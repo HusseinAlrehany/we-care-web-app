@@ -1,0 +1,21 @@
+<div class="specialities-container mat-elevation-z4">
+  <h2 class="title">Specialities</h2>
+
+  <mat-card *ngFor="let speciality of listOfSpecialities" class="speciality-card">
+    <div class="speciality-info">
+      <div>
+        <h3>{{ speciality.name }}</h3>
+        <p>{{ speciality.numberOfDoctors }} doctor(s)</p>
+      </div>
+      <div class="actions">
+        <button mat-raised-button color="primary" routerLink="/admin/speciality-details/{{speciality.id}}">
+          View Details
+        </button>
+        <button mat-raised-button color="warn" (click)="deleteSpeciality(speciality.id)">
+          Delete
+        </button>
+      </div>
+    </div>
+  </mat-card>
+</div>
+

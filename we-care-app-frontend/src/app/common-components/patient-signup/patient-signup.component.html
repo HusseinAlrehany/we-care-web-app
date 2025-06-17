@@ -1,0 +1,77 @@
+<div class="container">
+   <mat-card>
+      <mat-card-title>Sign Up</mat-card-title>
+      <mat-card-content>
+        <form [formGroup]="patientSignupForm">
+            <mat-form-field appearance="outline">
+               <mat-label>FirstName</mat-label>
+               <input matInput formControlName="firstName" placeholder="FirstName" required>
+               <mat-error *ngIf="patientSignupForm.get('firstName')?.invalid && patientSignupForm.get('firstName')?.touched">
+                  Please enter a valid first Name.
+               </mat-error>
+            </mat-form-field>
+
+           <mat-form-field appearance="outline">
+               <mat-label>LastName</mat-label>
+               <input matInput formControlName="lastName" placeholder="LastName" required>
+               <mat-error *ngIf="patientSignupForm.get('lastName')?.invalid && patientSignupForm.get('lastName')?.touched">
+                  Please enter a valid last Name.
+               </mat-error>
+            </mat-form-field>
+
+
+            <mat-form-field appearance="outline">
+                <mat-label>E-mail</mat-label>
+                <input matInput formControlName="email" placeholder="E-mail" required>
+                <mat-error *ngIf="patientSignupForm.get('email')?.invalid && patientSignupForm.get('email')?.touched">
+                    Please Enter valid email.
+                </mat-error>
+            </mat-form-field>
+
+
+             <mat-form-field appearance="outline">
+                <mat-label>Mobile</mat-label>
+                <input matInput formControlName="mobile" placeholder="Mobile" required>
+                <mat-error *ngIf="patientSignupForm.get('mobile')?.invalid && patientSignupForm.get('mobile')?.touched">
+                    Please Enter valid Mobile.
+                </mat-error>
+            </mat-form-field>
+
+
+            <mat-form-field appearance="outline">
+               <mat-label>Password</mat-label>
+               <input type="{{ hidePassword ? 'password' : 'text'}}" matInput formControlName="password" placeholder="password" required>
+               <button mat-icon-button matSuffix (click)="togglePasswordVisibility()">
+                  <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+               </button>
+               <mat-error *ngIf="patientSignupForm.get('password')?.invalid && patientSignupForm.get('password')?.touched">
+                Please enter valid password.
+               </mat-error>
+            </mat-form-field>
+
+
+            <mat-form-field appearance="outline">
+                <mat-label>confirmPassword</mat-label>
+                <input type="{{ hidePassword ? 'password' : 'text'}}" matInput formControlName="confirmPassword" placeholder="password" required>
+                <button mat-icon-button matSuffix (click)="togglePasswordVisibility()">
+                   <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                <mat-error *ngIf="patientSignupForm.get('confirmPassword')?.invalid && patientSignupForm.get('confirmPassword')?.touched">
+                 Please enter valid confirmation password.
+                </mat-error>
+             </mat-form-field>
+
+             <button mat-raised-button color="primary" type="submit" [disabled]="patientSignupForm.invalid" (click)="onPatientSignUp()">
+                SignUp
+             </button>
+        </form>
+      </mat-card-content>
+
+      <mat-card-actions>
+               <button mat-raised-button color="primary" routerLink="/doctor_signup">
+                Or you are a doctor? Sign Up
+             </button>
+             </mat-card-actions>
+   </mat-card>
+</div>
+

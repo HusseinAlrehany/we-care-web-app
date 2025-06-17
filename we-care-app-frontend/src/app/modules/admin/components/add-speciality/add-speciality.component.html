@@ -1,0 +1,14 @@
+<div class="container">
+    <h2>Add New Speciality</h2>
+    <form [formGroup]="addSpecialityForm" (ngSubmit)="addSpeciality()">
+         <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Speciality Name</mat-label>
+            <input matInput formControlName="name" placeholder="name" required/>
+            <mat-error *ngIf="addSpecialityForm.get('name')?.hasError('required')">
+               This input is required.
+            </mat-error>
+          </mat-form-field>
+
+          <button mat-raised-button color="primary" type="submit">Add Speciality</button>
+    </form>
+</div>

@@ -1,0 +1,124 @@
+
+    <mat-toolbar color="primary" class="main-toolbar">
+  <button mat-icon-button (click)="sidenav.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>We Care</span>
+  <span class="spacer"></span>
+
+  <!-- Conditional nav buttons -->
+  <div class="pages-common" *ngIf="!isAdminLoggedIn && !isDoctorLoggedIn && !isPatientLoggedIn">
+    <button mat-button routerLink="/book_visit" routerLinkActive="active">Visit A Doctor</button>
+    <button mat-button routerLink="/view_doctors" routerLinkActive="active">We Care Doctors</button>
+     <button mat-button routerLink="/we_care_AI" routerLinkActive="active">Unsure? Ask WeCare AI</button>
+    <button mat-button routerLink="/signin" routerLinkActive="active">Login</button>
+    <button mat-button routerLink="/patient_signup" routerLinkActive="active">Sign Up</button>
+   
+  </div>
+
+  <div class="pages-admin" *ngIf="isAdminLoggedIn">
+    <button mat-button (click)="navigateToAllDoctors()">We Care Doctors</button>
+    <button mat-button routerLink="/admin/add_doctor" routerLinkActive="active">Add Doctor</button>
+    <button mat-button routerLink="/admin/add_speciality" routerLinkActive="active">Add Speciality</button>
+    <button mat-button routerLink="/admin/add_clinic" routerLinkActive="active">Add Clinic</button>
+    <button mat-button routerLink="/admin/all_specialities" routerLinkActive="active">Specialities</button>
+    <button mat-button routerLink="/admin/all_clinics" routerLinkActive="active">Clinics</button>
+    <button mat-button routerLink="/admin/booked_visits" routerLinkActive="active">Booked Visits</button>
+    <button mat-button routerLink="/admin/visits_statistics" routerLinkActive="active">Statistics</button>
+    <button mat-button routerLink="/admin/reports" routerLinkActive="active">Reports</button>
+
+    <button mat-button routerLinkActive="active" (click)="signout()">Logout</button>
+  </div>
+
+  <div class="pages-doctor" *ngIf="isDoctorLoggedIn">
+    <button mat-button routerLink="/doctor/we_care_doctors" routerLinkActive="active">We Care Doctors</button>
+    <button mat-button routerLink="/doctor/todays_visits" routerLinkActive="active">Today's Booked Visits</button>
+    <button mat-button routerLink="/doctor/past_visits" routerLinkActive="active">Previous Visits</button>
+    <button mat-button routerLink="/doctor/add_schedule" routerLinkActive="active">Add Schedule</button>
+    <button mat-button routerLink="/doctor/add_clinic" routerLinkActive="active">Add Clinic</button>
+    <button mat-button routerLink="/doctor/profile" routerLinkActive="active">Profile</button>
+    <button mat-button  routerLinkActive="active" (click)="signout()" >Logout</button>
+  </div>
+
+  <div class="pages-patient" *ngIf="isPatientLoggedIn">
+    <button mat-button routerLink="/patient/view_doctors" routerLinkActive="active">We Care Doctors</button>
+    <button mat-button routerLink="/patient/my_visits" routerLinkActive="active">Current Booked Visits</button>
+    <button mat-button routerLink="/patient/visits_history" routerLinkActive="active">Visits History</button>
+    <button mat-button routerLink="/patient/book_visit" routerLinkActive="active">Book Visit</button>
+    <button mat-button routerLinkActive="active" (click)="signout()">Logout</button>
+  </div>
+</mat-toolbar>
+
+<mat-sidenav-container class="below-toolbar-container">
+  <mat-sidenav #sidenav mode="over" class="custom-sidenav">
+     <mat-nav-list *ngIf="isAdminLoggedIn">
+      <a mat-list-item routerLink="/">Home</a>
+      <a mat-list-item routerLink="/all_specialities">Specialities</a>
+      <a mat-list-item routerLink="/view_doctors">View Doctors</a>
+      <a mat-list-item routerLink="/view_doctors">Search Doctor</a>
+      <a mat-list-item routerLink="/about">About</a>
+      <a mat-list-item routerLink="/contact">Contact</a>
+      <a mat-list-item (click)="signout()">Logout</a>
+    </mat-nav-list>
+
+     <mat-nav-list *ngIf="isDoctorLoggedIn">
+      <a mat-list-item routerLink="/">Home</a>
+      <a mat-list-item routerLink="/all_specialities">Specialities</a>
+      <a mat-list-item routerLink="/view_doctors">View Doctors</a>
+      <a mat-list-item routerLink="/view_doctors">Search Doctor</a>
+      <a mat-list-item routerLink="/about">About</a>
+      <a mat-list-item routerLink="/contact">Contact</a>
+      <a mat-list-item (click)="signout()">Logout</a>
+    </mat-nav-list>
+
+     <mat-nav-list *ngIf="isPatientLoggedIn">
+      <a mat-list-item routerLink="/">Home</a>
+      <a mat-list-item routerLink="/all_specialities">Specialities</a>
+      <a mat-list-item routerLink="/view_doctors">View Doctors</a>
+      <a mat-list-item routerLink="/view_doctors">Search Doctor</a>
+      <a mat-list-item routerLink="/about">About</a>
+      <a mat-list-item routerLink="/contact">Contact</a>
+      <a mat-list-item (click)="signout()">Logout</a>
+    </mat-nav-list>
+
+
+     <mat-nav-list *ngIf="!isAdminLoggedIn && !isDoctorLoggedIn && !isPatientLoggedIn">
+      <a mat-list-item routerLink="/">Home</a>
+      <a mat-list-item routerLink="/all_specialities">Specialities</a>
+      <a mat-list-item routerLink="/view_doctors">View Doctors</a>
+      <a mat-list-item routerLink="/view_doctors">Search Doctor</a>
+      <a mat-list-item routerLink="/about">About</a>
+      <a mat-list-item routerLink="/contact">Contact</a>
+      <a mat-list-item (click)="signout()">Logout</a>
+    </mat-nav-list>
+
+
+
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <!-- Main routed views go here -->
+    <router-outlet></router-outlet>
+
+    <!-- Optional homepage hero section -->
+    <section *ngIf="isHomePage" class="hero">
+      <div class="hero-content">
+        <h1>Find Your Doctor</h1>
+        <p>Book a visit easily and we will take care of you.</p>
+        <button mat-button routerLink="/book_visit">Book Visit</button>
+      </div>
+    </section>
+
+    <!-- Footer only on homepage -->
+    <footer *ngIf="isHomePage" class="app-footer">
+      <div class="footer-content">
+        <p>&copy; 2025 We Care. All rights reserved.</p>
+        <nav>
+          <a routerLink="/about">About</a>
+          <a routerLink="/contact">Contact</a>
+          <a routerLink="/privacy">Privacy</a>
+        </nav>
+      </div>
+    </footer>
+  </mat-sidenav-content>
+</mat-sidenav-container>

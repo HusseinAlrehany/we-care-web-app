@@ -1,0 +1,80 @@
+<form [formGroup]="searchForm" class="search-container" *ngIf="listOfDoctors.length != 0">
+  <!-- Left: Search button -->
+  <div class="search-actions">
+    <button mat-raised-button color="primary"(click)="filterDoctorsBy()">Search</button>
+    
+  </div>
+
+  <!-- Right: Search fields -->
+  <div class="search-fields">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Doctor Name</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Speciality</mat-label>
+      <mat-select formControlName="speciality">
+        <mat-option *ngFor="let speciality of specialities" [value]="speciality">{{ speciality.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>State</mat-label>
+      <mat-select formControlName="state">
+        <mat-option *ngFor="let state of allStates" [value]="state">{{ state.stateName }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>City</mat-label>
+      <mat-select formControlName="city">
+        <mat-option *ngFor="let city of allCitiesByStateName" [value]="city">{{ city.cityName }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</form>
+
+
+<div class="doctor-list-container">
+  <mat-card *ngFor="let doctor of listOfDoctors" class="doctor-card">
+    <div class="card-content">
+      <img
+        [src]="'http://localhost:8080' + doctor.doctorImageURL"
+        alt="Doctor Image"
+        class="doctor-photo"
+      />
+
+      <div class="doctor-info">
+        <h3>Dr. {{ doctor.firstName }} {{ doctor.lastName }}</h3>
+        <p class="speciality">Speciality: {{ doctor.specialityName }}</p>
+        <p class="intro">{{ doctor.briefIntroduction }}</p>
+        <p class="intro">States: {{ doctor.clinicStates.join(', ') }}</p>
+        <p class="intro">Cities: {{ doctor.clinicCities.join(', ') }}</p>
+        <p class="joining">
+          <mat-icon color="primary" aria-hidden="false">event</mat-icon>
+          Joined on {{ doctor.joiningDate | date: 'mediumDate' }}
+        </p>
+
+        <div class="ratings" *ngIf="doctor.averageRating !== null">
+          <mat-icon color="accent">star</mat-icon>
+          <span>{{ doctor.averageRating.toFixed(1) }} / 5</span>
+          <span class="rating-count">({{ doctor.totalRating }} ratings)</span>
+        </div>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="card-actions">
+      <button mat-icon-button color="primary" >
+        <mat-icon>visibility</mat-icon>
+      </button>
+      <button mat-icon-button color="accent" >
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="onDelete(doctor.id)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </mat-card>
+</div>

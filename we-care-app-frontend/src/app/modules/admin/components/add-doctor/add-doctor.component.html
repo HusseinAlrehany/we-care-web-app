@@ -1,0 +1,115 @@
+<div class="signup-container" [ngClass]="{ 'loading': loading }">
+  <h2 class="title">Doctor Sign Up</h2>
+
+  <form [formGroup]="doctorSignupForm" (ngSubmit)="signUpAsDoctor()" enctype="multipart/form-data" class="signup-form">
+    
+    <!-- Photo Upload -->
+    <div class="file-upload-wrapper">
+      <label class="file-upload">
+        <span>Upload Personal Photo</span>
+        <input type="file" (change)="onSelectedDoctorPhotoFile($event)" hidden>
+        <mat-icon>upload</mat-icon>
+      </label>
+      <div *ngIf="selectedDoctorPhotoFile" class="preview-wrapper">
+        <img [src]="doctorPhotoPreview" alt="Doctor Photo" class="preview-image">
+      </div>
+    </div>
+
+    <!-- Medical Card Upload -->
+    <div class="file-upload-wrapper">
+      <label class="file-upload">
+        <span>Upload Medical Licence Card</span>
+        <input type="file" (change)="onSelectedMedicalFile($event)" hidden>
+        <mat-icon>upload</mat-icon>
+      </label>
+      <div *ngIf="selectedMedicalCardFile" class="preview-wrapper">
+        <img [src]="medicalCardPreview" alt="Medical Card" class="preview-image">
+      </div>
+    </div>
+
+    <!-- Speciality -->
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Select a Speciality</mat-label>
+      <mat-select formControlName="specialityId">
+        <mat-option *ngFor="let speciality of listOfSpecialities" [value]="speciality.id">
+          {{ speciality.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="doctorSignupForm.get('specialityId')?.hasError('required')">
+        This field is required.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Text Inputs -->
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>First Name</mat-label>
+      <input matInput formControlName="firstName" placeholder="First Name">
+      <mat-error *ngIf="doctorSignupForm.get('firstName')?.hasError('required')">
+        First name is required.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Last Name</mat-label>
+      <input matInput formControlName="lastName" placeholder="Last Name">
+      <mat-error *ngIf="doctorSignupForm.get('lastName')?.hasError('required')">
+        Last name is required.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" placeholder="Email">
+      <mat-error *ngIf="doctorSignupForm.get('email')?.hasError('required')">
+        Email is required.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Mobile</mat-label>
+      <input matInput formControlName="mobile" placeholder="Mobile">
+      <mat-error *ngIf="doctorSignupForm.get('mobile')?.hasError('required')">
+        Mobile number is required.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Brief Introduction</mat-label>
+      <textarea matInput formControlName="briefIntroduction" placeholder="Tell us about yourself"></textarea>
+      <mat-error *ngIf="doctorSignupForm.get('briefIntroduction')?.hasError('required')">
+        Introduction is required.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Password -->
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Password</mat-label>
+      <input [type]="hidePassword ? 'password' : 'text'" matInput formControlName="password" placeholder="Password">
+      <button mat-icon-button matSuffix (click)="togglePasswordVisibility()" type="button">
+        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-error *ngIf="doctorSignupForm.get('password')?.invalid && doctorSignupForm.get('password')?.touched">
+        Invalid password.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Confirm Password</mat-label>
+      <input [type]="hidePassword ? 'password' : 'text'" matInput formControlName="confirmPassword" placeholder="Confirm Password">
+      <button mat-icon-button matSuffix (click)="togglePasswordVisibility()" type="button">
+        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-error *ngIf="doctorSignupForm.get('confirmPassword')?.invalid && doctorSignupForm.get('confirmPassword')?.touched">
+        Invalid confirmation password.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Submit Button -->
+    <button mat-raised-button color="primary" type="submit" [disabled]="loading || doctorSignupForm.invalid">
+      <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+      <span *ngIf="!loading">Add Doctor</span>
+    </button>
+
+  </form>
+</div>
+

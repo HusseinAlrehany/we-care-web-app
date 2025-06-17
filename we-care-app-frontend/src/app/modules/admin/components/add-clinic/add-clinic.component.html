@@ -1,0 +1,74 @@
+<div class="form-wrapper">
+  <h2 class="form-title">
+    <mat-icon color="primary">local_hospital</mat-icon>
+    Add Clinic
+  </h2>
+
+  <form [formGroup]="addClinicForm" class="clinic-form" (ngSubmit)="addClinic()">
+
+    <!-- Clinic Mobile -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Clinic Mobile</mat-label>
+      <input matInput formControlName="clinicMobile" type="tel" placeholder="Enter clinic mobile">
+      <mat-error *ngIf="addClinicForm.get('clinicMobile')?.hasError('required')">
+        Clinic mobile is required
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Address -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Address</mat-label>
+      <input matInput formControlName="address" placeholder="Enter address">
+      <mat-error *ngIf="addClinicForm.get('address')?.hasError('required')">
+        Address is required
+      </mat-error>
+    </mat-form-field>
+
+    <!-- State Dropdown -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>State</mat-label>
+      <mat-select formControlName="stateId" (selectionChange)="onStateChange($event.value)">
+        <mat-option *ngFor="let state of states" [value]="state.id">
+          {{ state.stateName }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="addClinicForm.get('stateId')?.hasError('required')">
+        State is required
+      </mat-error>
+    </mat-form-field>
+
+    <!-- City Dropdown -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>City</mat-label>
+      <mat-select formControlName="cityId">
+        <mat-option *ngFor="let city of cities" [value]="city.id">
+          {{ city.cityName }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="addClinicForm.get('cityId')?.hasError('required')">
+        City is required
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Doctor Dropdown -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Doctor</mat-label>
+      <mat-select formControlName="doctorId">
+        <mat-option *ngFor="let doctor of shortDoctorsList" [value]="doctor.doctorId">
+          Dr. {{ doctor.fullName }} — {{ doctor.specialityName }} — {{ doctor.doctorEmail }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="addClinicForm.get('doctorId')?.hasError('required')">
+        Doctor is required
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Submit Button -->
+    <div class="button-container">
+      <button mat-raised-button color="primary" type="submit" [disabled]="addClinicForm.invalid">
+        Save Clinic
+      </button>
+    </div>
+
+  </form>
+</div>
