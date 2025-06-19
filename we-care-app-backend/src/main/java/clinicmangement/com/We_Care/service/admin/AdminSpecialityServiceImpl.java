@@ -2,6 +2,7 @@ package clinicmangement.com.We_Care.service.admin;
 
 import clinicmangement.com.We_Care.DTO.SpecialityDTO;
 import clinicmangement.com.We_Care.DTO.SpecialityDetailsDTOPage;
+import clinicmangement.com.We_Care.DTO.SpecialityDetailsInfo;
 import clinicmangement.com.We_Care.exceptions.types.NotFoundException;
 import clinicmangement.com.We_Care.exceptions.types.UserAlreadyExistsException;
 import clinicmangement.com.We_Care.mapper.ShortDoctorDTOMapper;
@@ -9,6 +10,7 @@ import clinicmangement.com.We_Care.mapper.SpecialityDetailsMapper;
 import clinicmangement.com.We_Care.mapper.SpecialityMapper;
 import clinicmangement.com.We_Care.models.Doctor;
 import clinicmangement.com.We_Care.models.Speciality;
+import clinicmangement.com.We_Care.repository.clinic.ClinicRepository;
 import clinicmangement.com.We_Care.repository.doctor.DoctorRepository;
 import clinicmangement.com.We_Care.repository.speciality.SpecialityRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,8 @@ public class AdminSpecialityServiceImpl implements AdminSpecialityService {
     private final SpecialityDetailsMapper specialityDetailsMapper;
 
     private final DoctorRepository doctorRepository;
+
+    private final ClinicRepository clinicRepository;
 
     private final ShortDoctorDTOMapper shortDoctorDTOMapper;
     @Override
@@ -60,18 +64,17 @@ public class AdminSpecialityServiceImpl implements AdminSpecialityService {
         specialityRepository.deleteById(id);
     }
 
-    //to be modified later
-    //i think we did not  need list of short doctors here
     @Override
-    public SpecialityDetailsDTOPage getSpecialityDetails(Integer id, int page, int size) {
+    public SpecialityDetailsDTOPage getSpecialityDetailsInfo(Integer specialityId, int page, int size) {
+         Page<SpecialityDetailsInfo> specialityDetailsInfoList =
+                 clinicRepository.getSpecialityDetailsInfo(specialityId, PageRequest.of(page, size));
 
-        Page<Doctor> doctorPage = doctorRepository.findAllBySpeciality_Id(id, PageRequest.of(page, size));
 
-        if(!doctorPage.hasContent()){
-            throw new NotFoundException("No Doctors for that Speciality");
-        }
+         if(!specialityDetailsInfoList.hasContent()){
+             throw new NotFoundException("No Details Found");
+         }
 
-        return specialityDetailsMapper.toSpecialityDetailsDTOPage(doctorPage);
+        return specialityDetailsMapper.toSpecialityDetailsDTOPage(specialityDetailsInfoList);
     }
 
 }

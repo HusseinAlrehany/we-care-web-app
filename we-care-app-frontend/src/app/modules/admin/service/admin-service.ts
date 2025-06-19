@@ -41,7 +41,7 @@ export class AdminService{
   }
 
   getSpecialityDetailsById(specialityId: number, page: number, size: number): Observable<SpecialityDetailsResponse>{
-    return this.httpClient.get<SpecialityDetailsResponse>(baseURL + `speciality-details/${specialityId}?page=${page - 1}&&size=${size}`, {
+    return this.httpClient.get<SpecialityDetailsResponse>(baseURL + `speciality-details-info/${specialityId}?page=${page - 1}&&size=${size}`, {
       withCredentials: true,
     });
   }

@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { DoctorClinicTableRow } from '../../../../common-components/models/doctor-clinic-table-row';
+import { SpecialityDetailsInfo } from '../../../../common-components/models/speciality-details-info';
 
 @Component({
   selector: 'app-speciality-details',
@@ -26,7 +27,7 @@ export class SpecialityDetailsComponent implements OnInit{
   'fullAddress'
   ];
 
-  dataSource = new MatTableDataSource<DoctorClinicTableRow>([]);
+  dataSource = new MatTableDataSource<SpecialityDetailsInfo>([]);
 
   specialityId: number = this.activatedRoute.snapshot.params['id'];
 
@@ -58,32 +59,15 @@ pageSizeOptions: number []= [2,4,6,8];
 
   }
 
-
   getSpecialityDetails(specialityId: number, pageNumber: number, pageSize: number) {
     this.adminService.getSpecialityDetailsById(specialityId, pageNumber, pageSize).subscribe(
       (res)=> {
-        //to combine two objects in the same table
-        const doctors = res.payload.shortDoctorDTOS;
-        const clincics = res.payload.clinicDTOS;
-
+        
         this.totalElements = res.payload.totalElements;
         this.currentPage = res.payload.number;
         
+        this.dataSource.data = res.payload.specialityDetailsInfoList;
 
-        const doctorClinicData: DoctorClinicTableRow [] = clincics.map(
-          clinic => {
-            const doctor = doctors.find(d => d.doctorId === clinic.doctorId);
-
-            return {
-              fullName: doctor?.fullName || '',
-              doctorEmail: doctor?.doctorEmail || '',
-              specialityName: doctor?.specialityName || '',
-              clinicMobile: clinic.clinicMobile || '',
-              fullAddress: `${clinic.address}, ${clinic.cityName}, ${clinic.stateName}`
-            };
-          });
-
-          this.dataSource.data = doctorClinicData;
       },
       (error)=> {
         const errorMessage = error?.error?.message || error?.errorMessage || 'An unexpected error occurs';

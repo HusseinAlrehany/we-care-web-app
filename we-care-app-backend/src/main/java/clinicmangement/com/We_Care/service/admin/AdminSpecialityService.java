@@ -2,6 +2,8 @@ package clinicmangement.com.We_Care.service.admin;
 
 import clinicmangement.com.We_Care.DTO.SpecialityDTO;
 import clinicmangement.com.We_Care.DTO.SpecialityDetailsDTOPage;
+import clinicmangement.com.We_Care.DTO.SpecialityDetailsInfo;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -14,5 +16,5 @@ public interface AdminSpecialityService {
 
     void deleteSpecialityById(Integer id);
 
-    SpecialityDetailsDTOPage getSpecialityDetails(Integer id, int page, int size);
+    SpecialityDetailsDTOPage getSpecialityDetailsInfo(Integer specialityId, int page, int size);
 }

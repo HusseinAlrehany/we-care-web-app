@@ -4,13 +4,13 @@
     <!-- Clinic Location Column -->
     <ng-container matColumnDef="fullName">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Full Name</th>
-      <td mat-cell *matCellDef="let element">{{ element.fullName }}</td>
+      <td mat-cell *matCellDef="let element">{{ element.firstName}} {{element.lastName}}</td>
     </ng-container>
 
     <!-- Mobile Column -->
     <ng-container matColumnDef="doctorEmail">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
-      <td mat-cell *matCellDef="let element">{{ element.doctorEmail }}</td>
+      <td mat-cell *matCellDef="let element">{{ element.doctorEmail}}</td>
     </ng-container>
 
     <!-- Address Column -->
@@ -28,7 +28,7 @@
 
     <ng-container matColumnDef="fullAddress">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Clinic Address</th>
-      <td mat-cell *matCellDef="let element">{{ element.fullAddress }}</td>
+      <td mat-cell *matCellDef="let element">{{ element.address}} {{element.stateName}} {{element.cityName}}</td>
     </ng-container>
 
     <!-- City Column -->

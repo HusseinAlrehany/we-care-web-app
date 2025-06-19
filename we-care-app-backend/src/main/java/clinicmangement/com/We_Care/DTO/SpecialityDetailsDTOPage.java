@@ -7,9 +7,8 @@ import java.util.List;
 @Data
 public class SpecialityDetailsDTOPage {
 
-    List<ShortDoctorDTO> shortDoctorDTOS;
 
-    List<ClinicDTO> clinicDTOS;
+    List<SpecialityDetailsInfo> specialityDetailsInfoList;
 
 
     private int totalPages;

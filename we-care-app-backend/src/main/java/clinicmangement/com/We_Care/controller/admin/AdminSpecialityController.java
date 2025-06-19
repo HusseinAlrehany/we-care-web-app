@@ -2,9 +2,11 @@ package clinicmangement.com.We_Care.controller.admin;
 
 import clinicmangement.com.We_Care.DTO.SpecialityDTO;
 import clinicmangement.com.We_Care.DTO.SpecialityDetailsDTOPage;
+import clinicmangement.com.We_Care.DTO.SpecialityDetailsInfo;
 import clinicmangement.com.We_Care.apiresponse.ApiResponse;
 import clinicmangement.com.We_Care.service.admin.AdminSpecialityService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,12 +43,13 @@ public class AdminSpecialityController {
                 .body(new ApiResponse<>("Deleted Success", null));
     }
 
-    @GetMapping("/speciality-details/{id}")
-    public ResponseEntity<ApiResponse<SpecialityDetailsDTOPage>> getSpecialityDetails(@PathVariable Integer id,
-                                                                                      @RequestParam(defaultValue = "0")int page,
-                                                                                      @RequestParam(defaultValue = "1")int size){
+    @GetMapping("/speciality-details-info/{specialityId}")
+    public ResponseEntity<ApiResponse<SpecialityDetailsDTOPage>> getSpecialityDetailsInfo(@PathVariable Integer specialityId,
+                                                                                             @RequestParam(defaultValue = "0")int page,
+                                                                                             @RequestParam(defaultValue = "4")int size){
 
-        return ResponseEntity.ok(new ApiResponse<>("Success", adminSpecialityService.getSpecialityDetails(id, page, size)));
+        return ResponseEntity.ok(new ApiResponse<>("Success",
+                adminSpecialityService.getSpecialityDetailsInfo(specialityId, page, size)));
     }
 
 
