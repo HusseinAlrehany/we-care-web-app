@@ -1,6 +1,7 @@
 package clinicmangement.com.We_Care.repository.clinic;
 
-import clinicmangement.com.We_Care.DTO.SpecialityDetailsInfo;
+import clinicmangement.com.We_Care.DTO.ClinicDTOProjection;
+import clinicmangement.com.We_Care.DTO.SpecialityDetailsInfoProjection;
 import clinicmangement.com.We_Care.models.Clinic;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ import java.util.List;
 @Repository
 public interface ClinicRepository extends JpaRepository<Clinic, Integer> {
     //query with DTO projection to save the result
+    //to be fixed speciality details not shown in front end
     @Query(value = """
             SELECT c.address AS address,
             c.clinic_mobile AS clinicMobile,
@@ -33,5 +35,21 @@ public interface ClinicRepository extends JpaRepository<Clinic, Integer> {
             
             WHERE d.speciality_id = :specialityId
             """, nativeQuery = true)
-    Page<SpecialityDetailsInfo> getSpecialityDetailsInfo(@Param("specialityId")Integer specialityId, Pageable pageable);
+    Page<SpecialityDetailsInfoProjection> getSpecialityDetailsInfo(@Param("specialityId")Integer specialityId, Pageable pageable);
+
+
+    @Query(value = """
+            SELECT c.id AS clinicId,
+            CONCAT (c.address, ' _ ', ct.city_name, ' _ ', st.state_name) AS clinicAddress
+            FROM clinic c
+            INNER JOIN doctors d
+            ON c.doctor_id = d.id
+            INNER JOIN states st
+            ON c.state_id = st.id
+            INNER JOIN cities ct
+            ON c.city_id = ct.id
+            WHERE d.user_id = :userId
+            """,nativeQuery = true)
+    List<ClinicDTOProjection> getAllClinicByUserId(@Param("userId") Integer userId);
+
 }

@@ -10,6 +10,9 @@ import { AllSpecialitiesComponent } from './components/all-specialities/all-spec
 import { AddClinicComponent } from './components/add-clinic/add-clinic.component';
 import { AllClinicsComponent } from './components/all-clinics/all-clinics.component';
 import { SpecialityDetailsComponent } from './components/speciality-details/speciality-details.component';
+import { UpdateClinicComponent } from './components/update-clinic/update-clinic.component';
+import { UpdateDoctorComponent } from './components/update-doctor/update-doctor.component';
+import { DoctorDetailsComponent } from './components/doctor-details/doctor-details.component';
 
 const routes: Routes = [
   {path: 'view_doctors', component: AllDoctorsComponent},
@@ -21,7 +24,10 @@ const routes: Routes = [
   {path: 'reports', component: ReportsComponent},
   {path: 'all_specialities', component: AllSpecialitiesComponent},
   {path: 'all_clinics', component: AllClinicsComponent},
-  {path: 'speciality-details/:id', component: SpecialityDetailsComponent}
+  {path: 'speciality-details/:id', component: SpecialityDetailsComponent},
+  {path: 'edit-clinic/:id', component: UpdateClinicComponent},
+  {path: 'edit-doctor/:id', component: UpdateDoctorComponent},
+  {path: 'doctor-details/:id', component: DoctorDetailsComponent}
 ];
 
 @NgModule({

@@ -1,8 +1,9 @@
 package clinicmangement.com.We_Care.mapper;
 
-import clinicmangement.com.We_Care.DTO.DoctorDTO;
-import clinicmangement.com.We_Care.DTO.UserDoctorDTO;
+import clinicmangement.com.We_Care.DTO.*;
+import clinicmangement.com.We_Care.models.Clinic;
 import clinicmangement.com.We_Care.models.Doctor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class DoctorMapper {
@@ -26,11 +28,10 @@ public class DoctorMapper {
         doctorDTO.setLastName(doctor.getLastName());
         doctorDTO.setJoiningDate(doctor.getJoiningDate());
         doctorDTO.setBriefIntroduction(doctor.getBriefIntroduction());
+        doctorDTO.setFees(doctor.getFees());
         doctorDTO.setUserId(doctor.getUser().getId());
         doctorDTO.setSpecialityId(doctor.getSpeciality().getId());
         doctorDTO.setSpecialityName(doctor.getSpeciality().getName());
-       // doctorDTO.setMedicalCardImage(doctor.getMedicalCard());
-       // doctorDTO.setDoctorImage(doctor.getDoctorPhoto());
         doctorDTO.setDoctorImageURL("/doctors/" + doctor.getId() + "/photo");
         doctorDTO.setMedicalCardURL("/doctors/" + doctor.getId() + "/medical-card");
         doctorDTO.setTotalRating(doctor.getTotalRating());
@@ -82,7 +83,6 @@ public class DoctorMapper {
 
     }
 
-
     public UserDoctorDTO userDoctorDTO(Doctor doctor){
             if(doctor == null){
                 throw new NullPointerException("Doctor is Null");
@@ -102,6 +102,44 @@ public class DoctorMapper {
 
             return userDoctorDTO;
         }
+
+
+
+    public SameDoctorsPage toSameDoctorsPage(Page<Doctor> doctorPage){
+
+        if(doctorPage == null){
+            throw new NullPointerException("Doctor Page is NULL");
+        }
+
+        SameDoctorsPage sameDoctorsPage = new SameDoctorsPage();
+        sameDoctorsPage.setPageNumber(doctorPage.getNumber());
+        sameDoctorsPage.setPageSize(doctorPage.getSize());
+        sameDoctorsPage.setTotalPages(doctorPage.getTotalPages());
+        sameDoctorsPage.setTotalElements(doctorPage.getTotalElements());
+        sameDoctorsPage.setNumberOfElements(doctorPage.getNumberOfElements());
+
+        sameDoctorsPage.setContent(doctorPage.getContent().stream().map(this::toSameDoctorDTO).toList());
+
+        return sameDoctorsPage;
+    }
+
+    public SameDoctorDTO toSameDoctorDTO(Doctor doctor){
+        if(doctor == null){
+            throw new NullPointerException("Doctor is NULL");
+        }
+
+        SameDoctorDTO sameDoctorDTO = new SameDoctorDTO();
+        sameDoctorDTO.setId(doctor.getId());
+        sameDoctorDTO.setFees(doctor.getFees());
+        sameDoctorDTO.setFullName(doctor.getFirstName() + " " + doctor.getLastName());
+        sameDoctorDTO.setBriefIntroduction(doctor.getBriefIntroduction());
+        sameDoctorDTO.setAverageRating(doctor.getAverageRating());
+        sameDoctorDTO.setTotalRating(doctor.getTotalRating());
+        sameDoctorDTO.setSpecialityName(doctor.getSpeciality().getName());
+        sameDoctorDTO.setDoctorImageURL("/doctors/" + doctor.getId() + "/photo");
+
+        return sameDoctorDTO;
+    }
 
 
 

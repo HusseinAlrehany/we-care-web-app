@@ -1,30 +1,27 @@
 package clinicmangement.com.We_Care.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
-@Table(name = "doctor_schedule")
+@Table(name = "Schedule_appointment")
 @Data
-public class DoctorSchedule {
+public class ScheduleAppointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Enumerated(EnumType.STRING)
-    private DayOfWeek dayOfWeek;
 
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private LocalDate date;
+    private LocalTime startTime;
+    private LocalTime endTime;
 
-    //@JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -34,6 +31,4 @@ public class DoctorSchedule {
     @JoinColumn(name = "clinic_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Clinic clinic;
-
-
 }

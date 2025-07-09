@@ -3,13 +3,17 @@ package clinicmangement.com.We_Care;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 
+import static org.springframework.data.web.config.EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO;
+
 @SpringBootApplication
+@EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO) //for paging support(JPQL + assign Result IN DTO)
 public class WeCareApplication {
 
 	public static void main(String[] args) {

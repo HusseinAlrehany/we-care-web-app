@@ -2,8 +2,6 @@ package clinicmangement.com.We_Care.service.admin;
 
 import clinicmangement.com.We_Care.DTO.SpecialityDTO;
 import clinicmangement.com.We_Care.DTO.SpecialityDetailsDTOPage;
-import clinicmangement.com.We_Care.DTO.SpecialityDetailsInfo;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 

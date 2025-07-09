@@ -7,11 +7,12 @@ import { ClinicDTO } from '../../../../common-components/models/clinic-dto';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-all-clinics',
   standalone: true ,
-  imports: [MaterialModule, CommonModule, ReactiveFormsModule],
+  imports: [MaterialModule, CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './all-clinics.component.html',
   styleUrl: './all-clinics.component.scss'
 })
@@ -67,6 +68,19 @@ export class AllClinicsComponent implements OnInit{
     this.pageSize = event.pageSize;
     this.pageNumber = event.pageIndex + 1;
     this.getAllClinics(this.pageNumber, this.pageSize);
+  }
+
+  deleteClinicById(clinicId: number){
+    this.adminService.deleteClinicById(clinicId).subscribe(
+      (res)=> {
+        this.snackBar.open(res.message, "Close", {duration: 5000});
+        this.getAllClinics(this.pageNumber, this.pageSize);
+      },
+      (error)=> {
+        const errorMessage = error?.error?.message || error?.errorMessage || 'An unexpected error occured';
+        this.snackBar.open(errorMessage, "Close", {duration: 5000});
+      }
+    )
   }
 
 }

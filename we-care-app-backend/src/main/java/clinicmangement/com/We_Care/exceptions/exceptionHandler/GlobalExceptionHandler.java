@@ -2,6 +2,7 @@ package clinicmangement.com.We_Care.exceptions.exceptionHandler;
 
 import clinicmangement.com.We_Care.exceptions.types.InvalidUserNameOrPasswordException;
 import clinicmangement.com.We_Care.exceptions.types.NotFoundException;
+import clinicmangement.com.We_Care.exceptions.types.OverLappedSchedulesException;
 import clinicmangement.com.We_Care.exceptions.types.UserAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -64,6 +65,14 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(OverLappedSchedulesException.class)
+    public ResponseEntity<Object> handleOverlappedSchedulesException(OverLappedSchedulesException ex){
+
+        return errorResponseBuilder(HttpStatus.CONFLICT,
+                                    ex.getMessage(),
+                ex.getStackTrace().toString());
+    }
+
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex){
         return errorResponseBuilder(HttpStatus.FORBIDDEN,

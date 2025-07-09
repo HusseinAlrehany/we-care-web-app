@@ -9,7 +9,8 @@ export interface DoctorSignupRequest {
     briefIntroduction: string,
     specialityId?: number,
     medicalCardFile?: File,
-    doctorPhotoFile?: File
+    doctorPhotoFile?: File,
+    fees: number
     
 
 }

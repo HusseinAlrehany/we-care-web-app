@@ -1,9 +1,6 @@
 package clinicmangement.com.We_Care.controller.admin;
 
-import clinicmangement.com.We_Care.DTO.DoctorDTO;
-import clinicmangement.com.We_Care.DTO.DoctorSignupRequest;
-import clinicmangement.com.We_Care.DTO.ShortDoctorDTO;
-import clinicmangement.com.We_Care.DTO.UserDTO;
+import clinicmangement.com.We_Care.DTO.*;
 import clinicmangement.com.We_Care.apiresponse.ApiResponse;
 import clinicmangement.com.We_Care.enums.StateName;
 import clinicmangement.com.We_Care.service.admin.AdminDoctorService;
@@ -68,4 +65,19 @@ public class AdminDoctorController {
 
 
     }
+
+    @GetMapping("/doctor/{id}")
+    public ResponseEntity<ApiResponse<DoctorDTO>> getDoctorById(@PathVariable Integer id){
+
+        return ResponseEntity.ok(new ApiResponse<>("Success", adminDoctorService.getDoctorById(id)));
+    }
+
+    @PutMapping("/edit-doctor/{id}")
+    public ResponseEntity<ApiResponse<DoctorDTODetails>> updateDoctor(@PathVariable Integer id,
+                                                                      @ModelAttribute DoctorDTODetails doctorDTODetails){
+
+        return ResponseEntity.ok(new ApiResponse<>("Doctor Updated Success", adminDoctorService.updateDoctor(id, doctorDTODetails)));
+
+    }
+
 }

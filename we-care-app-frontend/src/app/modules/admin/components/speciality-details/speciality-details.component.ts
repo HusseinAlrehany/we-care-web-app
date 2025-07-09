@@ -7,7 +7,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { DoctorClinicTableRow } from '../../../../common-components/models/doctor-clinic-table-row';
 import { SpecialityDetailsInfo } from '../../../../common-components/models/speciality-details-info';
 
 @Component({
@@ -66,7 +65,8 @@ pageSizeOptions: number []= [2,4,6,8];
         this.totalElements = res.payload.totalElements;
         this.currentPage = res.payload.number;
         
-        this.dataSource.data = res.payload.specialityDetailsInfoList;
+        this.dataSource.data = res.payload.specialityDetailsInfoProjectionList;
+        this.dataSource.paginator = this.paginator;
 
       },
       (error)=> {

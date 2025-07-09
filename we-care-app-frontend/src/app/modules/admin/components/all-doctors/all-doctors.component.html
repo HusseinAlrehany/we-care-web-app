@@ -47,9 +47,10 @@
       <div class="doctor-info">
         <h3>Dr. {{ doctor.firstName }} {{ doctor.lastName }}</h3>
         <p class="speciality">Speciality: {{ doctor.specialityName }}</p>
-        <p class="intro">{{ doctor.briefIntroduction }}</p>
+        <p class="intro">About: {{ doctor.briefIntroduction }}</p>
         <p class="intro">States: {{ doctor.clinicStates.join(', ') }}</p>
         <p class="intro">Cities: {{ doctor.clinicCities.join(', ') }}</p>
+        <p class="intro">Fees: {{doctor.fees}}</p>
         <p class="joining">
           <mat-icon color="primary" aria-hidden="false">event</mat-icon>
           Joined on {{ doctor.joiningDate | date: 'mediumDate' }}
@@ -66,10 +67,10 @@
     <mat-divider></mat-divider>
 
     <div class="card-actions">
-      <button mat-icon-button color="primary" >
+      <button mat-icon-button color="primary" routerLink="/admin/doctor-details/{{doctor.id}}">
         <mat-icon>visibility</mat-icon>
       </button>
-      <button mat-icon-button color="accent" >
+      <button mat-icon-button color="accent" routerLink="/admin/edit-doctor/{{doctor.id}}">
         <mat-icon>edit</mat-icon>
       </button>
       <button mat-icon-button color="warn" (click)="onDelete(doctor.id)">

@@ -10,7 +10,7 @@ import { SpecialitiesDTO } from '../models/specialities-dto';
 @Component({
   selector: 'app-doctor-signup',
   standalone: true ,
-  imports: [MaterialModule, CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [MaterialModule, CommonModule, ReactiveFormsModule],
   templateUrl: './doctor-signup.component.html',
   styleUrl: './doctor-signup.component.scss'
 })
@@ -78,7 +78,8 @@ previewDoctorImage(){
       confirmPassword: [null, [Validators.required]],
       mobile: [null, [Validators.required]],
       specialityId: [null, [Validators.required]],
-      briefIntroduction: [null, [Validators.required]]
+      briefIntroduction: [null, [Validators.required]],
+      fees: [null, [Validators.required]],
 
     });
 

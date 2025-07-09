@@ -2,13 +2,12 @@ package clinicmangement.com.We_Care.service.admin;
 
 import clinicmangement.com.We_Care.DTO.SpecialityDTO;
 import clinicmangement.com.We_Care.DTO.SpecialityDetailsDTOPage;
-import clinicmangement.com.We_Care.DTO.SpecialityDetailsInfo;
+import clinicmangement.com.We_Care.DTO.SpecialityDetailsInfoProjection;
 import clinicmangement.com.We_Care.exceptions.types.NotFoundException;
 import clinicmangement.com.We_Care.exceptions.types.UserAlreadyExistsException;
 import clinicmangement.com.We_Care.mapper.ShortDoctorDTOMapper;
 import clinicmangement.com.We_Care.mapper.SpecialityDetailsMapper;
 import clinicmangement.com.We_Care.mapper.SpecialityMapper;
-import clinicmangement.com.We_Care.models.Doctor;
 import clinicmangement.com.We_Care.models.Speciality;
 import clinicmangement.com.We_Care.repository.clinic.ClinicRepository;
 import clinicmangement.com.We_Care.repository.doctor.DoctorRepository;
@@ -66,7 +65,7 @@ public class AdminSpecialityServiceImpl implements AdminSpecialityService {
 
     @Override
     public SpecialityDetailsDTOPage getSpecialityDetailsInfo(Integer specialityId, int page, int size) {
-         Page<SpecialityDetailsInfo> specialityDetailsInfoList =
+         Page<SpecialityDetailsInfoProjection> specialityDetailsInfoList =
                  clinicRepository.getSpecialityDetailsInfo(specialityId, PageRequest.of(page, size));
 
 

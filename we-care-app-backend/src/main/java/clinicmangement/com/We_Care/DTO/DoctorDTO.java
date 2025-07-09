@@ -36,6 +36,8 @@ public class DoctorDTO {
 
     private String specialityName;
 
+    private Integer fees;
+
 
     private List<String> clinicStates;
 

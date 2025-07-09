@@ -1,5 +1,6 @@
 package clinicmangement.com.We_Care.token.utils;
 
+import clinicmangement.com.We_Care.models.User;
 import clinicmangement.com.We_Care.repository.user.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -7,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -62,6 +62,22 @@ public class JwtUtils {
 
     public boolean isTokenExpired(String token) {
         return extractClaims(token, Claims::getExpiration).before(new Date());
+    }
+
+
+    //if we need full control on logged in user
+    //and load all user object we can use that block
+    //but if we only want only email of currently logged  in user use (Principle interface from spring security)
+    public User getLoggedInUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication != null && authentication.isAuthenticated()){
+            User user = (User) authentication.getPrincipal();
+            Optional<User> optionalUser = userRepository.findById(user.getId());
+
+            return optionalUser.orElse(null);
+        }
+
+        return null;
     }
 
 }

@@ -1,6 +1,7 @@
 package clinicmangement.com.We_Care.service.admin;
 
 import clinicmangement.com.We_Care.DTO.DoctorDTO;
+import clinicmangement.com.We_Care.DTO.DoctorDTODetails;
 import clinicmangement.com.We_Care.DTO.ShortDoctorDTO;
 import clinicmangement.com.We_Care.enums.StateName;
 
@@ -24,4 +25,8 @@ public interface AdminDoctorService {
                                    String cityName);
 
     List<ShortDoctorDTO> getAllShortDoctors();
+
+    DoctorDTO getDoctorById(Integer id);
+
+    DoctorDTODetails updateDoctor(Integer id, DoctorDTODetails doctorDTODetails);
 }

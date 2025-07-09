@@ -1,5 +1,7 @@
 package clinicmangement.com.We_Care.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -31,6 +33,8 @@ public class Doctor {
     @Column(columnDefinition = "longblob")
     private byte[] doctorPhoto;
 
+    private Integer fees;
+
     private Double totalRating;
 
     private Double averageRating;
@@ -42,7 +46,8 @@ public class Doctor {
 
     //@JsonManagedReference
     @OneToMany(mappedBy = "doctor")
-    private List<DoctorSchedule> doctorScheduleList;
+    @JsonIgnore
+    private List<ScheduleAppointment> doctorScheduleList;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -52,6 +57,7 @@ public class Doctor {
 
 
     @OneToMany(mappedBy = "doctor")
+    @JsonIgnore
     private List<Clinic> clinicList;
 
     @OneToMany(mappedBy = "doctor")

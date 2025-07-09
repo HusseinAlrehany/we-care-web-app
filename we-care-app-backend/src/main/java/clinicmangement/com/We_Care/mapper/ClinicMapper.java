@@ -74,4 +74,7 @@ public class ClinicMapper {
                 .map(this::toClinicDTO)
                 .toList() : new ArrayList<>();
     }
+
+
+
 }

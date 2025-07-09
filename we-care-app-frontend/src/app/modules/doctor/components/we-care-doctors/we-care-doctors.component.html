@@ -1,1 +1,52 @@
-<p>we-care-doctors works!</p>
+<div class="doctor-list-container" *ngIf="sameSpecialityDoctors.length != 0">
+  <mat-card *ngFor="let doctor of sameSpecialityDoctors"  class="doctor-card">
+    <div class="card-content">
+      <img
+        [src]="'http://localhost:8080/doctors/' + doctor.id + '/photo'"
+        alt="Doctor Image"
+        class="doctor-photo"
+      />
+
+      <div class="doctor-info">
+        <h3>Dr. {{ doctor.fullName }}</h3>
+
+         <p class="speciality">
+            <mat-icon aria-hidden="false" aria-label="Speciality icon">local_hospital</mat-icon>
+                {{ doctor.specialityName }}
+         </p>
+
+
+         <p class="intro">
+              <mat-icon aria-hidden="false" aria-label="About icon">person</mat-icon>
+                    {{ doctor.briefIntroduction }}
+         </p>
+
+        
+        <p class="intro">
+                <mat-icon aria-hidden="false" aria-label="Fees icon">payments</mat-icon>
+                     {{ doctor.fees }} EGP
+        </p>
+
+        
+        <div class="ratings" *ngIf="doctor.averageRating !== null">
+          <mat-icon color="accent">star</mat-icon>
+          <span>{{ doctor.averageRating.toFixed(1) }} / 5</span>
+          <span class="rating-count">({{ doctor.totalRating }} ratings)</span>
+        </div>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+  </mat-card>
+
+
+  <!-- Paginator -->
+  <mat-paginator [length]="totalElements"
+                 [pageSize]="pageSize"
+                 [pageIndex]="currentPage"
+                 [pageSizeOptions]="pageSizeOptions"
+                 (page)="onPageChange($event)"
+                 >
+  </mat-paginator>
+</div>

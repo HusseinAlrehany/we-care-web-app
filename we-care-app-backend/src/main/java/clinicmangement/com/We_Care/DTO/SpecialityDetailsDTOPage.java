@@ -8,8 +8,7 @@ import java.util.List;
 public class SpecialityDetailsDTOPage {
 
 
-    List<SpecialityDetailsInfo> specialityDetailsInfoList;
-
+    List<SpecialityDetailsInfoProjection> specialityDetailsInfoProjectionList;
 
     private int totalPages;
     private Long totalElements;

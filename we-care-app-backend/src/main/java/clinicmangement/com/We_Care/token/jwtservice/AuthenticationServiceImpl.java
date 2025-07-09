@@ -107,6 +107,7 @@ public class AuthenticationServiceImpl implements  AuthenticationService{
         Doctor doctor = new Doctor();
         doctor.setFirstName(doctorSignupRequest.getFirstName());
         doctor.setLastName(doctorSignupRequest.getLastName());
+        doctor.setFees(doctorSignupRequest.getFees());
 
         Optional<Speciality> speciality = specialityRepository.findById(doctorSignupRequest.getSpecialityId());
         if(speciality.isEmpty()){

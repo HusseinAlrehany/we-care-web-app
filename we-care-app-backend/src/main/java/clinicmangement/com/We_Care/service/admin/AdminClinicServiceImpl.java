@@ -77,5 +77,42 @@ public class AdminClinicServiceImpl implements AdminClinicService{
         return clinicMapper.toClinicDTOPage(clinicPage);
     }
 
+    @Override
+    public void deleteClinicById(Integer clinicId) {
+        Clinic clinic = clinicRepository.findById(clinicId)
+                .orElseThrow(()-> new NotFoundException("No clinic Found ID:" + clinicId));
 
+        clinicRepository.deleteById(clinicId);
+    }
+
+    @Override
+    public ClinicDTO findClinicById(Integer id) {
+        Clinic clinic = clinicRepository.findById(id)
+                .orElseThrow(()-> new NotFoundException("No Clinic Found ID:" + id));
+        return clinicMapper.toClinicDTO(clinic);
+    }
+
+    @Override
+    public ClinicDTO updateClinic(ClinicDTO clinicDTO, Integer clinicId) {
+        Clinic clinic = clinicRepository.findById(clinicId)
+                .orElseThrow(()-> new NotFoundException("No Clinic Found ID: " + clinicId));
+
+        States state = stateRepository.findById(clinicDTO.getStateId())
+                .orElseThrow(()-> new NotFoundException("No State Found"));
+
+        Cities city = cityRepository.findById(clinicDTO.getCityId())
+                .orElseThrow(()-> new NotFoundException("No City Found"));
+
+        Doctor doctor = doctorRepository.findById(clinicDTO.getDoctorId())
+                .orElseThrow(()-> new NotFoundException("No Doctor Found"));
+
+        clinic.setClinicMobile(clinicDTO.getClinicMobile());
+        clinic.setAddress(clinicDTO.getAddress());
+        clinic.setState(state);
+        clinic.setCity(city);
+        clinic.setDoctor(doctor);
+
+
+        return clinicMapper.toClinicDTO(clinicRepository.save(clinic));
+    }
 }

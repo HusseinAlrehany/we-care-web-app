@@ -6,7 +6,7 @@ export interface SpecialityDetailsResponse {
 
     message: string;
     payload: {
-        specialityDetailsInfoList: SpecialityDetailsInfo[];
+        specialityDetailsInfoProjectionList: SpecialityDetailsInfo[];
         totalPages: number;
         totalElements: number;
         size: number;

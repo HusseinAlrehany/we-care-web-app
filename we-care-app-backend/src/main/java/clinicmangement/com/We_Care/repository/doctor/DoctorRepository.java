@@ -6,13 +6,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface DoctorRepository extends JpaRepository<Doctor, Integer>, JpaSpecificationExecutor<Doctor> {
@@ -33,4 +32,30 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer>, JpaSpe
                                @Param("cityName") String cityName);
 
     Page<Doctor> findAllBySpeciality_Id(Integer specialityId, Pageable pageable);
+
+    Optional<Doctor> findByUser_Id(Integer userId);
+
+    //Using JPQL for automatic pagination support
+    //native query need additional count query for pagination
+    @Query(value = """
+               SELECT d
+               FROM Doctor d
+               WHERE d.speciality.id = (
+                  SELECT doc.speciality.id
+                  FROM Doctor doc
+                  WHERE doc.user.id = :userId
+               )
+            """)
+    Page<Doctor> findAllSameSpecialityDocs(@Param("userId") Integer userId, Pageable pageable);
+
+    @Query(value = """
+            Select d.*
+            FROM doctors d
+            INNER JOIN users us
+            ON d.user_id = us.id
+            WHERE us.id = :userId
+            """, nativeQuery = true)
+    Doctor findDoctorByUserId(@Param("userId") Integer userId);
+
+
 }

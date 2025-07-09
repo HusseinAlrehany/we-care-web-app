@@ -2,6 +2,7 @@ package clinicmangement.com.We_Care.controller.doctor;
 
 import clinicmangement.com.We_Care.service.doctor.DoctorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.CacheControl;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping
@@ -27,7 +29,9 @@ public class ImageController {
          byte[] image = doctorService.getDoctorPhotoById(id);
          MediaType mediaType = getMediaType(image);
 
-        return ResponseEntity.ok().contentType(mediaType).body(image);
+        return ResponseEntity.ok().contentType(mediaType)
+                        .cacheControl(CacheControl.maxAge(1, TimeUnit.DAYS))
+                        .body(image);
     }
 
     @GetMapping("/doctors/{id}/medical-card")

@@ -53,6 +53,8 @@ public class DoctorSignupRequest {
     private MultipartFile medicalCardFile;
     private byte[] doctorPhotoByte;
 
+    private Integer fees;
+
     @ImgValidation
     private MultipartFile doctorPhotoFile;
 }

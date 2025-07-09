@@ -1,0 +1,96 @@
+<div class="signup-container" [ngClass]="{ 'loading': loading }">
+  <h2 class="title">Update Doctor</h2>
+  <form [formGroup]="updateForm" enctype="multipart/form-data" (ngSubmit)="updateDoctor()" class="signup-form">
+    
+    <!-- Personal Photo Upload -->
+    <div class="file-upload-wrapper">
+      <label class="file-upload">
+        <span>Upload Personal Photo</span>
+        <input type="file" (change)="onDoctorFileSelected($event)" hidden>
+        <mat-icon>attach_file</mat-icon>
+      </label>
+      <div *ngIf="selectedDoctorPhotoFile" class="preview-wrapper">
+        <img [src]="doctorPhotoPreview" alt="Doctor Photo" class="preview-image">
+      </div>
+      <div *ngIf="!selectedDoctorPhotoFile && existingDoctorImage" class="image-preview">
+        <div class="circle-image">
+          <img [src]="existingDoctorImage" alt="Existing Doctor Photo" class="preview-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- Medical Card Upload -->
+    <div class="file-upload-wrapper">
+      <label class="file-upload">
+        <span>Upload Medical Licence Card</span>
+        <input type="file" (change)="onCardFileSelected($event)" hidden>
+        <mat-icon>attach_file</mat-icon>
+      </label>
+      <div *ngIf="selectedMedicalCardFile" class="preview-wrapper">
+        <img [src]="medicalCardPreview" alt="Medical Card" class="preview-image">
+      </div>
+      <div *ngIf="!selectedMedicalCardFile && existingCardImage" class="image-preview">
+        <div class="circle-image">
+          <img [src]="existingCardImage" alt="Existing Medical Card" class="preview-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- Speciality Selection -->
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Select a Speciality</mat-label>
+      <mat-select formControlName="specialityId">
+        <mat-option *ngFor="let speciality of specialities" [value]="speciality.id">
+          {{speciality.name}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="updateForm.get('specialityId')?.hasError('required')">
+        This field is required.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- First Name Input -->
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>First Name</mat-label>
+      <input matInput formControlName="firstName" placeholder="First Name">
+      <mat-error *ngIf="updateForm.get('firstName')?.hasError('required')">
+        First name is required.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Last Name Input -->
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Last Name</mat-label>
+      <input matInput formControlName="lastName" placeholder="Last Name">
+      <mat-error *ngIf="updateForm.get('lastName')?.hasError('required')">
+        Last name is required.
+      </mat-error>
+    </mat-form-field>
+
+
+    <!-- Brief Introduction Input -->
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Brief Introduction</mat-label>
+      <textarea matInput formControlName="briefIntroduction" placeholder="Tell us about yourself"></textarea>
+      <mat-error *ngIf="updateForm.get('briefIntroduction')?.hasError('required')">
+        Introduction is required.
+      </mat-error>
+    </mat-form-field>
+
+   <!--Fees Field-->
+   <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Fees</mat-label>
+      <textarea matInput formControlName="fees" placeholder="Fees"></textarea>
+      <mat-error *ngIf="updateForm.get('fees')?.hasError('required')">
+        Fees is required.
+      </mat-error>
+    </mat-form-field>
+
+
+    <!-- Submit Button -->
+    <button mat-raised-button color="primary" type="submit" [disabled]="loading || updateForm.invalid">
+      <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+      <span *ngIf="!loading">Update Doctor</span>
+    </button>
+  </form>
+</div>

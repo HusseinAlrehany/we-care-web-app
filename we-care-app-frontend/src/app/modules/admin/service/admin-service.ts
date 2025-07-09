@@ -11,6 +11,7 @@ import { ClinicDTO } from '../../../common-components/models/clinic-dto';
 import { ClinicPageResponse } from '../../../common-components/models/clinic-page-response';
 import { ShortDoctorsResponse } from '../../../common-components/models/short-doctors-response';
 import { SpecialityDetailsResponse } from '../../../common-components/models/speciality-details-response';
+import { DoctorDTOUpdateResponse } from '../../../common-components/models/doctor-dtoupdate-response';
 
 const baseURL = "http://localhost:8080/we-care/";
 
@@ -91,6 +92,37 @@ export class AdminService{
     });
   }
 
+  deleteClinicById(clinicId: number):Observable<any>{
+    return this.httpClient.delete(baseURL + `clinic/${clinicId}`, {
+      withCredentials: true,
+    })
+  }
+
+  getClinicById(clinicId: number): Observable<ClinicDTO>{
+
+    return this.httpClient.get<ClinicDTO>(baseURL + `clinic/${clinicId}`, {
+      withCredentials: true,
+    })
+  }
+
+  updateClinic(clinicDTO: ClinicDTO, id: number): Observable<ClinicPageResponse> {
+     return this.httpClient.put<ClinicPageResponse>(baseURL + `clinic-edit/${id}`, clinicDTO , {
+      withCredentials: true,
+     });
+  }
+
+  getDoctorById(id: number): Observable<DoctorDTOUpdateResponse> {
+     return this.httpClient.get<DoctorDTOUpdateResponse>(baseURL + `doctor/${id}`, {
+      withCredentials: true,
+     });
+  }
+
+  updateDoctor(formData: FormData, id:number): Observable<DoctorDTOUpdateResponse> {
+
+    return this.httpClient.put<DoctorDTOUpdateResponse>(baseURL + `edit-doctor/${id}`, formData, {
+      withCredentials: true,
+    });
+  }
 
 
 

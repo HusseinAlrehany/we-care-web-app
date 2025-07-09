@@ -41,5 +41,24 @@ public class AdminClinicController {
 
     }
 
+    @DeleteMapping("/clinic/{id}")
+    public ResponseEntity<ApiResponse<Void>> deleteClinicById(@PathVariable Integer id){
+              adminClinicService.deleteClinicById(id);
+        return ResponseEntity.ok(new ApiResponse<>("Deleted Successfully"));
+    }
+
+    @GetMapping("/clinic/{id}")
+    public ResponseEntity<ClinicDTO> findClinicById(@PathVariable Integer id){
+
+              ClinicDTO clinicDTO =  adminClinicService.findClinicById(id);
+
+        return ResponseEntity.ok(clinicDTO);
+    }
+
+    @PutMapping("/clinic-edit/{id}")
+    public ResponseEntity<ApiResponse<ClinicDTO>> updateClinic(@RequestBody ClinicDTO clinicDTO, @PathVariable Integer id){
+        return ResponseEntity.ok(new ApiResponse<>("Clinic Updated Successfully", adminClinicService.updateClinic(clinicDTO, id)));
+    }
+
 
 }

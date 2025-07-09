@@ -1,0 +1,75 @@
+<div class="form-wrapper">
+  <h2 class="form-title">
+    <mat-icon color="primary">local_hospital</mat-icon>
+    Update Clinic
+  </h2>
+
+  <form class="clinic-form" [formGroup]="updateClinicForm" (ngSubmit)="updateClinic()">
+
+    <!-- Clinic Mobile -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Clinic Mobile</mat-label>
+      <input matInput formControlName="clinicMobile" type="tel" placeholder="Enter clinic mobile">
+      <mat-error *ngIf="this.updateClinicForm.get('clinicMobile')?.value.hasError">
+        Clinic mobile is required
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Address -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Address</mat-label>
+      <input matInput formControlName="address" placeholder="Enter address">
+      <mat-error *ngIf="this.updateClinicForm.get('address')?.value.hasError">
+        Address is required
+      </mat-error>
+    </mat-form-field>
+
+    <!-- State Dropdown -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>State</mat-label>
+      <mat-select formControlName="stateId" (selectionChange)="onStateChange($event.value)">
+        <mat-option *ngFor="let state of states" [value]="state.id">
+          {{state.stateName}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="this.updateClinicForm.get('stateId')?.value.hasError">
+        State is required
+      </mat-error>
+    </mat-form-field>
+
+    <!-- City Dropdown -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>City</mat-label>
+      <mat-select formControlName="cityId">
+        <mat-option *ngFor="let city of cities" [value]="city.id">
+          {{city.cityName}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="this.updateClinicForm.get('cityId')?.value.hasError">
+        City is required
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Doctor Dropdown -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Doctor</mat-label>
+      <mat-select formControlName="doctorId">
+        <mat-option *ngFor="let doctor of doctors" [value]="doctor.doctorId">
+           DR. {{doctor.fullName}} - {{doctor.specialityName}} - {{doctor.doctorEmail}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="this.updateClinicForm.get('doctorId')?.value.hasError">
+        Doctor is required
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Submit Button -->
+    <div class="button-container">
+      <button mat-raised-button color="primary" type="submit" [disabled]="this.updateClinicForm.invalid">
+        Update Clinic
+      </button>
+    </div>
+
+  </form>
+</div>
+

@@ -8,6 +8,7 @@ export interface DoctorDTO {
     totalRating: number,
     averageRating: number,
     specialityName: string,
+    fees: number,
     clinicStates: string[] ;
     clinicCities: string[];
 }

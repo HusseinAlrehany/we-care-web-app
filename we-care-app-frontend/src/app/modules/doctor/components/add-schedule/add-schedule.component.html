@@ -1,0 +1,60 @@
+<div class="form-wrapper">
+  <h2 class="form-title">
+    <mat-icon color="primary">local_hospital</mat-icon>
+    Add Schedule
+  </h2>
+
+  <form [formGroup]="scheduleForm" class="schedule-form" (ngSubmit)="addSchedule()">
+
+   <!--Start Time-->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Start Time</mat-label>
+      <input matInput type="time" formControlName="startTime" placeholder="Enter start time" step="60">
+      <mat-error *ngIf="scheduleForm.get('startTime')?.hasError('required')">
+        Start Time is required
+      </mat-error>
+    </mat-form-field>
+
+    <!--end Time-->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>End Time</mat-label>
+      <input matInput type="time" formControlName="endTime" placeholder="Enter end time" step="60">
+      <mat-error *ngIf="scheduleForm.get('endTime')?.hasError('required')">
+        End Time is required
+      </mat-error>
+    </mat-form-field>
+
+    <!--Date picker-->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="date" placeholder="Select a date" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="scheduleForm.get('date')?.hasError('required')">
+        Date is required
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Clinic Address Dropdown -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Clinic</mat-label>
+      <mat-select formControlName="clinicId">
+        <mat-option *ngFor="let clinic of myClinics" [value]="clinic.clinicId">
+          For Branch. {{ clinic.clinicAddress }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="scheduleForm.get('clinicId')?.hasError('required')">
+        Clinic is required
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Submit Button -->
+    <div class="button-container">
+      <button mat-raised-button color="primary" type="submit" [disabled]="scheduleForm.invalid">
+        Add Schedule
+      </button>
+    </div>
+
+  </form>
+</div>
+

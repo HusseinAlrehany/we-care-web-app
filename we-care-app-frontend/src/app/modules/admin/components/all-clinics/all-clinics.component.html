@@ -44,10 +44,10 @@
         <button mat-icon-button color="primary">
           <mat-icon>visibility</mat-icon>
         </button>
-        <button mat-icon-button color="accent">
+        <button mat-icon-button color="accent" routerLink="/admin/edit-clinic/{{element.id}}">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button color="warn">
+        <button mat-icon-button color="warn" (click)="deleteClinicById(element.id)">
           <mat-icon>delete</mat-icon>
         </button>
       </td>

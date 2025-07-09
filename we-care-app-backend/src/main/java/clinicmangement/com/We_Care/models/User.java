@@ -1,6 +1,8 @@
 package clinicmangement.com.We_Care.models;
 
 import clinicmangement.com.We_Care.enums.UserRole;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,8 +26,8 @@ public class User implements UserDetails {
     private String mobile;
     private String password;
 
-    @OneToOne(mappedBy = "user",fetch = FetchType.LAZY)
-    private Doctor doctor;
+     // @OneToOne(mappedBy = "user",fetch = FetchType.LAZY)
+     //private Doctor doctor;
 
     @OneToMany(mappedBy = "user")
     private List<VisitBooking> visitBookingList;

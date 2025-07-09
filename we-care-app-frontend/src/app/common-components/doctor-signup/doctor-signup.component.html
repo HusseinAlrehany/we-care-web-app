@@ -93,10 +93,20 @@
           </mat-form-field>
 
 
+          <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Fees</mat-label>
+          <input matInput formControlName="fees" placeholder="Fees" required/>
+          <mat-error *ngIf="doctorSignupForm.get('fees')?.hasError('required')">
+             This input is required.
+          </mat-error>
+          </mat-form-field>
+
           <mat-form-field appearance="outline">
                <mat-label>Password</mat-label>
                <input type="{{ hidePassword ? 'password' : 'text'}}" matInput formControlName="password" placeholder="password" required>
-               <button mat-icon-button matSuffix (click)="togglePasswordVisibility()">
+               <!--button tag without type ="" is by default type="submit" and when clicked it triggers (ngSubmit)="signUpAsDoctor()" -->
+               <!--so here without type="button" it will call (ngSubmit)="signupAsDoctor()" when click of visibility eye icon-->
+               <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility()">
                   <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
                </button>
                <mat-error *ngIf="doctorSignupForm.get('password')?.invalid && doctorSignupForm.get('password')?.touched">
@@ -108,7 +118,7 @@
              <mat-form-field appearance="outline">
                 <mat-label>confirmPassword</mat-label>
                 <input type="{{ hidePassword ? 'password' : 'text'}}" matInput formControlName="confirmPassword" placeholder="password" required>
-                <button mat-icon-button matSuffix (click)="togglePasswordVisibility()">
+                <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility()">
                    <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
                 </button>
                 <mat-error *ngIf="doctorSignupForm.get('confirmPassword')?.invalid && doctorSignupForm.get('confirmPassword')?.touched">

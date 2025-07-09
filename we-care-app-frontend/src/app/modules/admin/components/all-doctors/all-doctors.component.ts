@@ -9,13 +9,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CityDTO } from '../../../../common-components/models/city-dto';
 import { StateDTO } from '../../../../common-components/models/state-dto';
 import { SharedService } from '../../../../common-components/shared-service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-all-doctors',
   standalone: true,
-  imports: [MaterialModule, CommonModule, ReactiveFormsModule],
+  imports: [MaterialModule, CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './all-doctors.component.html',
   styleUrl: './all-doctors.component.scss'
 })

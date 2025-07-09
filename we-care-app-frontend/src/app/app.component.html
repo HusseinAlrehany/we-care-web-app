@@ -31,10 +31,11 @@
   </div>
 
   <div class="pages-doctor" *ngIf="isDoctorLoggedIn">
-    <button mat-button routerLink="/doctor/we_care_doctors" routerLinkActive="active">We Care Doctors</button>
+    <button mat-button routerLink="/doctor/we_care_doctors" routerLinkActive="active">Doctors In My Specilaity</button>
     <button mat-button routerLink="/doctor/todays_visits" routerLinkActive="active">Today's Booked Visits</button>
     <button mat-button routerLink="/doctor/past_visits" routerLinkActive="active">Previous Visits</button>
     <button mat-button routerLink="/doctor/add_schedule" routerLinkActive="active">Add Schedule</button>
+    <button mat-button routerLink="/doctor/view_schedules" routerLinkActive="active">View Schedules</button>
     <button mat-button routerLink="/doctor/add_clinic" routerLinkActive="active">Add Clinic</button>
     <button mat-button routerLink="/doctor/profile" routerLinkActive="active">Profile</button>
     <button mat-button  routerLinkActive="active" (click)="signout()" >Logout</button>

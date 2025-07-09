@@ -1,0 +1,43 @@
+.form-wrapper {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 32px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+
+  .form-title {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 24px;
+
+    mat-icon {
+      margin-right: 10px;
+    }
+  }
+
+  .schedule-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+
+    .full-width {
+      width: 100%;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+
+      button {
+        padding: 10px 40px;
+        font-size: 16px;
+        font-weight: 500;
+        border-radius: 8px;
+      }
+    }
+  }
+}
