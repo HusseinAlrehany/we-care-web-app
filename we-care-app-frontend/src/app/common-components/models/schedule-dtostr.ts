@@ -1,10 +1,9 @@
 export interface ScheduleDTOSTR {
 
-         id?: number,
-         scStartTime: string,
-         scEndTime: string,
-         scDate: string
-
+          id?: number,
+         startTime: string,
+         endTime: string,
+         date: string
     
    
 }

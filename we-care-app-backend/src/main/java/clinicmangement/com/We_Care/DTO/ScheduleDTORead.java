@@ -7,10 +7,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Data
-public class ScheduleDTO {
+public class ScheduleDTORead {
 
+    //using LocalDate, LocalTime for read requests
     private Integer id;
-
     //to help fix serialization issue from front end
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate date;

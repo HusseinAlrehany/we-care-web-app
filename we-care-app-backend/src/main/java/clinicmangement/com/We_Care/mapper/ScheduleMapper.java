@@ -1,7 +1,7 @@
 package clinicmangement.com.We_Care.mapper;
 
-import clinicmangement.com.We_Care.DTO.ScheduleDTO;
-import clinicmangement.com.We_Care.DTO.ScheduleDTOSTR;
+import clinicmangement.com.We_Care.DTO.ScheduleDTORead;
+import clinicmangement.com.We_Care.DTO.ScheduleDTOWrite;
 import clinicmangement.com.We_Care.models.ScheduleAppointment;
 import org.springframework.stereotype.Component;
 
@@ -12,62 +12,63 @@ import java.time.LocalTime;
 @Component
 public class ScheduleMapper {
 
-    public ScheduleAppointment toEntity(ScheduleDTO scheduleDTO){
+    public ScheduleAppointment toEntity(ScheduleDTOWrite scheduleDTOWrite){
 
-        if(scheduleDTO == null){
+        if(scheduleDTOWrite == null){
             throw new NullPointerException("Schedule DTO is null");
         }
 
         ScheduleAppointment doctorSchedule = new ScheduleAppointment();
-        doctorSchedule.setStartTime(scheduleDTO.getStartTime());
-        doctorSchedule.setEndTime(scheduleDTO.getEndTime());
-        doctorSchedule.setDate(scheduleDTO.getDate());
+        doctorSchedule.setStartTime(LocalTime.parse(scheduleDTOWrite.getStartTime()));
+        doctorSchedule.setEndTime(LocalTime.parse(scheduleDTOWrite.getEndTime()));
+        doctorSchedule.setDate(LocalDate.parse(scheduleDTOWrite.getDate()));
 
 
         return doctorSchedule;
     }
 
 
-    public ScheduleDTO toDTO(ScheduleAppointment scheduleAppointment){
+    public ScheduleDTORead toScheduleDTORead(ScheduleAppointment scheduleAppointment){
 
         if(scheduleAppointment == null){
             throw new NullPointerException("Schedule  is null");
         }
 
-        ScheduleDTO scheduleDTO = new ScheduleDTO();
-        scheduleDTO.setId(scheduleAppointment.getId());
+        ScheduleDTORead scheduleDTORead = new ScheduleDTORead();
+        scheduleDTORead.setId(scheduleAppointment.getId());
 
-        scheduleDTO.setDate(scheduleAppointment.getDate());
-        scheduleDTO.setStartTime(scheduleAppointment.getStartTime());
-        scheduleDTO.setEndTime(scheduleAppointment.getEndTime());
+        scheduleDTORead.setDate(scheduleAppointment.getDate());
+        scheduleDTORead.setStartTime(scheduleAppointment.getStartTime());
+        scheduleDTORead.setEndTime(scheduleAppointment.getEndTime());
+        scheduleDTORead.setClinicId(scheduleAppointment.getClinic().getId());
 
 
-        return scheduleDTO;
+        return scheduleDTORead;
     }
 
-    public ScheduleDTOSTR toDTOSTR(ScheduleAppointment scheduleAppointment){
+    public ScheduleDTOWrite toScheduleDTOWrite(ScheduleAppointment scheduleAppointment){
 
         if(scheduleAppointment == null){
             throw new NullPointerException("Schedule  is null");
         }
 
-        ScheduleDTOSTR scheduleDTOSTR = new ScheduleDTOSTR();
-        scheduleDTOSTR.setId(scheduleAppointment.getId());
-        scheduleDTOSTR.setScDate(scheduleAppointment.getDate().toString());
-        scheduleDTOSTR.setScStartTime(scheduleAppointment.getStartTime().toString());
-        scheduleDTOSTR.setScEndTime(scheduleAppointment.getEndTime().toString());
+        ScheduleDTOWrite scheduleDTOWrite = new ScheduleDTOWrite();
+        scheduleDTOWrite.setId(scheduleAppointment.getId());
+        scheduleDTOWrite.setDate(scheduleAppointment.getDate().toString());
+        scheduleDTOWrite.setStartTime(scheduleAppointment.getStartTime().toString());
+        scheduleDTOWrite.setEndTime(scheduleAppointment.getEndTime().toString());
 
-        return scheduleDTOSTR;
+        return scheduleDTOWrite;
     }
 
 
     //parsing the date and time to LocalDate, LocalTime
     //before saving to the database
     public void updateScheduleEntityFromDTO(ScheduleAppointment scheduleAppointment,
-                                            ScheduleDTOSTR scheduleDTOSTR){
-        scheduleAppointment.setDate(LocalDate.parse(scheduleDTOSTR.getScDate()));
-        scheduleAppointment.setStartTime(LocalTime.parse(scheduleDTOSTR.getScStartTime()));
-        scheduleAppointment.setEndTime(LocalTime.parse(scheduleDTOSTR.getScEndTime()));
+                                            ScheduleDTOWrite scheduleDTOWrite){
+        scheduleAppointment.setDate(LocalDate.parse(scheduleDTOWrite.getDate()));
+        scheduleAppointment.setStartTime(LocalTime.parse(scheduleDTOWrite.getStartTime()));
+        scheduleAppointment.setEndTime(LocalTime.parse(scheduleDTOWrite.getEndTime()));
 
     }
 

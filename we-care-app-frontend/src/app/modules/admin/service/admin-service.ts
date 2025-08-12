@@ -29,12 +29,6 @@ export class AdminService{
     });
   }
 
-  getAllSpecialities(): Observable<SpecialitiesResponse> {
-    return this.httpClient.get<SpecialitiesResponse>(baseURL + `specialities`,{
-      withCredentials: true
-    });
-  }
-
   deleteSpecialityById(id: number): Observable<any> {
     return this.httpClient.delete(baseURL + `speciality/${id}`, {
       withCredentials: true

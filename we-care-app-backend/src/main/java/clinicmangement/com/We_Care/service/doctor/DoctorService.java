@@ -1,7 +1,7 @@
 package clinicmangement.com.We_Care.service.doctor;
 
-import clinicmangement.com.We_Care.DTO.ClinicDTOProjection;
-import clinicmangement.com.We_Care.DTO.SameDoctorsPage;
+import clinicmangement.com.We_Care.DTO.*;
+import clinicmangement.com.We_Care.models.User;
 
 import java.util.List;
 
@@ -16,4 +16,12 @@ public interface DoctorService {
 
 
     List<ClinicDTOProjection> getAllMyClinicsByUserId(Integer userId);
+
+    void addClinic(Integer userId, DocClinicDTO docClinicDTO);
+
+    UserProfileDTOProjection getUserProfile(Integer userId);
+
+    void updateUserProfile(Integer userId, UserProfileUpdateRequest userProfileUpdateRequest);
+
+    void changePassword(ChangePasswordRequest changePasswordRequest, User user);
 }

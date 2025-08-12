@@ -36,6 +36,7 @@ export class ViewSchedulesComponent implements OnInit{
 
   pageSizeOptions: number [] = [2, 4, 6, 8];
 
+
   dataSource = new MatTableDataSource<ScheduleDTOProjection>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -57,13 +58,15 @@ export class ViewSchedulesComponent implements OnInit{
 
   }
   getAllMySchedules(pageNumber: number, pageSize: number) {
-   
+
     this.doctorService.getAllMySchedules(pageNumber, pageSize).subscribe(
       (res)=> {
           
          this.dataSource.data = res.payload.content;
          this.totalElements = res.payload.page.totalElements;
          this.currentPage = res.payload.page.number;
+
+
       },
       (error)=> {
         const errorMessage = error?.error?.message || error?.errorMessage || 'un expected error occured';
@@ -78,7 +81,13 @@ export class ViewSchedulesComponent implements OnInit{
     this.doctorService.deleteScheduleById(id).subscribe(
       (res)=> {
         this.snackBar.open(res.message, "Close", {duration: 3000});
+        
+        //manually clear the table before fetching all schedules
+        //to fix the last row in the last page not deleted despit deleted from DB
+        this.dataSource.data = [];
+        
         this.getAllMySchedules(this.pageNumber, this.pageSize);
+             
       },
       (error: HttpErrorResponse)=> {
           if(error.status === 404 && error.message){

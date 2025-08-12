@@ -3,19 +3,24 @@ package clinicmangement.com.We_Care.mapper;
 import clinicmangement.com.We_Care.DTO.*;
 import clinicmangement.com.We_Care.models.Clinic;
 import clinicmangement.com.We_Care.models.Doctor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class DoctorMapper {
 
+    private final ScheduleMapper scheduleMapper;
 
     public DoctorDTO toDTO(Doctor doctor){
         if(doctor == null){
@@ -37,6 +42,12 @@ public class DoctorMapper {
         doctorDTO.setTotalRating(doctor.getTotalRating());
         doctorDTO.setAverageRating(doctor.getAverageRating());
 
+        //last updated here is to help recall the new updated img and bypass browser cache
+        doctorDTO.setLastUpdated(
+                doctor.getLastUpdated()!= null ?
+                        doctor.getLastUpdated().toInstant(ZoneOffset.UTC).toEpochMilli()
+                        : System.currentTimeMillis()) ;
+
         //needed for doctor specification
        List<String> stateNames  = doctor.getClinicList().stream()
                 .map(clinic -> clinic.getState().getStateName().name())
@@ -48,6 +59,11 @@ public class DoctorMapper {
                 .map(clinic -> clinic.getCity().getCityName())
                 .toList();
         doctorDTO.setClinicCities(cityNames);
+
+        doctorDTO.setScheduleDTOReads(doctor.getDoctorScheduleList()
+                .stream()
+                .map(scheduleMapper::toScheduleDTORead)
+                .toList());
 
         return doctorDTO;
     }
@@ -103,8 +119,6 @@ public class DoctorMapper {
             return userDoctorDTO;
         }
 
-
-
     public SameDoctorsPage toSameDoctorsPage(Page<Doctor> doctorPage){
 
         if(doctorPage == null){
@@ -123,6 +137,7 @@ public class DoctorMapper {
         return sameDoctorsPage;
     }
 
+
     public SameDoctorDTO toSameDoctorDTO(Doctor doctor){
         if(doctor == null){
             throw new NullPointerException("Doctor is NULL");
@@ -138,7 +153,31 @@ public class DoctorMapper {
         sameDoctorDTO.setSpecialityName(doctor.getSpeciality().getName());
         sameDoctorDTO.setDoctorImageURL("/doctors/" + doctor.getId() + "/photo");
 
+        sameDoctorDTO.setLastUpdated(
+                doctor.getLastUpdated() != null ?
+                        doctor.getLastUpdated().toInstant(ZoneOffset.UTC).toEpochMilli()
+                        : System.currentTimeMillis());
+
         return sameDoctorDTO;
+    }
+
+    public void updateDoctorAndUserProfileFromDTO(Doctor doctor, UserProfileUpdateRequest userProfileUpdateRequest){
+
+        if(doctor == null || userProfileUpdateRequest == null){
+            throw new NullPointerException("Doctor or update request is null");
+        }
+
+        doctor.setFees(userProfileUpdateRequest.getFees());
+        doctor.setBriefIntroduction(userProfileUpdateRequest.getBriefIntroduction());
+
+        if(userProfileUpdateRequest.getDoctorImgFile() != null){
+            doctor.setDoctorPhoto(convertImageToByte(userProfileUpdateRequest.getDoctorImgFile()));
+        }
+
+        if(userProfileUpdateRequest.getMedicalCardFile() != null){
+            doctor.setMedicalCard(convertImageToByte(userProfileUpdateRequest.getMedicalCardFile()));
+        }
+
     }
 
 

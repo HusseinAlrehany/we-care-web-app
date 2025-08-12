@@ -6,6 +6,7 @@ import clinicmangement.com.We_Care.DTO.SignInRequest;
 import clinicmangement.com.We_Care.DTO.UserDTO;
 import clinicmangement.com.We_Care.apiresponse.ApiResponse;
 import clinicmangement.com.We_Care.apiresponse.AuthenticationResponse;
+import clinicmangement.com.We_Care.exceptions.types.NotFoundException;
 import clinicmangement.com.We_Care.token.jwtservice.AuthenticationService;
 import clinicmangement.com.We_Care.validation.groupvalidator.OnCreate;
 import jakarta.servlet.http.HttpServletResponse;
@@ -39,9 +40,14 @@ public class AuthController {
     }
     @PostMapping("/signin")
     public ResponseEntity<ApiResponse<AuthenticationResponse>> signin(@RequestBody SignInRequest signInRequest, HttpServletResponse httpServletResponse){
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(new ApiResponse<>("Sign in Success", authenticationService.signIn(signInRequest, httpServletResponse)));
-    }
+
+
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>("Sign in Success", authenticationService.signIn(signInRequest, httpServletResponse)));
+        }
+
+
+
 
 
 

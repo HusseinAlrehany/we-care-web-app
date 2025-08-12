@@ -7,6 +7,7 @@ import { SpecialitiesDTO } from '../../../../common-components/models/specialiti
 import { Router } from '@angular/router';
 import { AdminService } from '../../service/admin-service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { SharedService } from '../../../../common-components/shared-service';
 
 @Component({
   selector: 'app-add-doctor',
@@ -35,7 +36,8 @@ export class AddDoctorComponent {
     constructor(private adminService: AdminService,
                 private snackBar: MatSnackBar,
                 private router: Router,
-                private formBuilder: FormBuilder
+                private formBuilder: FormBuilder,
+                private sharedService: SharedService
                 
     ){}
   
@@ -89,7 +91,7 @@ export class AddDoctorComponent {
   
     }
     getAllSpecialities() {
-      this.adminService.getAllSpecialities().subscribe(
+      this.sharedService.getAllSpecialities().subscribe(
         (response)=> {
           console.log("Specialities are=> " , response.payload);
          this.listOfSpecialities = response.payload;

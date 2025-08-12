@@ -69,7 +69,7 @@ export class AllDoctorsComponent implements OnInit{
 
 
     //listen to route changes and reload doctors list
-    //scence angular not re initialize the component if you navigate to the same route, unless forcing it to do so
+    //since angular not re initialize the component if you navigate to the same route, unless forcing it to do so
     this.sharedService.reloadDoctorsList$.subscribe(()=> {
       this.getAllDoctors();
     })
@@ -77,7 +77,7 @@ export class AllDoctorsComponent implements OnInit{
     
   }
   
-  //to be cahnged to get cities by stateId
+  //to be changed to get cities by stateId
   getCitiesByStateName(selectedState: string) {
     this.sharedService.getCitiesByStateName(selectedState).subscribe(
       (response)=> {
@@ -114,7 +114,7 @@ export class AllDoctorsComponent implements OnInit{
   }
 
   getAllSpecialities() {
-    this.adminService.getAllSpecialities().subscribe(
+    this.sharedService.getAllSpecialities().subscribe(
       (res)=> {
         this.specialities = res.payload;
 

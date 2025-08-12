@@ -1,5 +1,6 @@
 package clinicmangement.com.We_Care.models;
 
+import clinicmangement.com.We_Care.enums.ScheduleStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
@@ -31,4 +32,8 @@ public class ScheduleAppointment {
     @JoinColumn(name = "clinic_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Clinic clinic;
+
+    @Enumerated(EnumType.STRING)
+    private ScheduleStatus scheduleStatus;
+
 }

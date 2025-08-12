@@ -24,6 +24,7 @@ export class WeCareDoctorsComponent implements OnInit{
   currentPage: number = 0;
   pageSizeOptions: number[] = [2,4,6,8];
 
+
  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private doctorService: DoctorService,
@@ -49,6 +50,7 @@ onPageChange(event: PageEvent): void{
 }
 
   getSameSpecialityDoctors(pageNumber: number, pageSize:number) {
+    
     this.doctorService.getSameSpecialityDoctor(pageNumber, pageSize).subscribe(
       (res)=> {
 

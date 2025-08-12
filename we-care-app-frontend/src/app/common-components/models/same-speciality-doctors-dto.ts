@@ -7,5 +7,6 @@ export interface SameSpecialityDoctorsDTO {
                 briefIntroduction: string,
                 averageRating: number | null,
                 totalRating: number | null,
-                specialityId: number
+                specialityId: number,
+                lastUpdated: number
 }

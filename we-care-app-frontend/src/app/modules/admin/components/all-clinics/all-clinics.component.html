@@ -1,4 +1,10 @@
-<div class="mat-elevation-z8 p-4" *ngIf="dataSource.data.length != 0">
+<!--No Clinics Created Block-->
+  <ng-template #noClinics>
+     <p class="text-center">No Clinics Created</p>
+  </ng-template>
+
+
+<div class="mat-elevation-z8 p-4" *ngIf="dataSource.data.length > 0; else noClinics">
   <table mat-table [dataSource]="dataSource" class="mat-table" matSort>
 
     <!-- Clinic Location Column -->

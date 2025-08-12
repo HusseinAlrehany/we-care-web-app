@@ -71,12 +71,17 @@ public class AdminDoctorServiceImpl implements AdminDoctorService{
 
         List<Doctor> doctors = doctorRepository.findAll(specification);
 
+
+
         if(doctors.isEmpty()){
             throw new NotFoundException("No Doctors matches this criteria");
         }
 
         return doctorMapper.toDoctorDTOList(doctors);
     }
+
+
+    //uses JPQL query for filtering but not work as intended
     @Override
     public List<DoctorDTO> filterDoctors( String doctorName,
                                           String specialityName,
@@ -90,9 +95,9 @@ public class AdminDoctorServiceImpl implements AdminDoctorService{
 
 
         List<Doctor> filteredDoctors = doctorRepository.filterDoctors(doctorName,
-                                                                     specialityName,
-                                                                      stateName1,
-                                                                       cityName);
+                specialityName,
+                stateName1,
+                cityName);
 
         if(filteredDoctors.isEmpty()){
             throw new NotFoundException("No Doctors Found");
@@ -101,6 +106,8 @@ public class AdminDoctorServiceImpl implements AdminDoctorService{
         return doctorMapper.toDoctorDTOList(filteredDoctors);
 
     }
+
+
 
     @Override
     public List<ShortDoctorDTO> getAllShortDoctors() {

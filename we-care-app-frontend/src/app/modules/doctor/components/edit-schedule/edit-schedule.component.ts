@@ -6,7 +6,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DoctorService } from '../../service/doctor.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ScheduleDTO } from '../../../../common-components/models/schedule-dto';
 import { ScheduleDTOSTR } from '../../../../common-components/models/schedule-dtostr';
 
 @Component({
@@ -32,9 +31,9 @@ constructor(private formBuilder: FormBuilder,
 ){
 
   this.updateScheduleForm = this.formBuilder.group({
-    scDate: ['', [Validators.required]],
-    scStartTime: ['', [Validators.required]],
-    scEndTime: ['', [Validators.required]]
+    date: ['', [Validators.required]],
+    startTime: ['', [Validators.required]],
+    endTime: ['', [Validators.required]]
   });
 
 }
@@ -62,22 +61,24 @@ constructor(private formBuilder: FormBuilder,
 
   updateSchedule(){
 
-   const formValue = this.updateScheduleForm.value;
-
   // Format date to "yyyy-MM-dd" converting the string input of date, time to date object
   //before submitting to backend to be parsed as LocalDate, LocalTime
-  const selectedDate = new Date(formValue.scDate);
+  const formValue = this.updateScheduleForm.value;
+
+  const selectedDate = new Date(formValue.date);
 
   const formattedDate = selectedDate.getFullYear() + '-' +
     String(selectedDate.getMonth() + 1).padStart(2, '0') + '-' +
     String(selectedDate.getDate()).padStart(2, '0');
 
-  this.scheduleDTOSTR = {
-    ...formValue,
-    scDate: formattedDate
+  const scheduleDTOSTR: ScheduleDTOSTR = {
+    date: formattedDate,
+    startTime: formValue.startTime, 
+    endTime: formValue.endTime,      
+    
   };
-     
-    this.doctorService.updateSchedule(this.scheduleId, this.scheduleDTOSTR).subscribe(
+
+    this.doctorService.updateSchedule(this.scheduleId, scheduleDTOSTR).subscribe(
        (res)=> {
          this.snackBar.open(res.message, "Close", {duration: 5000});
          this.router.navigateByUrl('/doctor/view_schedules');

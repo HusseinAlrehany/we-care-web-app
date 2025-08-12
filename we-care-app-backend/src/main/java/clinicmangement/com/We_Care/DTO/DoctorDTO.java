@@ -38,22 +38,15 @@ public class DoctorDTO {
 
     private Integer fees;
 
+    private Long lastUpdated;
 
     private List<String> clinicStates;
 
     private List<String> clinicCities;
 
-
-   // private List<ClinicDTO> clinicList;
-
-   // private List<VisitBooking> visitBookingList;
-
-    //@JsonManagedReference
-    // private List<DoctorSchedule> doctorScheduleList;
+    private List<ScheduleDTORead> scheduleDTOReads;
 
 
-    //private byte[] medicalCardImage;
-    //private byte[] doctorImage;
 
 
 }

@@ -1,8 +1,12 @@
 <div class="doctor-list-container" *ngIf="sameSpecialityDoctors.length != 0">
   <mat-card *ngFor="let doctor of sameSpecialityDoctors"  class="doctor-card">
     <div class="card-content">
-      <img
-        [src]="'http://localhost:8080/doctors/' + doctor.id + '/photo'"
+     <!--versioning the url by time stamp(last updated) to resolve showing the old img again after update-->
+     <!--this happens because the browser cache store the url of the img and when the img updated -->
+     <!--this url did not change so the browser keep showing the old img-->
+     <!--this time stamp versioning help to refetch the img after every update-->
+      <img  
+        [src]="'http://localhost:8080/doctors/' + doctor.id + '/photo?t=' + doctor.lastUpdated"
         alt="Doctor Image"
         class="doctor-photo"
       />

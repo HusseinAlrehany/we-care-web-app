@@ -1,0 +1,136 @@
+.user-profile-container {
+  position: relative;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 16px;
+  max-width: 700px;
+  margin: 2rem auto;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+
+  &.loading {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .edit-icon {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 10;
+    color: #1976d2;
+
+    mat-icon {
+      font-size: 24px;
+    }
+  }
+
+  .title {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1.5rem;
+  }
+
+  .user-profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .form-field {
+    width: 100%;
+
+    mat-form-field {
+      width: 100%;
+    }
+  }
+
+  .file-upload-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    .file-upload {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      color: #1976d2;
+      font-weight: 500;
+
+      mat-icon {
+        font-size: 20px;
+      }
+
+      span {
+        font-weight: 500;
+      }
+    }
+
+    .preview-wrapper,
+    .image-preview {
+      display: flex;
+      justify-content: flex-start;
+
+      .preview-image {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 12px;
+        border: 2px solid #e0e0e0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .circle-image {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+    }
+  }
+
+  button[type='submit'] {
+    align-self: center;
+    min-width: 180px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+
+    mat-spinner {
+      margin-right: 8px;
+    }
+
+    &:hover:not(:disabled) {
+      background-color: #115293;
+    }
+  }
+
+
+
+
+  .form-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.change-password-link {
+  color: #1976d2;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 500;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #0d47a1;
+  }
+}
+
+
+}
+
+

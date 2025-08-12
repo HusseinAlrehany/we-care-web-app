@@ -1,1 +1,189 @@
-<p>view-doctors works!</p>
+<!--loading spinner-->
+<div class="loading-overlay" *ngIf="isLoading">
+  <mat-spinner diameter="50" class="center-spinner"></mat-spinner>
+</div>
+
+<!-- Filter Form -->
+<div class="filter-row" [formGroup]="filterForm" *ngIf="doctorClinicSchedules.length > 0" [class.blur-content]="isLoading">
+  <!-- Speciality -->
+  <mat-form-field appearance="fill" class="filter-field">
+    <mat-label>Speciality</mat-label>
+    <mat-select formControlName="speciality">
+      <mat-option *ngFor="let speciality of specialities" [value]="speciality">{{
+        speciality.name
+      }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- State -->
+  <mat-form-field appearance="fill" class="filter-field">
+    <mat-label>State</mat-label>
+    <mat-select formControlName="state">
+      <mat-option *ngFor="let state of states" [value]="state">{{ state.stateName }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- City -->
+  <mat-form-field appearance="fill" class="filter-field">
+    <mat-label>City</mat-label>
+    <mat-select formControlName="city">
+      <mat-option *ngFor="let city of cities" [value]="city">{{ city.cityName}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Doctor Name -->
+  <mat-form-field appearance="fill" class="filter-field">
+    <mat-label>Doctor Name</mat-label>
+    <input matInput formControlName="doctorName" placeholder="Enter name" />
+  </mat-form-field>
+
+  <!-- Search Icon Button -->
+  <div class="search-icon-field">
+    <button mat-icon-button color="primary" (click)="applyFilters()">
+      <mat-icon>search</mat-icon>
+    </button>
+    <!--clear button-->
+    <button mat-icon-button color="warn" (click)="clearFilters()" *ngIf="hasFilters">
+      <mat-icon>clear</mat-icon>
+    </button>
+  </div>
+</div>
+
+<!--if no results found show a message-->
+<div *ngIf="!isLoading && doctorClinicSchedules.length === 0" class="no-results">
+    <mat-icon>info</mat-icon>
+    <span>No Results Found.</span>
+</div>
+
+<!--The filtering result  'http://localhost:8080'-->
+
+<div class="doctor-container">
+  <mat-card *ngFor="let doctor of doctorClinicSchedules" class="doctor-card">
+    <div class="card-content-wrapper">
+      <!-- Left Content Section -->
+      <div class="left-content">
+        <div class="doctor-header">
+          <div class="doctor-image-container">
+            <img
+              [src]="'http://localhost:8080' + doctor.doctorImageURL"
+              alt="Doctor Image"
+              class="doctor-image"
+              onerror="this.src='assets/default-doctor.jpg'"
+            />
+          </div>
+
+          <div class="doctor-title">
+            <h2 class="doctor-name">
+              Dr.{{ doctor.firstName }} {{ doctor.lastName }}
+            </h2>
+            <span class="doctor-speciality">{{ doctor.specialityName }}</span>
+
+            <div *ngIf="doctor.averageRating !== null" class="rating-container">
+              <mat-icon class="star-icon">star</mat-icon>
+              <span class="rating-value">{{
+                doctor.averageRating | number : "1.1-1"
+              }}</span>
+              <span class="rating-count"
+                >({{ doctor.totalRating }} reviews)</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <mat-divider class="section-divider"></mat-divider>
+
+        <div class="doctor-details">
+          <div class="detail-row">
+            <mat-icon>school</mat-icon>
+            <span>{{ doctor.briefIntroduction }}</span>
+          </div>
+
+          <div class="detail-row">
+            <mat-icon>calendar_today</mat-icon>
+            <span>Joined {{ doctor.joiningDate | date : "mediumDate" }}</span>
+          </div>
+
+          <div class="detail-row">
+            <mat-icon>attach_money</mat-icon>
+            <span>Consultation Fee: ${{ doctor.fees }}</span>
+          </div>
+        </div>
+
+        <mat-divider class="section-divider"></mat-divider>
+
+        <div class="clinic-info">
+          <h3 class="section-title">Clinic Information</h3>
+
+          <div class="detail-row">
+            <mat-icon>location_on</mat-icon>
+            <span>{{ doctor.clinicCity }}, {{ doctor.clinicState }}</span>
+          </div>
+
+          <div class="detail-row">
+            <mat-icon>home</mat-icon>
+            <span>{{ doctor.address }}</span>
+          </div>
+
+          <div class="detail-row">
+            <mat-icon>phone</mat-icon>
+            <span>{{ doctor.clinicMobile }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vertical Divider -->
+      <mat-divider [vertical]="true" class="vertical-divider"></mat-divider>
+      <div class="right-content">
+        <div class="schedule-carousel-wrapper">
+          <!-- left arrows -->
+          
+
+          <div class="schedule-scroll-container" [id]="'carousel' + doctor.doctorId">
+            <div
+              class="schedule-card"
+              *ngFor="let item of getGroupedSchedules(doctor.scheduleDTOs)"
+            >
+              <div class="schedule-date">
+                <span class="day-name">{{ item.date | date : "EEEE" }}</span>
+                <span class="date-value">{{ item.date | date : "MM/dd" }}</span>
+              </div>
+
+              <div class="time-slot" 
+              *ngFor="let slot of item.slots" 
+              (click)="onSlotClick(slot, item)"
+              [ngClass]="{selected: selectedSlot === slot}">
+                <span>{{ formatTimeToAMPM(slot.startTime) }}</span>
+                <span>-{{ formatTimeToAMPM(slot.endTime) }}</span>
+              </div>
+
+              <button mat-flat-button color="warn" class="book-btn" 
+              (click)="bookNow(doctor, selectedSlot)"
+              >
+                Book
+              </button>
+            </div>
+          </div>
+          <!--right arrow-->
+          
+        </div>
+        <!--if no schedules is currently active-->
+         <div *ngIf="!isLoading && doctor.scheduleDTOs.length === 0" class="no-results">
+               <mat-icon>info</mat-icon>
+               <span style="color: red;">No active schedules available.</span>
+         </div>
+        <!---->
+
+      </div>
+    </div>
+  </mat-card>
+
+  <!--The paginator section-->
+  <mat-paginator
+    *ngIf="totalElements > 0"
+    [length]="totalElements"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="onPageChange($event)"
+  >
+  </mat-paginator>
+</div>

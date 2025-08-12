@@ -6,9 +6,11 @@ import clinicmangement.com.We_Care.models.ScheduleAppointment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -17,24 +19,6 @@ import java.util.Optional;
 
 @Repository
 public interface ScheduleAppointmentRepository extends JpaRepository<ScheduleAppointment, Integer> {
-
-
-    //to avoid overlapping of schedules appointments
-    @Query(value = """
-            SELECT * FROM schedule_appointment s 
-            WHERE s.doctor_id = :doctorId
-            AND s.date = :date
-            AND (
-                  (:startTime < s.end_time AND :endTime > s.start_time)      
-                ) 
-            """, nativeQuery = true)
-    List<ScheduleAppointment> findOverlappedSchedules(
-            @Param("doctorId") Integer doctorId,
-            @Param("date")LocalDate date,
-            @Param("startTime")LocalTime startTime,
-            @Param("endTime")LocalTime endTime
-            );
-
 
     //using DTO projection to avoid loading all the object and it's blobs(images)
     //even if using scheduleDTO.setDoctorId(scheduleAppointment.getDoctor().getId());
@@ -78,6 +62,15 @@ public interface ScheduleAppointmentRepository extends JpaRepository<ScheduleApp
             """)
     Page<ScheduleDTOProjection> findAllSchedulesByUserId(@Param("userId")Integer userId, Pageable pageable);
 
+    List<ScheduleAppointment> findAllByDoctor_IdAndDate(Integer id, LocalDate date);
 
 
+    @Modifying
+    @Transactional
+    @Query("""
+            UPDATE ScheduleAppointment s
+            SET s.scheduleStatus = 'INACTIVE'
+            WHERE s.scheduleStatus = 'ACTIVE' AND s.date < :today
+            """)
+    int deactivatedExpiredSchedules(@Param("today") LocalDate today);
 }

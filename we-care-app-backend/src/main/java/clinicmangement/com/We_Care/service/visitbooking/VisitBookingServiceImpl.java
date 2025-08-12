@@ -1,0 +1,88 @@
+package clinicmangement.com.We_Care.service.visitbooking;
+
+import clinicmangement.com.We_Care.DTO.BookedDoctorDTOProjection;
+import clinicmangement.com.We_Care.DTO.VisitBookingDTO;
+import clinicmangement.com.We_Care.exceptions.types.NotFoundException;
+import clinicmangement.com.We_Care.exceptions.types.UserAlreadyExistsException;
+import clinicmangement.com.We_Care.mapper.VisitBookingMapper;
+import clinicmangement.com.We_Care.models.*;
+import clinicmangement.com.We_Care.repository.clinic.ClinicRepository;
+import clinicmangement.com.We_Care.repository.doctor.DoctorRepository;
+import clinicmangement.com.We_Care.repository.schedule.ScheduleAppointmentRepository;
+import clinicmangement.com.We_Care.repository.visit.VisitBookingRepository;
+import clinicmangement.com.We_Care.token.utils.JwtUtils;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class VisitBookingServiceImpl implements VisitBookingService{
+
+    private final VisitBookingRepository visitBookingRepository;
+    private final VisitBookingMapper visitBookingMapper;
+    private final ClinicRepository clinicRepository;
+    private final DoctorRepository doctorRepository;
+    //private final JwtUtils jwtUtils;
+    private final ScheduleAppointmentRepository scheduleAppointmentRepository;
+
+    @Transactional //since we fetching multiple entities from database
+    @Override
+    public void bookVisit(VisitBookingDTO visitBookingDTO, User currentUser) {
+       Clinic  clinic = clinicRepository.findById(visitBookingDTO.getClinicId())
+                .orElseThrow(()-> new NotFoundException("No Clinic Found ID:" + visitBookingDTO.getClinicId()));
+       Doctor doctor = doctorRepository.findById(visitBookingDTO.getDoctorId())
+                .orElseThrow(()-> new NotFoundException("No Doctor Found ID:" + visitBookingDTO.getDoctorId()));
+       ScheduleAppointment  appointment = scheduleAppointmentRepository.findById(visitBookingDTO.getScheduleId())
+                .orElseThrow(()-> new NotFoundException("No Schedule Found ID:" + visitBookingDTO.getScheduleId()));
+
+       VisitBooking existVisitBooking = visitBookingRepository.findByPatientMobileAndScheduleId(
+               visitBookingDTO.getPatientMobile(),
+               visitBookingDTO.getScheduleId());
+
+       if(existVisitBooking != null){
+           throw new UserAlreadyExistsException("You have already booked a visit with the same info!");
+       }
+
+        VisitBooking visitBooking = visitBookingMapper
+                .toEntity(visitBookingDTO);
+
+       if(currentUser != null){
+           visitBooking.setUser(currentUser);
+       }else {
+           visitBooking.setUser(null);
+       }
+
+        visitBooking.setDoctor(doctor);
+        visitBooking.setClinic(clinic);
+        visitBooking.setSchedule(appointment);
+
+        visitBookingRepository.save(visitBooking);
+
+       //saving both entities the owner and the other side
+       //because we not using (cascade=CASCADETYPE.persist) on the owner side
+        //if we do so saving the owner will be enough
+      //VisitBooking savedVisit = visitBookingRepository.save(visitBooking);
+      //setting the visit in the owner side (schedule appointment) not vice versa
+      //because the owner side (contains the foreign key) has the ability to control the relation
+      //appointment.setVisitBooking(visitBooking);
+
+      //scheduleAppointmentRepository.save(appointment);
+
+    }
+
+    @Override
+    public BookedDoctorDTOProjection getBookedDoctorWithSchedule(Integer scheduleId) {
+
+        BookedDoctorDTOProjection bookedDoctorDTOProjection =
+                doctorRepository.getBookedDoctor(scheduleId);
+
+        if(bookedDoctorDTOProjection == null){
+            throw new NotFoundException("No Info Found For Selected schedule ID: " + scheduleId);
+        }
+
+        return bookedDoctorDTOProjection;
+    }
+}

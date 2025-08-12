@@ -51,21 +51,6 @@ public class AdminDoctorController {
     }
 
 
-    //uses JPQL query with join fetch.
-    @GetMapping("/search-doctors")
-    public ResponseEntity<ApiResponse<List<DoctorDTO>>> filterDoctors(@RequestParam(required = false) String doctorName,
-                                                                      @RequestParam(required = false) String specialityName,
-                                                                      @RequestParam(required = false) String stateName,
-                                                                      @RequestParam(required = false) String cityName){
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(new ApiResponse<>("Success", adminDoctorService.filterDoctors(
-                       doctorName, specialityName, stateName, cityName)));
-
-
-
-    }
-
     @GetMapping("/doctor/{id}")
     public ResponseEntity<ApiResponse<DoctorDTO>> getDoctorById(@PathVariable Integer id){
 
@@ -79,5 +64,7 @@ public class AdminDoctorController {
         return ResponseEntity.ok(new ApiResponse<>("Doctor Updated Success", adminDoctorService.updateDoctor(id, doctorDTODetails)));
 
     }
+
+
 
 }

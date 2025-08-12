@@ -4,6 +4,7 @@ import clinicmangement.com.We_Care.DTO.DoctorSignupRequest;
 import clinicmangement.com.We_Care.DTO.SignInRequest;
 import clinicmangement.com.We_Care.DTO.PatientSignupRequest;
 import clinicmangement.com.We_Care.DTO.UserDTO;
+import clinicmangement.com.We_Care.apiresponse.ApiResponse;
 import clinicmangement.com.We_Care.apiresponse.AuthenticationResponse;
 import clinicmangement.com.We_Care.enums.UserRole;
 import clinicmangement.com.We_Care.exceptions.types.InvalidUserNameOrPasswordException;
@@ -21,7 +22,9 @@ import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -86,7 +89,7 @@ public class AuthenticationServiceImpl implements  AuthenticationService{
         return userMapper.toDTO(dbUser);
     }
 
-    @Transactional
+    @Transactional //to avoid saving a user row without doctor row if something wrong happens
     @Override
     public UserDTO signUpAsDoctor(DoctorSignupRequest doctorSignupRequest) throws IOException {
 
@@ -145,28 +148,36 @@ public class AuthenticationServiceImpl implements  AuthenticationService{
                 signInRequest.getEmail());
         final String jwtToken = jwtUtils.generateToken(userDetails);
 
-        Optional<User> optionalUser = userRepository.findFirstByEmail(signInRequest.getEmail());
-        if(optionalUser.isEmpty()){
-            throw new UsernameNotFoundException("No User Found");
+           Optional<User> optionalUser = userRepository.findFirstByEmail(signInRequest.getEmail());
+           //this line added for further check if there is a registered user as doctor
+          //but has no doctor row in doctor table (no user_id) in doctor table refer to that user
+           User userAsDoctor = userRepository.findByEmailWithDoctor(signInRequest.getEmail())
+                   .orElse(null);
+
+
+        //check if the logged in user(if he is a doctor) is actually a registered doctor
+        if(optionalUser.isEmpty() || userAsDoctor == null && optionalUser.get().getUserRole().equals(UserRole.DOCTOR)){
+            throw new UsernameNotFoundException("No User or doctor Found with that email");
         }
 
-        //store the jwt in http only cookie
-        ResponseCookie jwtCookie = ResponseCookie.from("jwt", jwtToken)
-                .httpOnly(true)
-                .secure(false)
-                .sameSite("strict")
-                .path("/")
-                .maxAge(24 * 60 * 60)
-                .build();
+            //store the jwt in http only cookie
+            ResponseCookie jwtCookie = ResponseCookie.from("jwt", jwtToken)
+                    .httpOnly(true)
+                    .secure(false)
+                    .sameSite("strict")
+                    .path("/")
+                    .maxAge(24 * 60 * 60)
+                    .build();
 
-        httpServletResponse.addHeader(HttpHeaders.SET_COOKIE, jwtCookie.toString());
-        AuthenticationResponse response = new AuthenticationResponse();
-        response.setJwtToken(jwtToken);
-        response.setUserId(optionalUser.get().getId());
-        response.setUserRole(optionalUser.get().getUserRole());
+            httpServletResponse.addHeader(HttpHeaders.SET_COOKIE, jwtCookie.toString());
+            AuthenticationResponse response = new AuthenticationResponse();
+            response.setJwtToken(jwtToken);
+            response.setUserId(optionalUser.get().getId());
+            response.setUserRole(optionalUser.get().getUserRole());
 
-        return response;
-    }
+            return response;
+
+        }
 
 
     @Override

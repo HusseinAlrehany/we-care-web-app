@@ -74,6 +74,9 @@ export class AllClinicsComponent implements OnInit{
     this.adminService.deleteClinicById(clinicId).subscribe(
       (res)=> {
         this.snackBar.open(res.message, "Close", {duration: 5000});
+
+        //clear the table before refetching the data
+        this.dataSource.data = [];
         this.getAllClinics(this.pageNumber, this.pageSize);
       },
       (error)=> {

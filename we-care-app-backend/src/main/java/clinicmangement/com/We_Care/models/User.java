@@ -26,8 +26,6 @@ public class User implements UserDetails {
     private String mobile;
     private String password;
 
-     // @OneToOne(mappedBy = "user",fetch = FetchType.LAZY)
-     //private Doctor doctor;
 
     @OneToMany(mappedBy = "user")
     private List<VisitBooking> visitBookingList;

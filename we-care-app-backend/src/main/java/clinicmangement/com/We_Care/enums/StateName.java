@@ -61,7 +61,7 @@ public enum StateName {
            return Arrays.stream(StateName.values())
                    .filter(state-> state.name().equalsIgnoreCase(value))
                    .findFirst()
-                   .orElseThrow(()-> new InvalidInputException("Invalid State"));
+                   .orElseThrow(()-> new InvalidInputException("Invalid State Name"));
     }
 
 

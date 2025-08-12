@@ -47,7 +47,10 @@ public class WebSecurityConfiguration {
                                 "/cities-by-state/**",
                                 "/states",
                                 "/filter-doctors",
-                                "/states/**").permitAll()
+                                "/states/**",
+                                "/filter-doctor-clinic-schedule",
+                                "/book-visit",
+                                "/booking-info").permitAll()
                         .requestMatchers("/we-care/**")
                         .authenticated())
                 //disable the default spring security logout to avoid

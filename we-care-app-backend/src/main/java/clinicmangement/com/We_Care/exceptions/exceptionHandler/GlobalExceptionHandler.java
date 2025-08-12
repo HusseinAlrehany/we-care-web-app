@@ -11,6 +11,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,15 +20,32 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+
+    //Convert the stacktrace into a string
+    //it is used here just for debugging purposes
+    //but it is not recommended for production
+    private String getStackTraceAsString(Throwable ex){
+
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        ex.printStackTrace(pw);
+        return sw.toString();
+
+    }
+
+
+
+
+
     public ResponseEntity<Object> errorResponseBuilder(HttpStatus status,
                                                        String message,
-                                                       String messageDetails){
+                                                       Throwable ex){
 
         return new ResponseEntity<>(new ErrorResponse(
               status,
                 message,
                 LocalDateTime.now(),
-                messageDetails),
+                getStackTraceAsString(ex)),
                 status);
     }
 
@@ -34,26 +53,26 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleExceptionType(Exception ex){
         return errorResponseBuilder(HttpStatus.INTERNAL_SERVER_ERROR,
                                     ex.getMessage(),
-                                     ex.getStackTrace().toString());
+                                     ex);
     }
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<Object> handleUserAlreadyExistsException(UserAlreadyExistsException ex){
         return errorResponseBuilder(HttpStatus.CONFLICT,
                                     ex.getMessage(),
-                                    ex.getStackTrace().toString());
+                                    ex);
     }
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Object> handeNotFoundException(NotFoundException ex){
         return errorResponseBuilder(HttpStatus.NOT_FOUND,
                                     ex.getMessage(),
-                                    ex.getStackTrace().toString());
+                                    ex);
     }
 
     @ExceptionHandler(InvalidUserNameOrPasswordException.class)
     public ResponseEntity<Object> handeNotFoundException(InvalidUserNameOrPasswordException ex){
         return errorResponseBuilder(HttpStatus.NOT_FOUND,
                 ex.getMessage(),
-                ex.getStackTrace().toString());
+                ex);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -70,14 +89,14 @@ public class GlobalExceptionHandler {
 
         return errorResponseBuilder(HttpStatus.CONFLICT,
                                     ex.getMessage(),
-                ex.getStackTrace().toString());
+                                    ex);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex){
         return errorResponseBuilder(HttpStatus.FORBIDDEN,
                 "you are not authorized to access this resource",
-                ex.getStackTrace().toString());
+                ex);
     }
 
 

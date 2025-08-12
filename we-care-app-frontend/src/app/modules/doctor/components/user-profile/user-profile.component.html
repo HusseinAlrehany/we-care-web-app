@@ -1,0 +1,86 @@
+<div class="user-profile-container" [ngClass]="{ 'loading': loading }">
+  <!-- Top-right Edit Icon -->
+  <button mat-icon-button color="primary" class="edit-icon" (click)="toggleEditing()">
+    <mat-icon> {{ isEditable ? 'cancel' : 'edit'}} </mat-icon>
+  </button>
+
+  <h2 class="title">Update Doctor</h2>
+
+  <form [formGroup]="userProfileForm" enctype="multipart/form-data" class="user-profile-form" (ngSubmit)="updateUserProfile()">
+
+    <!-- Personal Photo Upload -->
+    <div class="file-upload-wrapper">
+      <label class="file-upload">
+        <span>Upload Personal Photo</span>
+        <input type="file" (change)="onDoctorFileSelected($event)" hidden>
+        <mat-icon>attach_file</mat-icon>
+      </label>
+      <div *ngIf="selectedDoctorPhotoFile" class="preview-wrapper">
+        <img [src]="doctorPhotoPreview" alt="Doctor Photo" class="preview-image">
+      </div>
+      <div *ngIf="!selectedDoctorPhotoFile && existingDoctorImage" class="image-preview">
+        <div class="circle-image">
+          <img [src]="existingDoctorImage" alt="Existing Doctor Photo" class="preview-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- Medical Card Upload -->
+    <div class="file-upload-wrapper">
+      <label class="file-upload">
+        <span>Upload Medical Licence Card</span>
+        <input type="file" (change)="onCardFileSelected($event)" hidden>
+        <mat-icon>attach_file</mat-icon>
+      </label>
+      <div *ngIf="selectedMedicalCardFile" class="preview-wrapper">
+        <img [src]="medicalCardPreview" alt="Medical Card" class="preview-image">
+      </div>
+      <div *ngIf="!selectedMedicalCardFile && existingCardImage" class="image-preview">
+        <div class="circle-image">
+          <img [src]="existingCardImage" alt="Existing Medical Card" class="preview-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- Brief Introduction -->
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Brief Introduction</mat-label>
+      <textarea matInput formControlName="briefIntroduction" placeholder="Tell us about yourself"></textarea>
+      <mat-error *ngIf="userProfileForm.get('briefIntroduction')?.hasError('required')">
+        Introduction is required.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Fees -->
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Fees</mat-label>
+      <input matInput formControlName="fees" placeholder="Fees" />
+      <mat-error *ngIf="userProfileForm.get('fees')?.hasError('required')">
+        Fees is required.
+      </mat-error>
+    </mat-form-field>
+
+    <div class="form-actions">
+       <button mat-raised-button color="primary" type="submit" [disabled]="!isEditable || loading">
+         <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+         <span *ngIf="!loading">Update Profile</span>
+       </button>
+
+      <a class="change-password-link" (click)="openChangePasswordDialog()">Change Password</a>
+  </div>
+    
+  </form>
+</div>
+
+ <!-- Submit Button -->
+   <!--
+    <button mat-raised-button color="primary" type="submit" [disabled]="!isEditable">
+      <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+      <span *ngIf="!loading">Update Profile</span>
+    </button>
+    
+    <button mat-raised-button color="primary" type="submit">
+      <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+      <span *ngIf="!loading">Change Password</span>
+    </button>
+    -->

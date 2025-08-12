@@ -6,6 +6,7 @@ import { AdminService } from '../../service/admin-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SpecialitiesDTO } from '../../../../common-components/models/specialities-dto';
+import { SharedService } from '../../../../common-components/shared-service';
 
 @Component({
   selector: 'app-update-doctor',
@@ -41,7 +42,8 @@ export class UpdateDoctorComponent implements OnInit{
               private formBuilder: FormBuilder,
               private router:Router,
               private activatedRoute: ActivatedRoute,
-              private snackBar: MatSnackBar
+              private snackBar: MatSnackBar,
+              private sharedService: SharedService
   ){}
 
 onDoctorFileSelected(event: any){
@@ -125,7 +127,7 @@ onDoctorFileSelected(event: any){
     )
   }
   getAllSpecialities() {
-    this.adminService.getAllSpecialities().subscribe(
+    this.sharedService.getAllSpecialities().subscribe(
       (res)=> {
         console.log("SPECIALITIES" , res);
         this.specialities = res.payload;

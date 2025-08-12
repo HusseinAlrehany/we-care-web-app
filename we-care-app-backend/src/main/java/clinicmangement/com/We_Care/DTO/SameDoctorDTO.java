@@ -24,5 +24,7 @@ public class SameDoctorDTO {
 
     private Integer fees;
 
+    private Long lastUpdated;
+
 
 }

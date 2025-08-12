@@ -1,5 +1,12 @@
-<div class="mat-elevation-z8 p-4" *ngIf="dataSource.data.length != 0">
-  <table mat-table [dataSource]="dataSource" class="mat-table" matSort>
+  
+  <!--No Schedules Created Block-->
+  <ng-template #noSchedules>
+     <p class="text-center">No Schedules Created</p>
+  </ng-template>
+
+  <div class="mat-elevation-z8 p-4" *ngIf="dataSource.data.length > 0; else noSchedules">
+
+   <table mat-table [dataSource]="dataSource" class="mat-table" matSort>
 
     <!-- Clinic Location Column -->
     <ng-container matColumnDef="date">
@@ -52,5 +59,6 @@
                  (page)="onPageChange($event)"
                  >
   </mat-paginator>
-</div>
 
+  
+</div>

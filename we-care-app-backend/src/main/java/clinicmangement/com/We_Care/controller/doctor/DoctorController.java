@@ -2,7 +2,6 @@ package clinicmangement.com.We_Care.controller.doctor;
 
 import clinicmangement.com.We_Care.DTO.*;
 import clinicmangement.com.We_Care.apiresponse.ApiResponse;
-import clinicmangement.com.We_Care.models.ScheduleAppointment;
 import clinicmangement.com.We_Care.models.User;
 import clinicmangement.com.We_Care.service.doctor.DoctorService;
 import clinicmangement.com.We_Care.service.doctor.ScheduleService;
@@ -11,9 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -27,24 +26,24 @@ public class DoctorController {
     private final DoctorService doctorService;
 
     private final JwtUtils jwtUtils;
-
+    //there is also Principle interface(basic user info (userName)), @AuthenticationPrinciple (the entire user details)
     //instead of sending the doctor id with the request body
     //using principle to extract the email from http only cookie(session storage)
     @PostMapping("/doctor/add-schedule")
-    public ResponseEntity<ApiResponse<String>> addDailySchedule(@RequestBody ScheduleDTO scheduleDTO, Integer userId){
+    public ResponseEntity<ApiResponse<String>> addDailySchedule(@RequestBody ScheduleDTOWrite scheduleDTOWrite){
 
             User user = jwtUtils.getLoggedInUser();
-             userId = user.getId();
-             scheduleService.createDailySchedule(scheduleDTO, userId);
+             Integer userId = user.getId();
+             scheduleService.createDailySchedule(scheduleDTOWrite, userId);
         return ResponseEntity.ok(new ApiResponse<>("Schedule Added Successfully"));
     }
 
     @GetMapping("/doctor/my-speciality")
-    public ResponseEntity<ApiResponse<SameDoctorsPage>> getSameSpecialityDoctors(Integer userId,
+    public ResponseEntity<ApiResponse<SameDoctorsPage>> getSameSpecialityDoctors(
                                                                                  @RequestParam(defaultValue = "0") int pageNumber,
                                                                                  @RequestParam(defaultValue = "2") int pageSize){
         User user = jwtUtils.getLoggedInUser();
-        userId = user.getId();
+        Integer userId = user.getId();
 
         return ResponseEntity.ok(new ApiResponse<>("Success", doctorService.findAllSameSpecialityDocs(
                 userId, pageNumber, pageSize)));
@@ -53,21 +52,22 @@ public class DoctorController {
     }
 
     @GetMapping("/doctor/my-clinics")
-    public ResponseEntity<ApiResponse<List<ClinicDTOProjection>>> getAllMyClinics(Integer userId){
+    public ResponseEntity<ApiResponse<List<ClinicDTOProjection>>> getAllMyClinics(){
             User user = jwtUtils.getLoggedInUser();
-            userId = user.getId();
+            Integer userId = user.getId();
 
             return ResponseEntity.ok(new ApiResponse<>("Success",
                     doctorService.getAllMyClinicsByUserId(userId)));
     }
 
     @GetMapping("/doctor/schedules")
-    public ResponseEntity<ApiResponse<Page<ScheduleDTOProjection>>> getAllMySchedules(Integer userId,
+    public ResponseEntity<ApiResponse<Page<ScheduleDTOProjection>>> getAllMySchedules(
                                                                                       @RequestParam(defaultValue = "0")int pageNumber,
-                                                                                      @RequestParam(defaultValue = "5")int pageSize){
+                                                                                      @RequestParam(defaultValue = "5")int pageSize
+                                                                                      ){
 
         User user = jwtUtils.getLoggedInUser();
-        userId = user.getId();
+        Integer userId = user.getId();
 
         return ResponseEntity.ok(new ApiResponse<>("Success",
                 scheduleService.findAllSchedulesByUserId(userId, pageNumber, pageSize)));
@@ -81,7 +81,7 @@ public class DoctorController {
     }
 
     @GetMapping("/doctor/schedule/{scheduleId}")
-    public ResponseEntity<ApiResponse<ScheduleDTOSTR>> getScheduleById(@PathVariable Integer scheduleId){
+    public ResponseEntity<ApiResponse<ScheduleDTORead>> getScheduleById(@PathVariable Integer scheduleId){
 
         return ResponseEntity.ok(new ApiResponse<>("Success",
                 scheduleService.getScheduleById(scheduleId)));
@@ -89,16 +89,53 @@ public class DoctorController {
 
     @PutMapping("/doctor/edit-schedule/{scheduleId}")
     public ResponseEntity<ApiResponse<String>> updateSchedule(@PathVariable Integer scheduleId,
-                                                              @RequestBody ScheduleDTOSTR scheduleDTO)
+                                                              @RequestBody ScheduleDTOWrite scheduleDTOWrite)
     {
 
-            scheduleService.updateSchedule(scheduleId, scheduleDTO);
+            scheduleService.updateSchedule(scheduleId, scheduleDTOWrite);
 
         return ResponseEntity.ok(new ApiResponse<>("Schedule Updated Success"));
 
     }
 
+    @PostMapping("/doctor/add-clinic")
+    public ResponseEntity<ApiResponse<String>> addMyClinic(@RequestBody DocClinicDTO docClinicDTO)
+    {
+           User user = jwtUtils.getLoggedInUser();
+           Integer userId = user.getId();
+           doctorService.addClinic(userId, docClinicDTO);
 
+        return ResponseEntity.ok(new ApiResponse<>("Clinic Added Successfully"));
+
+    }
+
+    @GetMapping("/doctor/profile")
+    public ResponseEntity<ApiResponse<UserProfileDTOProjection>> getUserProfile(){
+        User user = jwtUtils.getLoggedInUser();
+        Integer userId = user.getId();
+
+        return ResponseEntity.ok(new ApiResponse<>("Success", doctorService.getUserProfile(userId)));
+    }
+
+    @PutMapping("/doctor/update-profile")
+    public ResponseEntity<ApiResponse<String>> updateUserProfile(@ModelAttribute UserProfileUpdateRequest userProfileUpdateRequest){
+        User user = jwtUtils.getLoggedInUser();
+        Integer userId = user.getId();
+
+        doctorService.updateUserProfile(userId, userProfileUpdateRequest);
+
+        return ResponseEntity.ok(new ApiResponse<>("Profile Updated Successfully"));
+
+    }
+
+    @PutMapping("/doctor/change-password")
+    public ResponseEntity<ApiResponse<String>> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest){
+        User user = jwtUtils.getLoggedInUser();
+
+        doctorService.changePassword(changePasswordRequest, user);
+
+        return ResponseEntity.ok(new ApiResponse<>("Password Changed Successfully, please signin again"));
+    }
 
 
 }

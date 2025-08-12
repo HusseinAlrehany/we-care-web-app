@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../../../Material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { SharedService } from '../../../../common-components/shared-service';
 
 @Component({
   selector: 'app-all-specialities',
@@ -19,7 +20,8 @@ export class AllSpecialitiesComponent implements OnInit{
   listOfSpecialities: SpecialitiesDTO [] = [];
 
   constructor(private adminService: AdminService, 
-              private snackBar: MatSnackBar
+              private snackBar: MatSnackBar,
+              private sharedService: SharedService 
    ){}
 
 
@@ -28,7 +30,7 @@ export class AllSpecialitiesComponent implements OnInit{
   }
   getAllSpecialities() {
     this.listOfSpecialities = [];
-     this.adminService.getAllSpecialities().subscribe(
+     this.sharedService.getAllSpecialities().subscribe(
       (response)=> {
          console.log(response);
          this.listOfSpecialities = response.payload;

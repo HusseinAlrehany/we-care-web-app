@@ -1,8 +1,19 @@
 package clinicmangement.com.We_Care.enums;
 
-public enum VisitStatus {
+import clinicmangement.com.We_Care.exceptions.types.InvalidInputException;
 
-    PENDING,
+import java.util.Arrays;
+
+public enum VisitStatus {
+    BOOKED,
     CHECKED,
-    CANCELED
+    CANCELED;
+
+
+    public static VisitStatus fromStringToVisitEnum(String visitStatus){
+        return Arrays.stream(VisitStatus.values())
+                .filter(status-> status.name().equalsIgnoreCase(visitStatus))
+                .findFirst()
+                .orElseThrow(()-> new InvalidInputException("Invalid Visit Status"));
+    }
 }

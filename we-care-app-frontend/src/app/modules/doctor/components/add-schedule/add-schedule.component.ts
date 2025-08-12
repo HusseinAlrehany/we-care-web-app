@@ -63,7 +63,9 @@ export class AddScheduleComponent implements OnInit{
    const selectedDate: Date = formValue.date;
    const formattedDate = selectedDate.getFullYear() + '-' +
                         String(selectedDate.getMonth() + 1).padStart(2, '0') + '-' +
+   
                         String(selectedDate.getDate()).padStart(2, '0');
+   //to only include the date , time fields                     
    this.scheduleDTO = {
      ...formValue,
      date: formattedDate
