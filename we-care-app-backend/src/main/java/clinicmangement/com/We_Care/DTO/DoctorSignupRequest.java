@@ -57,6 +57,8 @@ public class DoctorSignupRequest {
 
     @ImgValidation
     private MultipartFile doctorPhotoFile;
+
+    private String notificationToken;
 }
 
 

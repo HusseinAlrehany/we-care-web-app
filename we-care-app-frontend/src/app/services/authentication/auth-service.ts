@@ -6,7 +6,6 @@ import { StoredUser } from '../../common-components/models/stored-user';
 import { PatientSignupRequest } from '../../common-components/models/patient-signup-request';
 import { PatientSignupResponse } from '../../common-components/models/patient-signup-response';
 import { SpecialitiesResponse } from '../../common-components/models/specialities-response';
-import { DoctorSignupRequest } from '../../common-components/models/doctor-signup-request';
 import { DoctorSignupResponse } from '../../common-components/models/doctor-signup-response';
 
 @Injectable({

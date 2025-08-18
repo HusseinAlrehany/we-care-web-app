@@ -4,6 +4,7 @@ import clinicmangement.com.We_Care.DTO.BookedDoctorDTOProjection;
 import clinicmangement.com.We_Care.DTO.VisitBookingDTO;
 import clinicmangement.com.We_Care.exceptions.types.NotFoundException;
 import clinicmangement.com.We_Care.exceptions.types.UserAlreadyExistsException;
+import clinicmangement.com.We_Care.firebase.notificationservice.NotificationService;
 import clinicmangement.com.We_Care.mapper.VisitBookingMapper;
 import clinicmangement.com.We_Care.models.*;
 import clinicmangement.com.We_Care.repository.clinic.ClinicRepository;
@@ -25,8 +26,8 @@ public class VisitBookingServiceImpl implements VisitBookingService{
     private final VisitBookingMapper visitBookingMapper;
     private final ClinicRepository clinicRepository;
     private final DoctorRepository doctorRepository;
-    //private final JwtUtils jwtUtils;
     private final ScheduleAppointmentRepository scheduleAppointmentRepository;
+    private final NotificationService notificationService;
 
     @Transactional //since we fetching multiple entities from database
     @Override
@@ -60,6 +61,7 @@ public class VisitBookingServiceImpl implements VisitBookingService{
         visitBooking.setSchedule(appointment);
 
         visitBookingRepository.save(visitBooking);
+        notificationService.sendBookingNotification(visitBooking);
 
        //saving both entities the owner and the other side
        //because we not using (cascade=CASCADETYPE.persist) on the owner side

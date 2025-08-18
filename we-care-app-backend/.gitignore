@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+###exclude firebase file####
+src/main/resources/we-care-app-c1cef-firebase-adminsdk-fbsvc-0b8a50f521.json
+

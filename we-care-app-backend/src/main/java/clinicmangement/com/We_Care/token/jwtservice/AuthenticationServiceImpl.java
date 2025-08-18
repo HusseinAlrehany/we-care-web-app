@@ -10,6 +10,7 @@ import clinicmangement.com.We_Care.enums.UserRole;
 import clinicmangement.com.We_Care.exceptions.types.InvalidUserNameOrPasswordException;
 import clinicmangement.com.We_Care.exceptions.types.NotFoundException;
 import clinicmangement.com.We_Care.exceptions.types.UserAlreadyExistsException;
+import clinicmangement.com.We_Care.firebase.notificationservice.NotificationService;
 import clinicmangement.com.We_Care.mapper.UserMapper;
 import clinicmangement.com.We_Care.models.Doctor;
 import clinicmangement.com.We_Care.models.Speciality;
@@ -49,7 +50,7 @@ public class AuthenticationServiceImpl implements  AuthenticationService{
     private final AuthenticationManager authenticationManager;
     private final WecareUserDetailsService wecareUserDetailsService;
     private final UserMapper userMapper;
-
+    private final NotificationService notificationService;
 
     //creation of an admin user
     @PostConstruct
@@ -127,6 +128,11 @@ public class AuthenticationServiceImpl implements  AuthenticationService{
 
         doctorRepository.save(doctor);
 
+        //save the notification token of the registered doctor
+        if(doctorSignupRequest.getNotificationToken() != null){
+            notificationService.saveOrUpdateNotificationToken(doctorSignupRequest.getNotificationToken(), user);
+        }
+
         return userMapper.toDTO(dbUser);
     }
 
@@ -158,6 +164,11 @@ public class AuthenticationServiceImpl implements  AuthenticationService{
         //check if the logged in user(if he is a doctor) is actually a registered doctor
         if(optionalUser.isEmpty() || userAsDoctor == null && optionalUser.get().getUserRole().equals(UserRole.DOCTOR)){
             throw new UsernameNotFoundException("No User or doctor Found with that email");
+        }
+
+        //save the notification token used in firebase to send offline notification to the doctor
+        if(signInRequest.getNotificationToken() != null && optionalUser.get().getUserRole().equals(UserRole.DOCTOR)){
+            notificationService.saveOrUpdateNotificationToken(signInRequest.getNotificationToken(), optionalUser.get());
         }
 
             //store the jwt in http only cookie
