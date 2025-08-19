@@ -42,4 +42,4 @@ testem.log
 Thumbs.db
 
 #firebase
-/firebase-messaging-sw.js
+/src/firebase-messaging-sw.js
