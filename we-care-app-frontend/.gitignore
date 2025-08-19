@@ -42,4 +42,4 @@ testem.log
 Thumbs.db
 
 #firebase ignoring
-WE-CARE-APP-FRONTEND/src/firebase-messaging-sw.js
+we-care-app-frontend/src/firebase-messaging-sw.js
