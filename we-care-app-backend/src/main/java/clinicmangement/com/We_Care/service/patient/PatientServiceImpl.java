@@ -1,21 +1,19 @@
 package clinicmangement.com.We_Care.service.patient;
 
-import clinicmangement.com.We_Care.DTO.DoctorClinicScheduleDTO;
 import clinicmangement.com.We_Care.DTO.DoctorClinicScheduleDTOPage;
+import clinicmangement.com.We_Care.DTO.PatientBookedVisitsProjection;
+import clinicmangement.com.We_Care.enums.VisitStatus;
 import clinicmangement.com.We_Care.exceptions.types.NotFoundException;
 import clinicmangement.com.We_Care.mapper.DoctorClinicScheduleDTOMapper;
-import clinicmangement.com.We_Care.mapper.ScheduleMapper;
-import clinicmangement.com.We_Care.models.Clinic;
 import clinicmangement.com.We_Care.models.Doctor;
-import clinicmangement.com.We_Care.models.ScheduleAppointment;
 import clinicmangement.com.We_Care.repository.doctor.DoctorRepository;
+import clinicmangement.com.We_Care.repository.visit.VisitBookingRepository;
 import clinicmangement.com.We_Care.search.DoctorSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,6 +22,7 @@ public class PatientServiceImpl implements PatientService{
 
     private final DoctorRepository doctorRepository;
     private final DoctorClinicScheduleDTOMapper doctorClinicScheduleDTOMapper;
+    private final VisitBookingRepository visitBookingRepository;
 
     //getting doctor with one clinic with all related schedule of that clinic
     //if a doctor has two clinic, this doctor will show twice with each clinic
@@ -60,5 +59,31 @@ public class PatientServiceImpl implements PatientService{
         //passing stateName, cityName to call overloaded method to filter stateName, cityName
         return doctorClinicScheduleDTOMapper.buildDoctorClinicScheduleDTOPage(doctors, pageable, stateName, cityName);
     }
+
+    @Override
+    public List<PatientBookedVisitsProjection> getPatientBookedVisits(Integer userId) {
+
+        List<PatientBookedVisitsProjection> patientBookedVisitsProjections =
+                visitBookingRepository.getPatientBookedVisits(userId, VisitStatus.BOOKED.name());
+        if(patientBookedVisitsProjections.isEmpty()){
+            throw new NotFoundException("No Booked Visits Found");
+        }
+
+        return patientBookedVisitsProjections;
+    }
+
+    @Override
+    public List<PatientBookedVisitsProjection> getPatientCheckedVisits(Integer userId) {
+
+        //extracting the enum as string using .name()
+        List<PatientBookedVisitsProjection> patientCheckedVisitsProjections =
+                visitBookingRepository.getPatientBookedVisits(userId, VisitStatus.CHECKED.name());
+
+        if(patientCheckedVisitsProjections.isEmpty()){
+            throw new NotFoundException("No Checked Visits Found");
+        }
+        return patientCheckedVisitsProjections;
+    }
+
 
 }

@@ -45,7 +45,6 @@
     <button mat-button routerLink="/patient/view_doctors" routerLinkActive="active">We Care Doctors</button>
     <button mat-button routerLink="/patient/my_visits" routerLinkActive="active">Current Booked Visits</button>
     <button mat-button routerLink="/patient/visits_history" routerLinkActive="active">Visits History</button>
-    <button mat-button routerLink="/patient/book_visit" routerLinkActive="active">Book Visit</button>
     <button mat-button routerLinkActive="active" (click)="signout()">Logout</button>
   </div>
 </mat-toolbar>
@@ -54,7 +53,6 @@
   <mat-sidenav #sidenav mode="over" class="custom-sidenav">
      <mat-nav-list *ngIf="isAdminLoggedIn">
       <a mat-list-item routerLink="/">Home</a>
-      <a mat-list-item routerLink="/all_specialities">Specialities</a>
       <a mat-list-item routerLink="/view_doctors">View Doctors</a>
       <a mat-list-item routerLink="/view_doctors">Search Doctor</a>
       <a mat-list-item routerLink="/about">About</a>
@@ -64,7 +62,6 @@
 
      <mat-nav-list *ngIf="isDoctorLoggedIn">
       <a mat-list-item routerLink="/">Home</a>
-      <a mat-list-item routerLink="/all_specialities">Specialities</a>
       <a mat-list-item routerLink="/view_doctors">View Doctors</a>
       <a mat-list-item routerLink="/view_doctors">Search Doctor</a>
       <a mat-list-item routerLink="/about">About</a>
@@ -74,7 +71,6 @@
 
      <mat-nav-list *ngIf="isPatientLoggedIn">
       <a mat-list-item routerLink="/">Home</a>
-      <a mat-list-item routerLink="/all_specialities">Specialities</a>
       <a mat-list-item routerLink="/view_doctors">View Doctors</a>
       <a mat-list-item routerLink="/view_doctors">Search Doctor</a>
       <a mat-list-item routerLink="/about">About</a>
@@ -85,7 +81,6 @@
 
      <mat-nav-list *ngIf="!isAdminLoggedIn && !isDoctorLoggedIn && !isPatientLoggedIn">
       <a mat-list-item routerLink="/">Home</a>
-      <a mat-list-item routerLink="/all_specialities">Specialities</a>
       <a mat-list-item routerLink="/view_doctors">View Doctors</a>
       <a mat-list-item routerLink="/view_doctors">Search Doctor</a>
       <a mat-list-item routerLink="/about">About</a>

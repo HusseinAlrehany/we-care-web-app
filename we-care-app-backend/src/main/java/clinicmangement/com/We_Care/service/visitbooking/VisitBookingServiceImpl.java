@@ -13,9 +13,11 @@ import clinicmangement.com.We_Care.repository.schedule.ScheduleAppointmentReposi
 import clinicmangement.com.We_Care.repository.visit.VisitBookingRepository;
 import clinicmangement.com.We_Care.token.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -86,5 +88,18 @@ public class VisitBookingServiceImpl implements VisitBookingService{
         }
 
         return bookedDoctorDTOProjection;
+    }
+
+    //schedule task done every day at 4:43 PM
+    //mark past visits as CHECKED
+    @Scheduled(cron = "0 43 16 * * *", zone = "Africa/Cairo")
+    public void markPastVisitsAsChecked(){
+
+        int updatedRows = visitBookingRepository.markPastVisitsAsChecked(LocalDate.now());
+
+        if(updatedRows > 0){
+            System.out.println("mark as CHECKED " + updatedRows + " Checked ROWS");
+        }
+
     }
 }

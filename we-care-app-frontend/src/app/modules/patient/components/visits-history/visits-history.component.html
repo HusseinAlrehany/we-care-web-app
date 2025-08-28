@@ -1,1 +1,55 @@
-<p>visits-history works!</p>
+<!--No Clinics Created Block-->
+  <ng-template #noBookedVisits>
+     <p class="text-center">No Booked Visits Found.</p>
+  </ng-template>
+
+
+<div class="mat-elevation-z8 p-4" *ngIf="dataSource.data.length > 0; else noBookedVisits">
+  <table mat-table [dataSource]="dataSource" class="mat-table" matSort>
+
+    <!-- Clinic Location Column -->
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+      <td mat-cell *matCellDef="let element">{{ element.date }}</td>
+    </ng-container>
+
+    <!-- Mobile Column -->
+    <ng-container matColumnDef="doctorName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Doctor Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.doctorName }}</td>
+    </ng-container>
+
+    <!-- Address Column -->
+    <ng-container matColumnDef="fullAddress">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Address</th>
+      <td mat-cell *matCellDef="let element">{{ element.fullAddress }}</td>
+    </ng-container>
+
+    <!-- Doctor Column -->
+    <ng-container matColumnDef="patientMobile">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Patient Mobile</th>
+      <td mat-cell *matCellDef="let element">{{ element.patientMobile }}</td>
+    </ng-container>
+
+    <!-- City Column -->
+    <ng-container matColumnDef="patientName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Patient Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.patientName }}</td>
+    </ng-container>
+
+    <!-- State Column -->
+    <ng-container matColumnDef="specialityName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Speciality</th>
+      <td mat-cell *matCellDef="let element">{{ element.specialityName }}</td>
+    </ng-container>
+
+    <!-- Actions Column -->
+    
+    <!-- Header and Row Declarations -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+</div>
+
+

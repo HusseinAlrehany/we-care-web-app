@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { DoctorClinicScheduleDTOResponse } from '../../../common-components/models/doctor-clinic-schedule-dtoresponse';
 import { ApiResponse } from '../../../common-components/api-response/api-response';
 import { VisitBookingDTO } from '../../../common-components/models/visit-booking-dto';
+import { PatientBookedVisitsProjection } from '../../../common-components/models/patient-booked-visits-projection';
 
 const baseURL = 'http://localhost:8080/we-care/patient/';
 
@@ -25,6 +26,19 @@ export class PatientService {
   bookAvisit(visitBookingDTO: VisitBookingDTO): Observable<ApiResponse<string>>{
 
     return this.httpClient.post<ApiResponse<string>>(`http://localhost:8080/book-visit`, visitBookingDTO, {
+      withCredentials: true,
+    });
+  }
+
+  getPatientBookedVisits(): Observable<ApiResponse<PatientBookedVisitsProjection[]>> {
+    return this.httpClient.get<ApiResponse<PatientBookedVisitsProjection[]>>(baseURL + `booked-visits`, {
+      withCredentials: true,
+    });
+  }
+
+  getPatientCheckedVisits(): Observable<ApiResponse<PatientBookedVisitsProjection[]>> {
+
+    return this.httpClient.get<ApiResponse<PatientBookedVisitsProjection[]>>(baseURL + `checked-visits`, {
       withCredentials: true,
     });
   }

@@ -40,19 +40,25 @@ import io.swagger.v3.oas.annotations.servers.Server;
                 //can be used at controller level
                 //for jwt authentication
                 @SecurityRequirement(
-                        name = "bearerAuth"
+                        name = "cookieAuth"
                 )
         }
 )
 //this annotation for using bearer token in swagger
 @SecurityScheme(
-        name = "bearerAuth",
+        /*name = "bearerAuth",
         description = "JWT auth description",
         scheme = "bearer",
         type = SecuritySchemeType.HTTP,
         bearerFormat = "JWT",
         //inject token to header
-        in = SecuritySchemeIn.HEADER
+        in = SecuritySchemeIn.HEADER*/
+
+        name = "cookieAuth",
+        description = "JWT stored in HttpOnly cookie",
+        type = SecuritySchemeType.APIKEY,
+        in = SecuritySchemeIn.COOKIE,
+        paramName = "jwt"
 )
 
 public class OpenApiConfig {

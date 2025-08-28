@@ -50,7 +50,9 @@ public class WebSecurityConfiguration {
                                 "/states/**",
                                 "/filter-doctor-clinic-schedule",
                                 "/book-visit",
-                                "/booking-info").permitAll()
+                                "/booking-info",
+                                "/Test",
+                                "/we-care-ai-model/**").permitAll()
                         .requestMatchers("/we-care/**")
                         .authenticated())
                 //disable the default spring security logout to avoid
@@ -82,7 +84,5 @@ public class WebSecurityConfiguration {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-
-
 
 }
