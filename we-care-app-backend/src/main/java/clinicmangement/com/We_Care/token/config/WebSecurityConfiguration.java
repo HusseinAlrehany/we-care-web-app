@@ -52,7 +52,8 @@ public class WebSecurityConfiguration {
                                 "/book-visit",
                                 "/booking-info",
                                 "/Test",
-                                "/we-care-ai-model/**").permitAll()
+                                "/we-care-ai-model/**",
+                                "/we-care-doctors").permitAll()
                         .requestMatchers("/we-care/**")
                         .authenticated())
                 //disable the default spring security logout to avoid

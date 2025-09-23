@@ -8,7 +8,7 @@
 
   <!-- Conditional nav buttons -->
   <div class="pages-common" *ngIf="!isAdminLoggedIn && !isDoctorLoggedIn && !isPatientLoggedIn">
-    <button mat-button routerLink="/book_visit" routerLinkActive="active">Visit A Doctor</button>
+    <button mat-button routerLink="/pharmacy" routerLinkActive="active">Pharmacy</button>
     <button mat-button routerLink="/view_doctors" routerLinkActive="active">We Care Doctors</button>
      <button mat-button routerLink="/we_care_AI" routerLinkActive="active">Help? Ask WeCare AI</button>
     <button mat-button routerLink="/signin" routerLinkActive="active">Login</button>

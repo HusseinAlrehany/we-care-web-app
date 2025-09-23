@@ -4,12 +4,19 @@ import { PatientSignupComponent } from './common-components/patient-signup/patie
 import { DoctorSignupComponent } from './common-components/doctor-signup/doctor-signup.component';
 import { authGuard } from './common-components/auth-guard/auth-guard';
 import { AiModelComponent } from './common-components/ai-model/ai-model.component';
+import { SharedViewDoctorsComponent } from './common-components/shared-view-doctors/shared-view-doctors.component';
+import { PharmacyComponent } from './common-components/pharmacy/pharmacy.component';
+import { GuestVisitBookingComponent } from './common-components/guest-visit-booking/guest-visit-booking.component';
 
 export const routes: Routes = [
     {path: 'patient_signup', component: PatientSignupComponent},
     {path: 'doctor_signup', component: DoctorSignupComponent},
     {path: 'signin', component: SignInComponent},
     {path: 'we_care_AI', component: AiModelComponent},
+    {path: 'view_doctors', component: SharedViewDoctorsComponent},
+    {path: 'pharmacy', component: PharmacyComponent},
+    {path: 'guest_visit_booking', component: GuestVisitBookingComponent},
+
     {path: 'admin', loadChildren: ()=> import("./modules/admin/admin.module")
         .then(e=>e.AdminModule), canActivate: [authGuard]
     },

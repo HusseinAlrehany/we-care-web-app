@@ -108,6 +108,13 @@ chatWithCohereAiModel(message: string, sessionId: string): Observable<any> {
 
 }
 
+getDoctorClinicSchedulePage(pageNumber: number, pageSize: number): Observable<DoctorClinicScheduleDTOResponse> {
+     
+    return this.httpClient.get<DoctorClinicScheduleDTOResponse>(baseURL + `we-care-doctors?pageNumber=${pageNumber - 1}&&pageSize=${pageSize}`, {
+      
+    });
+  }
+
 
 
 }

@@ -3,7 +3,6 @@ import { MaterialModule } from '../../../../Material.module';
 import { CommonModule, formatDate } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DoctorClinicScheduleDTO } from '../../../../common-components/models/doctor-clinic-schedule-dto';
-import { PatientService } from '../../service/patient.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -14,7 +13,7 @@ import { StateDTO } from '../../../../common-components/models/state-dto';
 import { CityDTO } from '../../../../common-components/models/city-dto';
 import { SpecialitiesDTO } from '../../../../common-components/models/specialities-dto';
 import { DoctorFilter } from '../../../../common-components/models/doctor-filter';
-import { Router, RouterLink } from '@angular/router';
+import { Router} from '@angular/router';
 @Component ({
   selector: 'app-view-doctors',
   standalone: true,
@@ -46,7 +45,6 @@ loadingStartTime: any ;
 
 
 constructor(private formBuilder: FormBuilder,
-            private patientService: PatientService,
             private snackBar: MatSnackBar,
             private sharedService: SharedService,
             private router: Router
@@ -225,7 +223,7 @@ getCitiesByStateId(stateId: number) {
   getDoctorClinicSchedulePage(pageNumber: number, pageSize: number) {
     
     this.setLoadingState(true);
-    this.patientService.getDoctorClinicSchedulePage(pageNumber, pageSize).subscribe({
+    this.sharedService.getDoctorClinicSchedulePage(pageNumber, pageSize).subscribe({
       next: (res)=> {
         this.doctorClinicSchedules = res.payload.content;
         this.totalElements = res.payload.totalElements;

@@ -16,12 +16,12 @@ export class PatientService {
   constructor(private httpClient: HttpClient) { }
 
 
-  getDoctorClinicSchedulePage(pageNumber: number, pageSize: number): Observable<DoctorClinicScheduleDTOResponse> {
+  /*getDoctorClinicSchedulePage(pageNumber: number, pageSize: number): Observable<DoctorClinicScheduleDTOResponse> {
      
     return this.httpClient.get<DoctorClinicScheduleDTOResponse>(baseURL + `we-care-doctors?pageNumber=${pageNumber - 1}&&pageSize=${pageSize}`, {
       withCredentials: true,
     });
-  }
+  }*/
 
   bookAvisit(visitBookingDTO: VisitBookingDTO): Observable<ApiResponse<string>>{
 

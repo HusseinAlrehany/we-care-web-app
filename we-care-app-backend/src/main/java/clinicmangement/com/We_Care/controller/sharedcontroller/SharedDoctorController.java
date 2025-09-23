@@ -1,5 +1,6 @@
 package clinicmangement.com.We_Care.controller.sharedcontroller;
 
+import clinicmangement.com.We_Care.DTO.DoctorClinicScheduleDTO;
 import clinicmangement.com.We_Care.DTO.DoctorClinicScheduleDTOPage;
 import clinicmangement.com.We_Care.DTO.DoctorDTO;
 import clinicmangement.com.We_Care.DTO.SameDoctorsPage;
@@ -66,4 +67,12 @@ private final PatientService patientService;
                )));
 
    }
+   
+    @GetMapping("/we-care-doctors")
+    public ResponseEntity<ApiResponse<DoctorClinicScheduleDTOPage>> getDoctorPage(@RequestParam(defaultValue = "0")int pageNumber,
+                                                                                  @RequestParam(defaultValue = "10")int pageSize){
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return ResponseEntity.ok(new ApiResponse<>("Success",
+                patientService.getDoctorPage(pageable)));
+    }
 }

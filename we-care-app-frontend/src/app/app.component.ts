@@ -67,6 +67,8 @@ export class AppComponent implements OnInit{
   }
 
   //call the function to reload all doctors when clicking on we care doctors link
+  //to force angular to reload the component since angular not support automatic reloading of the component
+  //when navigating on the same route
   navigateToAllDoctors(){
     this.router.navigate(['/admin/view_doctors']).then(()=> {
       this.sharedService.triggerReloadDoctorsList(); //triggering reload all doctors

@@ -26,13 +26,13 @@ public class PatientController {
 
   private final PatientService patientService;
 
-  @GetMapping("/we-care-doctors")
+  /*@GetMapping("/we-care-doctors")
     public ResponseEntity<ApiResponse<DoctorClinicScheduleDTOPage>> getDoctorPage(@RequestParam(defaultValue = "0")int pageNumber,
                                                                                   @RequestParam(defaultValue = "10")int pageSize){
          Pageable pageable = PageRequest.of(pageNumber, pageSize);
       return ResponseEntity.ok(new ApiResponse<>("Success",
               patientService.getDoctorPage(pageable)));
-  }
+  }*/
 
   @GetMapping("/booked-visits")
   public ResponseEntity<ApiResponse<List<PatientBookedVisitsProjection>>> getPatientBookedVisits(@AuthenticationPrincipal User user){
