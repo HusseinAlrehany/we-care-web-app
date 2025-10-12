@@ -1,0 +1,80 @@
+.doctor-list-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 24px;
+  padding: 24px;
+}
+
+.doctor-card {
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+  .card-content {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+
+    .doctor-photo {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 2px solid #ccc;
+    }
+
+    .doctor-info {
+      flex: 1;
+
+      h3 {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: blue;
+      }
+
+      .speciality,
+      .intro,
+      .ratings {
+        margin: 4px 0;
+        
+      }
+
+      .ratings {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        .rating-count {
+          color: gray;
+          font-size: 0.9em;
+        }
+      }
+    }
+  }
+
+  .card-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+
+    button {
+      margin-left: 8px;
+    }
+  }
+}
+
+
+
+//empty state message
+.no-visit-message {
+  display: flex;
+  justify-content: center;      /* Center horizontally */
+  align-items: center;          /* Center vertically */
+  height: 60vh;                 /* Takes up most of the page height */
+  text-align: center;
+  color: #e53935;               /* Material Red 600 */
+  font-size: 1.5rem;            /* Slightly larger text */
+  font-weight: 500;
+  background-color: #fff;       /* Optional: light background */
+}

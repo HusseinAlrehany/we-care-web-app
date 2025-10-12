@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class CohereClient {
 
 
-    private final WebClient webClient;
+    /*private final WebClient webClient;
 
 
     // In-memory session-to-history map
@@ -149,6 +149,6 @@ public class CohereClient {
             errorMap.put("details", e.getResponseBodyAsString());
             return errorMap;
         }
-    }
+    }*/
 
 }

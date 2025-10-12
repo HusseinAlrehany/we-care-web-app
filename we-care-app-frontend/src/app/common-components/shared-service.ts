@@ -9,6 +9,7 @@ import { SpecialitiesResponse } from './models/specialities-response';
 import { ApiResponse } from './api-response/api-response';
 import { DoctorFilter } from './models/doctor-filter';
 import { BookedDoctorDTO } from './models/booked-doctor-dto';
+import { UrlWithStringQuery } from 'node:url';
 
 const baseURL = "http://localhost:8080/";
 
@@ -98,10 +99,10 @@ getBookedDoctor(scheduleId: number): Observable<ApiResponse<BookedDoctorDTO>> {
   return this.httpClient.get<ApiResponse<BookedDoctorDTO>>(baseURL + `booking-info`, {params});
 }
 
-chatWithCohereAiModel(message: string, sessionId: string): Observable<any> {
+chatWithCohereAiModel(message: string): Observable<any> {
   const params:any = {
     message: message,
-    sessionId: sessionId
+    
   };
 
   return this.httpClient.get(baseURL + `we-care-ai-model/chat`, {params});

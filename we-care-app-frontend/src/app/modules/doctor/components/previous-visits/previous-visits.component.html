@@ -1,1 +1,54 @@
-<p>previous-visits works!</p>
+<div class="doctor-list-container" *ngIf="doctorPreviousVisits.length > 0; else noVisits">
+  <mat-card *ngFor="let visit of doctorPreviousVisits"  class="doctor-card">
+    <div class="card-content">
+     
+      <div class="doctor-info">
+        <h3>MR/MS. {{ visit.patientName}}</h3>
+
+         <p class="speciality">
+            <mat-icon aria-hidden="false" aria-label="Patient mobile">phone</mat-icon>
+                {{ visit.patientMobile}}
+         </p>
+
+
+         <p class="intro">
+              <mat-icon aria-hidden="false" aria-label="Visit date">event</mat-icon>
+                    {{visit.visitDate | date: 'mediumDate'}}
+         </p>
+
+        
+        <p class="intro">
+                <mat-icon aria-hidden="false" aria-label="Start time">schedule</mat-icon>
+                     {{ formatTimeToAMPM(visit.startTime)}}
+        </p>
+
+        <p class="intro">
+                <mat-icon aria-hidden="false" aria-label="End time">timer</mat-icon>
+                     {{ formatTimeToAMPM(visit.endTime)}}
+        </p>
+
+        
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+  </mat-card>
+
+
+  <!-- Paginator -->
+  <mat-paginator [length]="totalElements"
+                 [pageSize]="pageSize"
+                 [pageIndex]="currentPage"
+                 [pageSizeOptions]="pageSizeOptions"
+                 (page)="onPageChange($event)"
+                 >
+  </mat-paginator>
+</div>
+
+<!--empty state message-->
+<ng-template #noVisits>
+  <div class="no-state-message">
+     <p>No Previous Visits Found.</p>
+  </div>
+</ng-template>

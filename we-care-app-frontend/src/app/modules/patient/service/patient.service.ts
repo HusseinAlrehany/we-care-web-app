@@ -5,6 +5,7 @@ import { DoctorClinicScheduleDTOResponse } from '../../../common-components/mode
 import { ApiResponse } from '../../../common-components/api-response/api-response';
 import { VisitBookingDTO } from '../../../common-components/models/visit-booking-dto';
 import { PatientBookedVisitsProjection } from '../../../common-components/models/patient-booked-visits-projection';
+import { ReviewDTORequest } from '../../../common-components/models/review-dtorequest';
 
 const baseURL = 'http://localhost:8080/we-care/patient/';
 
@@ -39,6 +40,12 @@ export class PatientService {
   getPatientCheckedVisits(): Observable<ApiResponse<PatientBookedVisitsProjection[]>> {
 
     return this.httpClient.get<ApiResponse<PatientBookedVisitsProjection[]>>(baseURL + `checked-visits`, {
+      withCredentials: true,
+    });
+  }
+
+  addReview(review: ReviewDTORequest): Observable<ApiResponse<string>>{
+    return this.httpClient.post<ApiResponse<string>>(baseURL + `add-review`, review, {
       withCredentials: true,
     });
   }

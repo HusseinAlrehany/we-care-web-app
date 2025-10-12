@@ -1,21 +1,26 @@
 package clinicmangement.com.We_Care.service.doctor;
 
 import clinicmangement.com.We_Care.DTO.*;
+import clinicmangement.com.We_Care.enums.VisitStatus;
 import clinicmangement.com.We_Care.exceptions.types.InvalidUserNameOrPasswordException;
 import clinicmangement.com.We_Care.exceptions.types.NotFoundException;
 import clinicmangement.com.We_Care.mapper.DoctorMapper;
+import clinicmangement.com.We_Care.mapper.DoctorPreviousVisitsMapper;
 import clinicmangement.com.We_Care.models.*;
 import clinicmangement.com.We_Care.repository.city.CityRepository;
 import clinicmangement.com.We_Care.repository.clinic.ClinicRepository;
 import clinicmangement.com.We_Care.repository.doctor.DoctorRepository;
 import clinicmangement.com.We_Care.repository.states.StateRepository;
 import clinicmangement.com.We_Care.repository.user.UserRepository;
+import clinicmangement.com.We_Care.repository.visit.VisitBookingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -28,7 +33,9 @@ public class DoctorServiceImpl implements DoctorService{
     private final StateRepository stateRepository;
     private final CityRepository cityRepository;
     private final UserRepository userRepository;
+    private final VisitBookingRepository visitBookingRepository;
     private final PasswordEncoder encoder;
+    private final DoctorPreviousVisitsMapper doctorPreviousVisitsMapper;
 
     @Override
     public byte[] getMedicalCardById(Integer id) {
@@ -130,6 +137,33 @@ public class DoctorServiceImpl implements DoctorService{
             throw new InvalidUserNameOrPasswordException("Wrong Current Password");
         }
 
+    }
+
+    @Override
+    public DoctorPreviousVisitsPage getDoctorPreviousVisits(Integer id,
+                                                            Integer pageNumber,
+                                                            Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+        Page<DoctorsVisitsDTOProjection> doctorPreviousVisitsDTOProjectionPage = visitBookingRepository.getDoctorPreviousVisits(id, VisitStatus.CHECKED.name(), pageable);
+
+        if(!doctorPreviousVisitsDTOProjectionPage.hasContent()){
+            throw new NotFoundException("No Previous Visits Found");
+        }
+        return doctorPreviousVisitsMapper.toDoctorPreviousVisitsPage(doctorPreviousVisitsDTOProjectionPage);
+    }
+
+    @Override
+    public List<DoctorsVisitsDTOProjection> getDoctorTodayVisits(Integer userId, LocalDate today) {
+
+        List<DoctorsVisitsDTOProjection> doctorsVisitsDTOProjections = visitBookingRepository.getDoctorsTodayVisits(
+                userId, LocalDate.now());
+
+        if(doctorsVisitsDTOProjections.isEmpty()){
+            throw new NotFoundException("No Visits Found For Today!");
+        }
+
+        return doctorsVisitsDTOProjections;
     }
 
 }

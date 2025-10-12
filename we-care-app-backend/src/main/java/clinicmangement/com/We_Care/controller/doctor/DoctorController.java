@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -135,6 +136,25 @@ public class DoctorController {
         doctorService.changePassword(changePasswordRequest, user);
 
         return ResponseEntity.ok(new ApiResponse<>("Password Changed Successfully, please signin again"));
+    }
+
+    @GetMapping("/doctor/visits-history")
+    public ResponseEntity<ApiResponse<DoctorPreviousVisitsPage>> getDoctorsPreviousVisits(@AuthenticationPrincipal User user,
+                                                                                          @RequestParam(defaultValue = "0")Integer pageNumber,
+                                                                                          @RequestParam(defaultValue = "10")Integer pageSize
+                                                                                                         ){
+
+
+
+        return ResponseEntity.ok(new ApiResponse<>("Success" ,doctorService.getDoctorPreviousVisits(user.getId(), pageNumber, pageSize)));
+
+    }
+
+    @GetMapping("/doctor/today-visits")
+    public ResponseEntity<ApiResponse<List<DoctorsVisitsDTOProjection>>> getDoctorsTodayVisits(@AuthenticationPrincipal User user,
+                                                                                               @RequestParam(required = false)LocalDate today){
+        return ResponseEntity.ok(new ApiResponse<>("Success",
+                doctorService.getDoctorTodayVisits(user.getId(), today)));
     }
 
 

@@ -14,11 +14,11 @@ import { SharedService } from '../shared-service';
 export class AiModelComponent {
 
   userInput: string = '';
-  sessionId: string = 'default-session';
+  //sessionId: string = 'default-session';
   loading: boolean = false;
 
-  messages: { sender: 'user' | 'ai', text: string } [] = [
-    { sender: 'ai', text: 'Hello! I am your We-Care AI assistant. How can I help you today?'}
+  messages: { sender: 'user' | 'ai', text: string }[] = [
+    { sender: 'ai', text: 'Hello! I am your We-Care AI assistant. How can I help you today?' }
   ];
 
   constructor(private sharedService: SharedService){
@@ -29,16 +29,16 @@ export class AiModelComponent {
 
     if(!this.userInput.trim()) return;
 
-    const query = this.userInput;
+    const query=  this.userInput;
     this.messages.push({ sender: 'user', text: query});
     this.userInput = '';
     this.loading = true;
 
 
-    this.sharedService.chatWithCohereAiModel(query, this.sessionId).subscribe({
+    this.sharedService.chatWithCohereAiModel(query).subscribe({
       next: (res)=> {
           this.loading = false;
-          this.messages.push({ sender: 'ai', text: res.text })
+          this.messages.push({ sender: 'ai', text: res.answer })
       },
       error:()=> {
 

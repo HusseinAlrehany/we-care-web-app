@@ -12,5 +12,4 @@ public class StateDTO {
 
     private StateName stateName;
 
-    //private List<ClinicDTO> clinicDTOList;
 }

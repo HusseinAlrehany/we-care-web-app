@@ -2,6 +2,7 @@ package clinicmangement.com.We_Care.controller.Patient;
 
 import clinicmangement.com.We_Care.DTO.DoctorClinicScheduleDTOPage;
 import clinicmangement.com.We_Care.DTO.PatientBookedVisitsProjection;
+import clinicmangement.com.We_Care.DTO.ReviewDTORequest;
 import clinicmangement.com.We_Care.apiresponse.ApiResponse;
 import clinicmangement.com.We_Care.models.User;
 import clinicmangement.com.We_Care.service.patient.PatientService;
@@ -11,10 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -45,6 +43,19 @@ public class PatientController {
 
     return ResponseEntity.ok(new ApiResponse<>("Success", patientService.getPatientCheckedVisits(user.getId())));
   }
+
+  @PostMapping("/add-review")
+  public ResponseEntity<ApiResponse<?>> addReview(@AuthenticationPrincipal User user,
+                                                  @RequestBody ReviewDTORequest reviewDTORequest
+                                                  ){
+
+
+    return ResponseEntity.ok(new ApiResponse<>("Review Added Successfully",
+            patientService.addReview(user,reviewDTORequest)));
+
+  }
+
+
 
 
 }

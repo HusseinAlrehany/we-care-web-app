@@ -1,8 +1,10 @@
 package clinicmangement.com.We_Care.repository.visit;
 
+import clinicmangement.com.We_Care.DTO.DoctorsVisitsDTOProjection;
 import clinicmangement.com.We_Care.DTO.PatientBookedVisitsProjection;
-import clinicmangement.com.We_Care.enums.VisitStatus;
 import clinicmangement.com.We_Care.models.VisitBooking;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,6 +21,8 @@ public interface VisitBookingRepository extends JpaRepository<VisitBooking, Inte
    VisitBooking findByPatientMobileAndScheduleId(String patientMobile, Integer scheduleId);
 
 
+
+
    @Modifying
    @Transactional
    @Query("""
@@ -33,6 +37,7 @@ public interface VisitBookingRepository extends JpaRepository<VisitBooking, Inte
    @Query(value = """
            SELECT vb.patient_name AS patientName,
                   vb.patient_mobile AS patientMobile,
+                  d.id AS doctorId,
                   scp.date AS date,
                   sp.name AS specialityName,
                   CONCAT(d.first_name, ' ', d.last_name) AS doctorName,
@@ -60,5 +65,51 @@ public interface VisitBookingRepository extends JpaRepository<VisitBooking, Inte
                                                               //pass enum as string in the repository method
                                                               //to avoid native query issues
                                                               @Param("status")String status );
+
+  @Query(value = """
+          Select vb.patient_mobile AS patientMobile,
+                  vb.patient_name AS patientName,
+                  sc.date AS visitDate, sc.start_time AS startTime,
+                  sc.end_time AS endTime
+          FROM visit_booking vb
+          INNER JOIN doctors d
+          ON d.id = vb.doctor_id
+          INNER JOIN users us
+          ON us.id = d.user_id
+          INNER JOIN schedule_appointment sc
+          ON sc.id = vb.schedule_id
+          WHERE d.user_id = :userId
+          AND vb.visit_status = :status       
+          ORDER BY sc.date DESC
+          """,
+          countQuery = """
+                  SELECT COUNT(*)
+                  FROM visit_booking vb
+                  INNER JOIN doctors d ON d.id = vb.doctor_id
+                  INNER JOIN users us ON us.id = d.user_id
+                  INNER JOIN schedule_appointment sc ON sc.id = vb.schedule_id
+                  WHERE d.user_id = :userId
+                  AND vb.visit_status = :status
+                  """, nativeQuery = true)
+
+   Page<DoctorsVisitsDTOProjection> getDoctorPreviousVisits(@Param("userId")Integer userId,
+                                                            @Param("status")String status,
+                                                            Pageable pageable);
+@Query(value = """
+        SELECT vb.patient_mobile AS patientMobile,
+        vb.patient_name AS patientName,
+        sc.date AS visitDate,
+        sc.start_time AS startTime,
+        sc.end_time AS endTime
+        
+        FROM visit_booking vb
+        INNER JOIN schedule_appointment sc
+        ON vb.schedule_id = sc.id
+        WHERE sc.date = :today
+        
+        """, nativeQuery = true)
+
+  List<DoctorsVisitsDTOProjection> getDoctorsTodayVisits(@Param("userId")Integer userId,
+                                                         @Param("today")LocalDate today);
 
 }

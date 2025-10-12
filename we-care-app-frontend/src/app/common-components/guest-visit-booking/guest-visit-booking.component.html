@@ -1,1 +1,63 @@
-<p>guest-visit-booking works!</p>
+<div class="booking-container">
+  <!-- Left Side: Booking Form -->
+  <section class="form-section">
+    <mat-card class="booking-form-card">
+      <mat-card-title>Book Your Visit</mat-card-title>
+      <form [formGroup]="guestBookingForm" (ngSubmit)="bookAvisit()">
+        <mat-form-field appearance="outline">
+          <mat-label>Patient Name</mat-label>
+          <input matInput formControlName="patientName" />
+          <mat-error *ngIf="guestBookingForm.get('patientName')?.hasError('required')">
+            Please Enter your name.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Patient Mobile</mat-label>
+          <input matInput formControlName="patientMobile" />
+          <mat-error *ngIf="guestBookingForm.get('patientMobile')?.hasError('required')">
+             Please Enter your mobile.
+          </mat-error>
+        </mat-form-field>
+
+        <!--Hidden Fields recievied from view doctors component-->
+       <input type="hidden" formControlName="doctorId">
+       <input type="hidden"  formControlName="clinicId">
+       <input type="hidden" formControlName="scheduleId">
+
+        <div class="form-actions">
+          <button mat-raised-button color="primary" >Book</button>
+          <button mat-button color="warn" (click)="onCancel()">Cancel</button>
+        </div>
+
+        
+
+      </form>
+    </mat-card>
+
+    
+  </section>
+
+  <!-- Right Side: Doctor Info Card -->
+  <section class="info-section">
+    <mat-card class="doctor-info-card">
+      <div class="doctor-header">
+        <img [src]="'http://localhost:8080/doctors/' + docId + '/photo'" alt="Doctor" class="doctor-photo" />
+        <div class="doctor-details">
+          <h3>DR {{bookedDoctor?.fullName}}</h3>
+          <p class="speciality">{{bookedDoctor?.specialityName}}</p>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+      
+      <div class="schedule">
+        <strong>Selected Slot: </strong>
+        <span >{{bookedDoctor?.date | date: "EEEE"}}, 
+               {{bookedDoctor?.date | date: "MM/dd" }}, 
+               {{formatTimeToAMPM(bookedDoctor?.startTime!)}} 
+              To {{formatTimeToAMPM(bookedDoctor?.endTime!)}}
+        </span>
+      </div>
+    </mat-card>
+  </section>
+</div>

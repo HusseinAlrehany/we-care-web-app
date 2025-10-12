@@ -1,0 +1,41 @@
+<div class="rating-container mat-elevation-z4">
+  <h2 class="section-title">Rate Your Doctor</h2>
+
+  <form class="rating-form" (ngSubmit)="submitReview(ratingForm)" #ratingForm="ngForm">
+    <!-- Rating Stars -->
+    <div class="star-rating">
+      <mat-icon
+        *ngFor="let star of stars; let i = index"
+        (click)="setRating(i + 1)"
+        [ngClass]="{ active: i < rating }"
+      >
+        {{ i < rating ? "star" : "star_border" }}
+      </mat-icon>
+    </div>
+
+    <!-- Rating Value -->
+    <div class="rating-value">{{ rating }} / 5</div>
+
+    <!-- Comment Box -->
+    <mat-form-field appearance="fill" class="comment-field">
+      <mat-label>Write your comment</mat-label>
+      <textarea
+        matInput
+        rows="4"
+        [(ngModel)] = "comment"
+        name="comment"
+        required
+      ></textarea>
+    </mat-form-field>
+
+    <!-- Submit Button -->
+    <button
+      mat-raised-button
+      color="primary"
+      class="submit-button"
+     
+    >
+      Submit Review
+    </button>
+  </form>
+</div>

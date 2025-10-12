@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Data
 public class DoctorSignupRequest {
     //doctor and patient shared fields
+    //to be updated to show group validation message for the user in UI
     private Integer id;
 
     @NotBlank(message = "firstName is Required")

@@ -134,7 +134,7 @@ public class ScheduleServiceImpl implements ScheduleService{
     }
 
     //this function runs every day at 03:00 PM
-    @Scheduled(cron = "0 45 15 * * *", zone = "Africa/Cairo")
+    @Scheduled(cron = "0 55 19 * * *", zone = "Africa/Cairo")
     public void deactivateExpiredSchedules(){
         //LocalDate today = LocalDate.now();
         int updatedRows = scheduleRepository.deactivatedExpiredSchedules(LocalDate.now());

@@ -29,7 +29,7 @@ export class WeCareDoctorsComponent implements OnInit{
 
   constructor(private doctorService: DoctorService,
               private snackBar: MatSnackBar,
-              private formBuilder:FormBuilder
+             
 
   ){
 

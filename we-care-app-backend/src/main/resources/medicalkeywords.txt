@@ -1,0 +1,17 @@
+disease
+symptom
+diagnosis
+treatment
+medicine
+doctor
+patient
+hospital
+blood
+infection
+virus
+vaccine
+anatomy
+pharmacy
+nurse
+pain
+surgery

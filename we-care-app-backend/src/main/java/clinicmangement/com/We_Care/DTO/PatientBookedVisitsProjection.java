@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public interface PatientBookedVisitsProjection {
 
+    Integer getDoctorId();
     String getPatientName();
     String getPatientMobile();
     LocalDate getDate();

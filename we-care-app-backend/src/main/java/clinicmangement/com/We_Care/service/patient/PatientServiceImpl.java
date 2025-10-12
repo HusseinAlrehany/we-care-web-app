@@ -2,11 +2,16 @@ package clinicmangement.com.We_Care.service.patient;
 
 import clinicmangement.com.We_Care.DTO.DoctorClinicScheduleDTOPage;
 import clinicmangement.com.We_Care.DTO.PatientBookedVisitsProjection;
+import clinicmangement.com.We_Care.DTO.ReviewDTORequest;
 import clinicmangement.com.We_Care.enums.VisitStatus;
 import clinicmangement.com.We_Care.exceptions.types.NotFoundException;
 import clinicmangement.com.We_Care.mapper.DoctorClinicScheduleDTOMapper;
+import clinicmangement.com.We_Care.mapper.ReviewDTOMapper;
 import clinicmangement.com.We_Care.models.Doctor;
+import clinicmangement.com.We_Care.models.Reviews;
+import clinicmangement.com.We_Care.models.User;
 import clinicmangement.com.We_Care.repository.doctor.DoctorRepository;
+import clinicmangement.com.We_Care.repository.reviews.ReviewsRepository;
 import clinicmangement.com.We_Care.repository.visit.VisitBookingRepository;
 import clinicmangement.com.We_Care.search.DoctorSpecification;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +28,8 @@ public class PatientServiceImpl implements PatientService{
     private final DoctorRepository doctorRepository;
     private final DoctorClinicScheduleDTOMapper doctorClinicScheduleDTOMapper;
     private final VisitBookingRepository visitBookingRepository;
+    private final ReviewsRepository reviewsRepository;
+    private final ReviewDTOMapper reviewDTOMapper;
 
     //getting doctor with one clinic with all related schedule of that clinic
     //if a doctor has two clinic, this doctor will show twice with each clinic
@@ -83,6 +90,20 @@ public class PatientServiceImpl implements PatientService{
             throw new NotFoundException("No Checked Visits Found");
         }
         return patientCheckedVisitsProjections;
+    }
+
+    @Override
+    public ReviewDTORequest addReview(User user, ReviewDTORequest reviewDTORequest) {
+
+        Doctor doctor = doctorRepository.findById(reviewDTORequest.getDoctorId())
+                .orElseThrow(()-> new NotFoundException("No Doctor Found ID: " + reviewDTORequest.getDoctorId()));
+
+        Reviews reviews = reviewDTOMapper.toReviews(reviewDTORequest);
+
+        reviews.setDoctor(doctor);
+        reviews.setUser(user);
+
+        return reviewDTOMapper.toReviewDTORequest(reviewsRepository.save(reviews));
     }
 
 

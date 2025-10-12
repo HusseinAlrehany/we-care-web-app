@@ -13,11 +13,11 @@ import { StateDTO } from '../../../../common-components/models/state-dto';
 import { CityDTO } from '../../../../common-components/models/city-dto';
 import { SpecialitiesDTO } from '../../../../common-components/models/specialities-dto';
 import { DoctorFilter } from '../../../../common-components/models/doctor-filter';
-import { Router} from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 @Component ({
   selector: 'app-view-doctors',
   standalone: true,
-  imports: [MaterialModule, CommonModule, ReactiveFormsModule, NgbCarouselModule],
+  imports: [MaterialModule, CommonModule, ReactiveFormsModule, NgbCarouselModule, RouterModule],
   templateUrl: './view-doctors.component.html',
   styleUrl: './view-doctors.component.scss'
 })

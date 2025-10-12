@@ -16,6 +16,7 @@ import java.util.List;
 public interface ClinicRepository extends JpaRepository<Clinic, Integer> {
     //query with DTO projection to save the result
     //to be fixed speciality details not shown in front end
+    //also it needs additional count query for paging support
     @Query(value = """
             SELECT c.address AS address,
             c.clinic_mobile AS clinicMobile,

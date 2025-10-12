@@ -31,7 +31,7 @@ public class VisitBookingServiceImpl implements VisitBookingService{
     private final ScheduleAppointmentRepository scheduleAppointmentRepository;
     private final NotificationService notificationService;
 
-    @Transactional //since we fetching multiple entities from database
+    @Transactional //since we fetching multiple entities from database to gurantee that the whole process will be executed
     @Override
     public void bookVisit(VisitBookingDTO visitBookingDTO, User currentUser) {
        Clinic  clinic = clinicRepository.findById(visitBookingDTO.getClinicId())
@@ -45,6 +45,10 @@ public class VisitBookingServiceImpl implements VisitBookingService{
                visitBookingDTO.getPatientMobile(),
                visitBookingDTO.getScheduleId());
 
+        //there is edge case here
+        //patient can book visit which has past date
+        //before the schedule which will deactivate this date triggered
+
        if(existVisitBooking != null){
            throw new UserAlreadyExistsException("You have already booked a visit with the same info!");
        }
@@ -52,6 +56,7 @@ public class VisitBookingServiceImpl implements VisitBookingService{
         VisitBooking visitBooking = visitBookingMapper
                 .toEntity(visitBookingDTO);
 
+       //if the user has credentials otherwise the user is guest user.
        if(currentUser != null){
            visitBooking.setUser(currentUser);
        }else {
@@ -92,7 +97,7 @@ public class VisitBookingServiceImpl implements VisitBookingService{
 
     //schedule task done every day at 4:43 PM
     //mark past visits as CHECKED
-    @Scheduled(cron = "0 43 16 * * *", zone = "Africa/Cairo")
+    @Scheduled(cron = "0 57 19 * * *", zone = "Africa/Cairo")
     public void markPastVisitsAsChecked(){
 
         int updatedRows = visitBookingRepository.markPastVisitsAsChecked(LocalDate.now());

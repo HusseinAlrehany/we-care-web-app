@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/we-care-ai-model")
+//@RequestMapping("/we-care-ai-model")
 public class CohereModelController {
 
 
-    private final CohereClient cohereClient;
+   /* private final CohereClient cohereClient;
     private final Map<String, List<Map<String, String>>> chatHistories = new HashMap<>();
 
     public CohereModelController(CohereClient cohereClient) {
@@ -41,7 +41,7 @@ public class CohereModelController {
         Map<String, Object> fullResponse = cohereClient.generateRawResponseWithMemory(message, history);
 
         // Extract fields
-        String responseId = (String) fullResponse.get("response_id");
+        String responseId = (String) fullResponse.get("id");
         String text = (String) fullResponse.get("text");
 
         // Clean the text (remove \n\n)
@@ -56,6 +56,6 @@ public class CohereModelController {
         simplifiedResponse.put("text", text);
 
         return ResponseEntity.ok(simplifiedResponse);
-    }
+    }*/
 
 }

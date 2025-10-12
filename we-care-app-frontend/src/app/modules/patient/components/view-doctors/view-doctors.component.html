@@ -77,14 +77,19 @@
               Dr.{{ doctor.firstName }} {{ doctor.lastName }}
             </h2>
             <span class="doctor-speciality">{{ doctor.specialityName }}</span>
-
+            <!--Rating section of the doctor-->
             <div *ngIf="doctor.averageRating !== null" class="rating-container">
               <mat-icon class="star-icon">star</mat-icon>
               <span class="rating-value">{{
                 doctor.averageRating | number : "1.1-1"
               }}</span>
-              <span class="rating-count"
-                >({{ doctor.totalRating }} reviews)</span
+              <span class="rating-count">
+                <!--using dynamic routing [routerLink] since reviews will be loadied depending on doc ID-->
+                <a [routerLink]= "['/doctor/{id}/reviews']" class="reviews-link">
+                    ({{ doctor.totalRating }} reviews)
+                </a>
+                
+                </span
               >
             </div>
           </div>

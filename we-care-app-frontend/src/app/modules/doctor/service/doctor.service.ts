@@ -11,8 +11,9 @@ import { ScheduleDTOSTR } from '../../../common-components/models/schedule-dtost
 import { DocClinicDTO } from '../../../common-components/models/doc-clinic-dto';
 import { ApiResponse } from '../../../common-components/api-response/api-response';
 import { UserProfile } from '../../../common-components/models/user-profile';
-import { UserProfileUpdateRequest } from '../../../common-components/models/user-profile-update-request';
 import { ChangePasswordRequest } from '../../../common-components/models/change-password-request';
+import { DoctorPreviousVisitDtoProjection } from '../../../common-components/models/doctor-previous-visit-dto-projection';
+import { DoctorPreviousVisitsPage } from '../../../common-components/models/doctor-previous-visits-page';
 
 const baseURL = "http://localhost:8080/we-care/doctor/";
 
@@ -105,5 +106,18 @@ export class DoctorService {
       withCredentials: true,
     });
   }
-  
+
+  getDoctorPreviousVisits(pageNumber: number, pageSize: number): Observable<DoctorPreviousVisitsPage> {
+    return this.httpClient.get<DoctorPreviousVisitsPage>(baseURL + `visits-history?pageNumber=${pageNumber - 1}&pageSize=${pageSize}`, {
+      withCredentials: true,
+    });
+  }
+
+  getDoctorTodaysVisit(): Observable<ApiResponse<DoctorPreviousVisitDtoProjection[]>> {
+
+    return this.httpClient.get<ApiResponse<DoctorPreviousVisitDtoProjection[]>>(baseURL + `today-visits`, {
+      withCredentials: true,
+    });
+  }
+
 }

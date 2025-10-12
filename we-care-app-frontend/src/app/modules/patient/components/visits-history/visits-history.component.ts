@@ -6,11 +6,12 @@ import { PatientService } from '../../service/patient.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { PatientBookedVisitsProjection } from '../../../../common-components/models/patient-booked-visits-projection';
+import { AdminRoutingModule } from "../../../admin/admin-routing.module";
 
 @Component({
   selector: 'app-visits-history',
   standalone: true,
-  imports: [MaterialModule, CommonModule, ReactiveFormsModule],
+  imports: [MaterialModule, CommonModule, ReactiveFormsModule, AdminRoutingModule],
   templateUrl: './visits-history.component.html',
   styleUrl: './visits-history.component.scss'
 })
@@ -22,7 +23,8 @@ export class VisitsHistoryComponent implements OnInit{
    'fullAddress',
    'patientMobile',
    'patientName',
-   'specialityName'
+   'specialityName',
+   'actions'
  ];
 
  dataSource = new MatTableDataSource<PatientBookedVisitsProjection>([]);
