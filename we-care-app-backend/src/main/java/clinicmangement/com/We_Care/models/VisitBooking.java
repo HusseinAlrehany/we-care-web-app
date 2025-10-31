@@ -38,6 +38,7 @@ public class VisitBooking {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "schedule_id", referencedColumnName = "id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private ScheduleAppointment schedule;
 
 

@@ -9,6 +9,7 @@ import { CommonModule, formatDate } from '@angular/common';
 import { SharedService } from '../../../../common-components/shared-service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { BookedDoctorDTO } from '../../../../common-components/models/booked-doctor-dto';
+import { PushNotificationService } from '../../../../notification/push-notification.service';
 
 @Component({
   selector: 'app-visit-booking',
@@ -29,7 +30,8 @@ export class VisitBookingComponent implements OnInit {
               private router: Router,
               private snackBar: MatSnackBar,
               private formBuilder: FormBuilder,
-              private sharedService: SharedService
+              private sharedService: SharedService,
+              private pushNotification: PushNotificationService
   ){
 
     this.bookingForm = this.formBuilder.group({
@@ -61,7 +63,6 @@ export class VisitBookingComponent implements OnInit {
      }
 
      this.getBookedDoctorWithSchedule(this.scId);
-    
   }
   getBookedDoctorWithSchedule(scId: number) {
     
@@ -82,11 +83,11 @@ export class VisitBookingComponent implements OnInit {
     }
   }
 
-  bookAvisit(){
+   bookAvisit(){
 
     if(this.bookingForm.valid){
        this.visitBooking = this.bookingForm.value;
-
+       
     this.patientService.bookAvisit(this.visitBooking).subscribe({
       next: (res)=> {
         
@@ -105,6 +106,8 @@ export class VisitBookingComponent implements OnInit {
 
     }
    
+  
+
   }
 
   onCancel(){

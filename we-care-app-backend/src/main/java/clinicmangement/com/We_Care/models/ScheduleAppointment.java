@@ -25,7 +25,7 @@ public class ScheduleAppointment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OnDelete(action = OnDeleteAction.CASCADE) // when doctor(parent) deleted , delete the child (schedule appointment) too
     private Doctor doctor;
 
     @ManyToOne(fetch = FetchType.LAZY)

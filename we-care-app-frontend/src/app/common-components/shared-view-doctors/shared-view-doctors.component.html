@@ -75,17 +75,24 @@
 
           <div class="doctor-title">
             <h2 class="doctor-name">
-              Dr.{{ doctor.firstName }} {{ doctor.lastName }}
+              <!--make the name of the doctor clickable-->
+               <a [routerLink]="['/details/', doctor.doctorId]">
+                  Dr.{{ doctor.firstName }} {{ doctor.lastName }}
+               </a>
             </h2>
             <span class="doctor-speciality">{{ doctor.specialityName }}</span>
 
-            <div *ngIf="doctor.averageRating !== null" class="rating-container">
+            <div *ngIf="doctor.averageRating != null" class="rating-container">
               <mat-icon class="star-icon">star</mat-icon>
               <span class="rating-value">{{
                 doctor.averageRating | number : "1.1-1"
               }}</span>
-              <span class="rating-count"
-                >({{ doctor.totalRating }} reviews)</span
+              <span class="rating-count">
+                <!--make reviews clickable-->
+                 <a [routerLink]="['/reviews/', doctor.doctorId]">
+                     ({{ doctor.totalRating }} reviews)
+                 </a>
+                </span
               >
             </div>
           </div>

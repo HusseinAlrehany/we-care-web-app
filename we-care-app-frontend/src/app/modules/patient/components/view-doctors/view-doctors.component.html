@@ -74,7 +74,10 @@
 
           <div class="doctor-title">
             <h2 class="doctor-name">
-              Dr.{{ doctor.firstName }} {{ doctor.lastName }}
+              <!--make doctor's name clickable to navigate to doctor's details-->
+              <a [routerLink]="['/details/', doctor.doctorId]">
+                    Dr.{{ doctor.firstName }} {{ doctor.lastName }}
+                 </a>
             </h2>
             <span class="doctor-speciality">{{ doctor.specialityName }}</span>
             <!--Rating section of the doctor-->
@@ -84,8 +87,8 @@
                 doctor.averageRating | number : "1.1-1"
               }}</span>
               <span class="rating-count">
-                <!--using dynamic routing [routerLink] since reviews will be loadied depending on doc ID-->
-                <a [routerLink]= "['/doctor/{id}/reviews']" class="reviews-link">
+                <!--using dynamic routing [routerLink] since reviews will be loaded depending on doc ID-->
+                <a [routerLink]= "['/reviews/', doctor.doctorId]" class="reviews-link">
                     ({{ doctor.totalRating }} reviews)
                 </a>
                 

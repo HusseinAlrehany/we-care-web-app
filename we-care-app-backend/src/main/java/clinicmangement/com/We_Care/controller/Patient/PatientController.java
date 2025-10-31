@@ -3,6 +3,7 @@ package clinicmangement.com.We_Care.controller.Patient;
 import clinicmangement.com.We_Care.DTO.DoctorClinicScheduleDTOPage;
 import clinicmangement.com.We_Care.DTO.PatientBookedVisitsProjection;
 import clinicmangement.com.We_Care.DTO.ReviewDTORequest;
+import clinicmangement.com.We_Care.DTO.ReviewsDTOPage;
 import clinicmangement.com.We_Care.apiresponse.ApiResponse;
 import clinicmangement.com.We_Care.models.User;
 import clinicmangement.com.We_Care.service.patient.PatientService;
@@ -23,14 +24,6 @@ import java.util.List;
 public class PatientController {
 
   private final PatientService patientService;
-
-  /*@GetMapping("/we-care-doctors")
-    public ResponseEntity<ApiResponse<DoctorClinicScheduleDTOPage>> getDoctorPage(@RequestParam(defaultValue = "0")int pageNumber,
-                                                                                  @RequestParam(defaultValue = "10")int pageSize){
-         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-      return ResponseEntity.ok(new ApiResponse<>("Success",
-              patientService.getDoctorPage(pageable)));
-  }*/
 
   @GetMapping("/booked-visits")
   public ResponseEntity<ApiResponse<List<PatientBookedVisitsProjection>>> getPatientBookedVisits(@AuthenticationPrincipal User user){
@@ -54,8 +47,5 @@ public class PatientController {
             patientService.addReview(user,reviewDTORequest)));
 
   }
-
-
-
 
 }

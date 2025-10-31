@@ -10,6 +10,8 @@ import { ApiResponse } from './api-response/api-response';
 import { DoctorFilter } from './models/doctor-filter';
 import { BookedDoctorDTO } from './models/booked-doctor-dto';
 import { UrlWithStringQuery } from 'node:url';
+import { ReviewDTOResponseProjection } from './models/review-dtoresponse-projection';
+import { ReviewsDTOPage } from './models/reviews-dtopage';
 
 const baseURL = "http://localhost:8080/";
 
@@ -115,6 +117,18 @@ getDoctorClinicSchedulePage(pageNumber: number, pageSize: number): Observable<Do
       
     });
   }
+
+getReviewsByDoctorId(doctorId: number, pageNumber: number, pageSize: number): Observable<ApiResponse<ReviewsDTOPage>> {
+
+  const params = new HttpParams()
+              .set('doctorId', doctorId)
+              .set('pageNumber', pageNumber - 1)
+              .set('pageSize', pageSize);
+              
+
+  return this.httpClient.get<ApiResponse<ReviewsDTOPage>>(baseURL + `reviews`, {params});
+
+}  
 
 
 

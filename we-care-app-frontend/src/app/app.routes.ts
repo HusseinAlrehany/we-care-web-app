@@ -7,6 +7,8 @@ import { AiModelComponent } from './common-components/ai-model/ai-model.componen
 import { SharedViewDoctorsComponent } from './common-components/shared-view-doctors/shared-view-doctors.component';
 import { PharmacyComponent } from './common-components/pharmacy/pharmacy.component';
 import { GuestVisitBookingComponent } from './common-components/guest-visit-booking/guest-visit-booking.component';
+import { DoctorDetailsComponent } from './common-components/doctor-details/doctor-details.component';
+import { DoctorReviewsComponent } from './common-components/doctor-reviews/doctor-reviews.component';
 
 export const routes: Routes = [
     {path: 'patient_signup', component: PatientSignupComponent},
@@ -16,6 +18,8 @@ export const routes: Routes = [
     {path: 'view_doctors', component: SharedViewDoctorsComponent},
     {path: 'pharmacy', component: PharmacyComponent},
     {path: 'guest_visit_booking', component: GuestVisitBookingComponent},
+    {path: 'details/:id', component: DoctorDetailsComponent},
+    {path: 'reviews/:id', component: DoctorReviewsComponent},
 
     {path: 'admin', loadChildren: ()=> import("./modules/admin/admin.module")
         .then(e=>e.AdminModule), canActivate: [authGuard]

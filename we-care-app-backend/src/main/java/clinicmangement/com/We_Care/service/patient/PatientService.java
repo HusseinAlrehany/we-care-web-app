@@ -3,6 +3,7 @@ package clinicmangement.com.We_Care.service.patient;
 import clinicmangement.com.We_Care.DTO.DoctorClinicScheduleDTOPage;
 import clinicmangement.com.We_Care.DTO.PatientBookedVisitsProjection;
 import clinicmangement.com.We_Care.DTO.ReviewDTORequest;
+import clinicmangement.com.We_Care.DTO.ReviewsDTOPage;
 import clinicmangement.com.We_Care.models.User;
 import org.springframework.data.domain.Pageable;
 

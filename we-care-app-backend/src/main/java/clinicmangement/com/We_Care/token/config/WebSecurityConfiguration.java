@@ -53,7 +53,8 @@ public class WebSecurityConfiguration {
                                 "/booking-info",
                                 "/Test",
                                 "/we-care-ai-model/**",
-                                "/we-care-doctors").permitAll()
+                                "/we-care-doctors",
+                                "/reviews").permitAll()
                         .requestMatchers("/we-care/**")
                         .authenticated())
                 //disable the default spring security logout to avoid

@@ -15,3 +15,5 @@ bootstrapApplication(AppComponent, appConfig)
     .then(registration => console.log('SW registered'))
     .catch(err => console.log('SW registration failed'));
 }
+
+

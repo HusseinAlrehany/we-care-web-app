@@ -26,7 +26,5 @@ public void init() throws IOException {
          System.out.println("FireBase Started Successfully");
     }
 
-
-
 }
 }

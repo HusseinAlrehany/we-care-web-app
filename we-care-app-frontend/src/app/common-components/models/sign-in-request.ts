@@ -1,5 +1,6 @@
 export interface SignInRequest {
 
     email: string,
-    password: string
+    password: string,
+    notificationToken?: string
 }

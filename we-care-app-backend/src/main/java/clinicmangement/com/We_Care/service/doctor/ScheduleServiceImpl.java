@@ -89,10 +89,13 @@ public class ScheduleServiceImpl implements ScheduleService{
     }
 
     @Override
-    public Page<ScheduleDTOProjection> findAllSchedulesByUserId(Integer userId, int pageNumber,
-                                                                  int pageSize) {
+    public Page<ScheduleDTOProjection> findAllSchedulesByUserId(Integer userId,
+                                                                int pageNumber,
+                                                                int pageSize) {
 
-        Page<ScheduleDTOProjection> projections = scheduleRepository.findAllSchedulesByUserId(userId, PageRequest.of(pageNumber, pageSize));
+        Page<ScheduleDTOProjection> projections = scheduleRepository.findAllAvailableSchedulesByUserId(userId,
+                                                                    ScheduleStatus.ACTIVE,
+                                                                    PageRequest.of(pageNumber, pageSize));
 
         if(!projections.hasContent()){
             throw new NotFoundException("No Schedules Created");
@@ -134,7 +137,7 @@ public class ScheduleServiceImpl implements ScheduleService{
     }
 
     //this function runs every day at 03:00 PM
-    @Scheduled(cron = "0 55 19 * * *", zone = "Africa/Cairo")
+    @Scheduled(cron = "0 32 21 * * *", zone = "Africa/Cairo")
     public void deactivateExpiredSchedules(){
         //LocalDate today = LocalDate.now();
         int updatedRows = scheduleRepository.deactivatedExpiredSchedules(LocalDate.now());

@@ -1,0 +1,71 @@
+<div class="reviews-container mat-elevation-z2">
+  <h2 class="section-title">Patient Reviews</h2>
+
+  <!-- ⭐ Doctor average rating section -->
+  <div class="doctor-average-rating" *ngIf="doctorReviews.length > 0">
+    <ng-container *ngIf="doctorReviews[0].averageRating as avg">
+      <div class="stars-container">
+        <ng-container *ngFor="let star of [1,2,3,4,5]; let i = index">
+          <mat-icon [ngClass]="{ 'filled-star': i < Math.round(avg) }">star</mat-icon>
+        </ng-container>
+        <!--number of reviewers per page-->
+        <span>({{doctorReviews.length}})</span>
+      </div>
+      <div class="average-text">
+        <span>{{ avg | number : '1.1-1' }}</span>
+        <span class="out-of">/ 5</span>
+      </div>
+    </ng-container>
+  </div>
+
+  <div *ngIf="doctorReviews.length > 0; else noReviews" class="reviews-list">
+    <mat-card *ngFor="let review of doctorReviews" class="review-card">
+      <mat-card-header>
+        <div mat-card-avatar class="avatar-icon">
+          <mat-icon>person</mat-icon>
+        </div>
+        <mat-card-title>{{ review.patientName }}</mat-card-title>
+        <mat-card-subtitle>
+          {{ review.createdAt ? (review.createdAt | date: 'mediumDate') : 'No date available' }}
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+
+         <!--Rating section-->
+        <div class="rating">
+          <ng-container *ngFor="let star of [1,2,3,4,5]; let i = index">
+            <mat-icon
+              [ngClass]="{ 'filled-star': i < review.rating }"
+              class="star-icon"
+            >star</mat-icon>
+          </ng-container>
+          <span class="rating-text">{{ review.rating }}/5</span>
+        </div>
+
+        <p class="review-comment">"{{ review.comment }}"</p>
+
+       <!-- <div class="rating-details">
+          <p><strong>Total Rating:</strong> {{ review.totalRating  }}</p>
+          <p><strong>Average Rating:</strong> {{ review.averageRating  }}</p>
+        </div>-->
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-paginator
+    [length]="totalElements"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="onPageChange($event)"
+    aria-label="Select page"
+  ></mat-paginator>
+
+  <ng-template #noReviews>
+    <div class="no-reviews">
+      <mat-icon>chat_bubble_outline</mat-icon>
+      <p>No reviews found for this doctor.</p>
+    </div>
+  </ng-template>
+</div>

@@ -14,6 +14,7 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
+
 // Optional: show background notifications
 messaging.onBackgroundMessage((payload) => {
   const title = payload?.notification?.title || 'New Notification';
@@ -30,3 +31,7 @@ self.addEventListener('notificationclick', (event) => {
   const target = event.notification?.data?.url || '/';
   event.waitUntil(clients.openWindow(target));
 });
+
+
+
+

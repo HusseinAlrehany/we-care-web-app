@@ -6,6 +6,7 @@ import clinicmangement.com.We_Care.DTO.PatientSignupRequest;
 import clinicmangement.com.We_Care.DTO.UserDTO;
 import clinicmangement.com.We_Care.apiresponse.ApiResponse;
 import clinicmangement.com.We_Care.apiresponse.AuthenticationResponse;
+import clinicmangement.com.We_Care.apiresponse.AuthenticationResponseWithNotification;
 import clinicmangement.com.We_Care.enums.UserRole;
 import clinicmangement.com.We_Care.exceptions.types.InvalidUserNameOrPasswordException;
 import clinicmangement.com.We_Care.exceptions.types.NotFoundException;
@@ -130,7 +131,11 @@ public class AuthenticationServiceImpl implements  AuthenticationService{
 
         //save the notification token of the registered doctor
         if(doctorSignupRequest.getNotificationToken() != null){
+            System.out.println("INSIDE SIGN UP FUNCTION");
+            System.out.println("Notification Token is " + doctorSignupRequest.getNotificationToken());
             notificationService.saveOrUpdateNotificationToken(doctorSignupRequest.getNotificationToken(), user);
+        } else {
+            System.out.println("Notification Token IS NULL");
         }
 
         return userMapper.toDTO(dbUser);
@@ -168,10 +173,13 @@ public class AuthenticationServiceImpl implements  AuthenticationService{
 
         //save the notification token used in firebase to send offline notification to the doctor
         if(signInRequest.getNotificationToken() != null && optionalUser.get().getUserRole().equals(UserRole.DOCTOR)){
+            System.out.println("Sign in notification Token is " + signInRequest.getNotificationToken());
             notificationService.saveOrUpdateNotificationToken(signInRequest.getNotificationToken(), optionalUser.get());
         }
 
             //store the jwt in http only cookie
+            //because httpOnlyCookie can not be read via (javascript, so it is XSS safe)
+            //also it send only with http request to the backend
             ResponseCookie jwtCookie = ResponseCookie.from("jwt", jwtToken)
                     .httpOnly(true)
                     .secure(false)
@@ -185,6 +193,7 @@ public class AuthenticationServiceImpl implements  AuthenticationService{
             response.setJwtToken(jwtToken);
             response.setUserId(optionalUser.get().getId());
             response.setUserRole(optionalUser.get().getUserRole());
+
 
             return response;
 

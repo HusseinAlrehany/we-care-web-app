@@ -2,8 +2,12 @@ package clinicmangement.com.We_Care.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "reviews")
@@ -27,4 +31,9 @@ public class Reviews {
     @JoinColumn(name = "doctor_id", referencedColumnName = "id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Doctor doctor;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }

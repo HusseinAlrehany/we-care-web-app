@@ -2,6 +2,7 @@ package clinicmangement.com.We_Care.repository.schedule;
 
 import clinicmangement.com.We_Care.DTO.ScheduleDTOProjection;
 import clinicmangement.com.We_Care.DTO.ScheduleViewProjection;
+import clinicmangement.com.We_Care.enums.ScheduleStatus;
 import clinicmangement.com.We_Care.models.ScheduleAppointment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -59,8 +60,11 @@ public interface ScheduleAppointmentRepository extends JpaRepository<ScheduleApp
             JOIN d.user u
             
             WHERE u.id = :userId
+            AND s.scheduleStatus = :status
             """)
-    Page<ScheduleDTOProjection> findAllSchedulesByUserId(@Param("userId")Integer userId, Pageable pageable);
+    Page<ScheduleDTOProjection> findAllAvailableSchedulesByUserId(@Param("userId")Integer userId,
+                                                                  @Param("status") ScheduleStatus status,
+                                                                  Pageable pageable);
 
     List<ScheduleAppointment> findAllByDoctor_IdAndDate(Integer id, LocalDate date);
 
@@ -73,4 +77,18 @@ public interface ScheduleAppointmentRepository extends JpaRepository<ScheduleApp
             WHERE s.scheduleStatus = 'ACTIVE' AND s.date < :today
             """)
     int deactivatedExpiredSchedules(@Param("today") LocalDate today);
+
+
+
+    @Query(value = """
+            DELETE FROM schedule_appointment sc
+            WHERE sc.date = :duration
+            AND sc.schedule_status = :status
+            """, nativeQuery = true)
+    int deleteOldAppointments(@Param("duration")LocalDate duration,
+                              @Param("status")String status);
+
+
+
+
 }

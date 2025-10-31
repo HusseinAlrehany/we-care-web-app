@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/authentication/auth-service';
 import { MaterialModule } from '../../Material.module';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -8,6 +8,7 @@ import { SignInRequest } from '../models/sign-in-request';
 import { StoredUser } from '../models/stored-user';
 import { StorageService } from '../../services/storage/storage-service';
 import { CommonModule } from '@angular/common';
+import { PushNotificationService } from '../../notification/push-notification.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -16,7 +17,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.scss'
 })
-export class SignInComponent {
+export class SignInComponent{
 
  signinForm!: FormGroup;
  hidePassword: boolean = true;
@@ -25,7 +26,8 @@ export class SignInComponent {
               private snackBar: MatSnackBar,
               private router: Router,
               private formBuilder: FormBuilder,
-              private storageService: StorageService
+              private storageService: StorageService,
+              private pushNotification: PushNotificationService
             
                
   ){
@@ -36,11 +38,21 @@ export class SignInComponent {
    })
 
   }
+  
 
-  onSignIn(){
-    console.log(this.signinForm.value);
+ async onSignIn(event: Event){
+    event.preventDefault();
 
-   const signInRequest: SignInRequest = this.signinForm.value;
+    const notificationToken = await this.pushNotification.getOrRequestToken();
+
+   //attach the token to sign in form  
+   const signInRequest: SignInRequest = {
+       ... this.signinForm.value,
+       notificationToken: notificationToken
+   };
+
+   console.log("Sign in Form ", signInRequest);
+
     this.authService.signIn(signInRequest).subscribe(
       (response)=> {
         console.log("RESPONSE ", response );

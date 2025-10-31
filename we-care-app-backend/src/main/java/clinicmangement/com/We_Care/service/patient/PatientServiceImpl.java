@@ -1,8 +1,6 @@
 package clinicmangement.com.We_Care.service.patient;
 
-import clinicmangement.com.We_Care.DTO.DoctorClinicScheduleDTOPage;
-import clinicmangement.com.We_Care.DTO.PatientBookedVisitsProjection;
-import clinicmangement.com.We_Care.DTO.ReviewDTORequest;
+import clinicmangement.com.We_Care.DTO.*;
 import clinicmangement.com.We_Care.enums.VisitStatus;
 import clinicmangement.com.We_Care.exceptions.types.NotFoundException;
 import clinicmangement.com.We_Care.mapper.DoctorClinicScheduleDTOMapper;
@@ -15,6 +13,7 @@ import clinicmangement.com.We_Care.repository.reviews.ReviewsRepository;
 import clinicmangement.com.We_Care.repository.visit.VisitBookingRepository;
 import clinicmangement.com.We_Care.search.DoctorSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -98,10 +97,15 @@ public class PatientServiceImpl implements PatientService{
         Doctor doctor = doctorRepository.findById(reviewDTORequest.getDoctorId())
                 .orElseThrow(()-> new NotFoundException("No Doctor Found ID: " + reviewDTORequest.getDoctorId()));
 
+        double totalRating = reviewsRepository.getTotalRatingByDoctorId(doctor.getId());
+        double averageRating = reviewsRepository.getAverageRatingByDoctorId(doctor.getId());
+
         Reviews reviews = reviewDTOMapper.toReviews(reviewDTORequest);
 
         reviews.setDoctor(doctor);
         reviews.setUser(user);
+        doctor.setTotalRating(totalRating);
+        doctor.setAverageRating(averageRating);
 
         return reviewDTOMapper.toReviewDTORequest(reviewsRepository.save(reviews));
     }

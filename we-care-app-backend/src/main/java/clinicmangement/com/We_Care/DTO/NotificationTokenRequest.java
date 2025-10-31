@@ -3,9 +3,9 @@ package clinicmangement.com.We_Care.DTO;
 import lombok.Data;
 
 @Data
-public class SignInRequest {
+public class NotificationTokenRequest {
 
-    private String email;
-    private String password;
+    private Long id;
     private String notificationToken;
+    private Integer doctorId;
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken, onMessage, Messaging } from 'firebase/messaging';
 import { environment } from '../../firebase-env/environment';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -10,6 +11,7 @@ export class PushNotificationService {
   private messaging?: Messaging;
   private currentToken: string | null = null;
   private initDone = false;
+
 
   private initFirebase() {
     if (this.initDone) return;
@@ -62,4 +64,6 @@ export class PushNotificationService {
   getCachedToken(): string | null {
     return this.currentToken;
   }
+
+
 }

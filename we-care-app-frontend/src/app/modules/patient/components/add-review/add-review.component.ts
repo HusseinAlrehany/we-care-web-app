@@ -48,7 +48,7 @@ setRating(value: number){
     next: (res)=> {
        
          this.snackBar.open(res.message, "Close", {duration: 3000});
-         this.router.navigateByUrl('/patient/view_doctors');
+         this.router.navigate(['reviews/', this.doctorId]);
     },
     error: (error: HttpErrorResponse)=> {
       if(error.status === 404 && error.error){

@@ -1,7 +1,10 @@
 package clinicmangement.com.We_Care.mapper;
 
 import clinicmangement.com.We_Care.DTO.ReviewDTORequest;
+import clinicmangement.com.We_Care.DTO.ReviewDTOResponseProjection;
+import clinicmangement.com.We_Care.DTO.ReviewsDTOPage;
 import clinicmangement.com.We_Care.models.Reviews;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -34,13 +37,25 @@ public class ReviewDTOMapper {
         reviewDTORequest.setComment(reviews.getComment());
         reviewDTORequest.setRating(reviews.getRating());
         reviewDTORequest.setDoctorId(reviews.getDoctor().getId());
+        reviewDTORequest.setTotalRating(reviews.getDoctor().getTotalRating());
+        reviewDTORequest.setAverageRating(reviews.getDoctor().getAverageRating());
 
         return reviewDTORequest;
     }
 
-   public List<ReviewDTORequest> toReviewsDTORequestList(List<Reviews> reviews){
 
-        return reviews != null ? reviews.stream().map(this::toReviewDTORequest).toList() :
-                new ArrayList<>();
-   }
+    public ReviewsDTOPage toReviewDTOPage(Page<ReviewDTOResponseProjection> reviewProjectionPage){
+
+        ReviewsDTOPage reviewsDTOPage = new ReviewsDTOPage();
+        reviewsDTOPage.setContent(reviewProjectionPage.getContent().stream().toList());
+        reviewsDTOPage.setTotalPages(reviewProjectionPage.getTotalPages());
+        reviewsDTOPage.setNumber(reviewProjectionPage.getNumber());
+        reviewsDTOPage.setSize(reviewProjectionPage.getSize());
+        reviewsDTOPage.setTotalElements(reviewProjectionPage.getTotalElements());
+        reviewsDTOPage.setNumberOfElements(reviewProjectionPage.getNumberOfElements());
+
+        return reviewsDTOPage;
+
+    }
+
 }

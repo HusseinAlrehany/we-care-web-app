@@ -5,6 +5,7 @@ import clinicmangement.com.We_Care.DTO.SignInRequest;
 import clinicmangement.com.We_Care.DTO.PatientSignupRequest;
 import clinicmangement.com.We_Care.DTO.UserDTO;
 import clinicmangement.com.We_Care.apiresponse.AuthenticationResponse;
+import clinicmangement.com.We_Care.apiresponse.AuthenticationResponseWithNotification;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;

@@ -12,12 +12,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DoctorFilter } from '../models/doctor-filter';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ScheduleDTO } from '../models/schedule-dto';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-shared-view-doctors',
   standalone: true,
-  imports: [MaterialModule, ReactiveFormsModule, CommonModule],
+  imports: [MaterialModule, ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './shared-view-doctors.component.html',
   styleUrl: './shared-view-doctors.component.scss'
 })

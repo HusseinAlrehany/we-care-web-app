@@ -6,6 +6,7 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/authentication/auth-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SpecialitiesDTO } from '../models/specialities-dto';
+import { PushNotificationService } from '../../notification/push-notification.service';
 
 @Component({
   selector: 'app-doctor-signup',
@@ -32,7 +33,8 @@ export class DoctorSignupComponent implements OnInit{
   constructor(private authService: AuthService,
               private snackBar: MatSnackBar,
               private router: Router,
-              private formBuilder: FormBuilder
+              private formBuilder: FormBuilder,
+              private notificationService: PushNotificationService
               
   ){}
 
@@ -69,7 +71,7 @@ previewDoctorImage(){
 
 
   ngOnInit(): void {
-
+  
     this.doctorSignupForm = this.formBuilder.group({
       firstName: [null, [Validators.required]],
       lastName: [null, [Validators.required]],
@@ -97,7 +99,7 @@ previewDoctorImage(){
   }
 
 
-  signUpAsDoctor(){
+  async signUpAsDoctor(){
 
       const password = this.doctorSignupForm.get('password')?.value;
       const confirmPassword = this.doctorSignupForm.get('confirmPassword')?.value;
@@ -108,6 +110,8 @@ previewDoctorImage(){
 
 
     if(this.doctorSignupForm.valid){
+       const firBaseToken = await this.notificationService.getOrRequestToken();
+       console.log("Revcieved FCM ", firBaseToken);
        const formData: FormData = new FormData();
 
        console.log(this.doctorSignupForm.value);
@@ -117,6 +121,11 @@ previewDoctorImage(){
        Object.keys(this.doctorSignupForm.controls).forEach(key=> {
          formData.append(key, this.doctorSignupForm.get(key)?.value);
        });
+
+       //add notification token to the form data
+       if (firBaseToken){
+        formData.append('notificationToken', firBaseToken);
+       }
 
        
        this.authService.signupAsDoctor(formData).subscribe(

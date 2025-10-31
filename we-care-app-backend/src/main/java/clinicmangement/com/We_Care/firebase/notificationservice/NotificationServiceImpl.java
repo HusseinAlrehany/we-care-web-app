@@ -23,8 +23,10 @@ public class NotificationServiceImpl implements NotificationService{
 
     @Override
     public void saveOrUpdateNotificationToken(String notificationToken, User user) {
-
-
+        //firebase notification is per device or per browser notification
+        //which means one notification is created and registered for that browser or device
+        //if someone else logged in with the same browser the same notification token is saved for that different user
+        //unless we handle this situation
         if(notificationToken == null || notificationToken.isBlank()){
             throw new IllegalArgumentException("Notification Token is required");
         }
@@ -34,17 +36,20 @@ public class NotificationServiceImpl implements NotificationService{
         if(doctor == null){
             throw new NotFoundException("No doctor found for ID: " + user.getId());
         }
+        NotificationToken existingToken = notificationTokenRepository.findByDoctor_Id(doctor.getId())
+                .orElse(null);
 
-          NotificationToken existingToken = notificationTokenRepository.findByNotificationToken(notificationToken)
-                  .orElse(null);
-          if(existingToken == null){
-              NotificationToken token = new NotificationToken();
-              token.setDoctor(doctor);
-              token.setNotificationToken(notificationToken);
-
-
-              notificationTokenRepository.save(token);
-          }
+        if(existingToken == null){
+            //no token for that doctor then create new one
+            NotificationToken token = new NotificationToken();
+            token.setDoctor(doctor);
+            token.setNotificationToken(notificationToken);
+            notificationTokenRepository.save(token);
+            //if there is token but no equal to the sent one then update it
+        } else if(!existingToken.getNotificationToken().equals(notificationToken)) {
+             existingToken.setNotificationToken(notificationToken);
+             notificationTokenRepository.save(existingToken);
+        }
     }
 
 
@@ -66,6 +71,7 @@ public class NotificationServiceImpl implements NotificationService{
                     .build();
             try {
                 String response = FirebaseMessaging.getInstance().send(message);
+                System.out.println("Notification Token: " + t.getNotificationToken());
                 System.out.println("Sent message: " + response);
             } catch (FirebaseMessagingException e) {
 
