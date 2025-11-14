@@ -1,1 +1,52 @@
-<p>doctor-details works!</p>
+<div class="page-container">
+
+  <!-- LEFT SIDEBAR : Doctor Info -->
+  <aside class="left-panel mat-elevation-z4">
+
+    <div class="doctor-header">
+      <img [src]="'http://localhost:8080' + doctorDetailsView?.doctorImageURL" alt="" class="doctor-photo">
+
+      <h2 class="name">
+        {{ doctorDetailsView?.firstName }} {{ doctorDetailsView?.lastName }}
+      </h2>
+
+      <h4 class="speciality">
+        {{ doctorDetailsView?.specialityName }}
+      </h4>
+
+      <p class="brief">{{ doctorDetailsView?.briefIntroduction }}</p>
+
+      <div class="fees-box mat-elevation-z2">
+        <span>Fees</span>
+        <h3>${{ doctorDetailsView?.fees }}</h3>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- RIGHT SECTION : Clinics -->
+  <main class="right-panel">
+
+    <h2 class="section-title">Clinics</h2>
+
+    <div class="clinic-list">
+
+      <mat-card *ngFor="let clinic of doctorDetailsView?.docClinics" class="clinic-card mat-elevation-z3">
+        <div class="clinic-title">
+          <mat-icon>location_on</mat-icon>
+        </div>
+
+        <p><strong>Address:</strong><br>
+          {{ clinic.address }}, {{ clinic.cityName }}, {{ clinic.stateName }}
+        </p>
+
+        <p><strong>Mobile:</strong><br>
+          {{ clinic.clinicMobile }}
+        </p>
+      </mat-card>
+
+    </div>
+
+  </main>
+
+</div>

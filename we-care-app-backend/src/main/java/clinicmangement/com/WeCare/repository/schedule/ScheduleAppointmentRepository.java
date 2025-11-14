@@ -1,0 +1,93 @@
+package clinicmangement.com.WeCare.repository.schedule;
+
+import clinicmangement.com.WeCare.DTO.ScheduleDTOProjection;
+import clinicmangement.com.WeCare.DTO.ScheduleViewProjection;
+import clinicmangement.com.WeCare.enums.ScheduleStatus;
+import clinicmangement.com.WeCare.models.ScheduleAppointment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface ScheduleAppointmentRepository extends JpaRepository<ScheduleAppointment, Integer> {
+
+    //using DTO projection to avoid loading all the object and it's blobs(images)
+    //even if using scheduleDTO.setDoctorId(scheduleAppointment.getDoctor().getId());
+    //this will load the entire Doctor and it's blobs and relations which causes outOfMemory error
+    @Query(value = """
+            SELECT
+            s.id AS id,
+            s.date AS date,
+            s.end_time AS endTime,
+            s.start_time AS startTime,
+            d.id AS doctorId,
+            c.id AS clinicId,
+            CONCAT(c.address, ', ', ct.city_name, ', ', st.state_name) AS clinicLocation
+            FROM schedule_appointment s
+            JOIN doctors d ON s.doctor_id = d.id
+            JOIN clinic c ON s.clinic_id = c.id
+            JOIN cities ct ON c.city_id = ct.id
+            JOIN states st ON c.state_id = st.id
+            WHERE s.id = :id
+            """,nativeQuery = true)
+    Optional<ScheduleViewProjection> findScheduleProjection(@Param("id") Integer id);
+
+    //using JPQL (entities specific) query , with paging support
+    @Query("""
+            SELECT new clinicmangement.com.WeCare.DTO.ScheduleDTOProjection(
+               s.id,
+               s.date,
+               s.startTime,
+               s.endTime,
+               CONCAT(c.address, ', ', ct.cityName, ', ', st.stateName)
+            )
+            
+            FROM ScheduleAppointment s
+            JOIN s.doctor d
+            JOIN s.clinic c
+            JOIN c.city ct
+            JOIN c.state st
+            JOIN d.user u
+            
+            WHERE u.id = :userId
+            AND s.scheduleStatus = :status
+            """)
+    Page<ScheduleDTOProjection> findAllAvailableSchedulesByUserId(@Param("userId")Integer userId,
+                                                                  @Param("status") ScheduleStatus status,
+                                                                  Pageable pageable);
+
+    List<ScheduleAppointment> findAllByDoctor_IdAndDate(Integer id, LocalDate date);
+
+
+    @Modifying
+    @Transactional
+    @Query("""
+            UPDATE ScheduleAppointment s
+            SET s.scheduleStatus = 'INACTIVE'
+            WHERE s.scheduleStatus = 'ACTIVE' AND s.date < :today
+            """)
+    int deactivatedExpiredSchedules(@Param("today") LocalDate today);
+
+
+
+    @Query(value = """
+            DELETE FROM schedule_appointment sc
+            WHERE sc.date = :duration
+            AND sc.schedule_status = :status
+            """, nativeQuery = true)
+    int deleteOldAppointments(@Param("duration")LocalDate duration,
+                              @Param("status")String status);
+
+
+
+
+}

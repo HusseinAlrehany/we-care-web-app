@@ -12,6 +12,7 @@ import { BookedDoctorDTO } from './models/booked-doctor-dto';
 import { UrlWithStringQuery } from 'node:url';
 import { ReviewDTOResponseProjection } from './models/review-dtoresponse-projection';
 import { ReviewsDTOPage } from './models/reviews-dtopage';
+import { DoctorDetailsViewproj } from './models/doctor-details-viewproj';
 
 const baseURL = "http://localhost:8080/";
 
@@ -128,7 +129,13 @@ getReviewsByDoctorId(doctorId: number, pageNumber: number, pageSize: number): Ob
 
   return this.httpClient.get<ApiResponse<ReviewsDTOPage>>(baseURL + `reviews`, {params});
 
-}  
+} 
+
+
+getDoctorDetailsView(doctorId: number): Observable<ApiResponse<DoctorDetailsViewproj>>{
+
+  return this.httpClient.get<ApiResponse<DoctorDetailsViewproj>>(baseURL + `doctor-details?doctorId=${doctorId}`);
+}
 
 
 
